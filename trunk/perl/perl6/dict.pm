@@ -4,13 +4,9 @@ use bag;
 
 our @dict;
 
-# I originally had `our %dict_hash', which works exactly the same
-# way. But this will, supposedly in a future version of pugs, limit
-# the hash keys to Ints, which might improve performance, or provide
-# error-checking, or something.
-our Any %dict_hash{Int};
-
-my $dict_file_name = "/usr/share/dict/words";
+# TODO -- figure out how to use FindBin, so as to make this work
+# regardless of the current directory.
+my $dict_file_name = "../../words.utf8";
 #my $dict_file_name = "words";
 
 sub acceptable (Str $word) returns Bool {
@@ -30,21 +26,12 @@ sub acceptable (Str $word) returns Bool {
     return Bool::False ;
   }
 
-  # Testing only
-  if ($word.chars > 4) {
-    return Bool::False ;
-  }
-
-  if ($word ~~ rx:perl5{[aeiou]}) {
+  if ($word ~~ rx:perl5{[aeiouy]}) {
     return Bool::True ;
   }
 
   return Bool::False;
 }
-
-# Don't put more than this many words into our hash.  Useful only for
-# debugging, since reading the whole dictionary is really really slow.
-my $max_words is constant = 1000;
 
 sub snarf_wordlist {
   my $dict = open($dict_file_name, :r)
@@ -52,42 +39,41 @@ sub snarf_wordlist {
 
   print $*ERR: "Reading $dict_file_name ...";
 
+  my %dict_hash;
+
   for ($dict.readline) -> $word {
                                  my $chopped = lc (chomp($word));
                                  next unless (acceptable($chopped));
-                                 my $entry = %dict_hash{Bag::bag($chopped)};
-                                 $entry.push($chopped);
-                                 $entry = $entry.uniq;
-                                 if (%dict_hash.elems == $max_words) {
-                                   say "read enough words; won't read no mo'";
-                                   last;
-                                 }
+                                 my $bag = Bag::bag($chopped);
+                                 %dict_hash{$bag}.push($chopped)
+                                 unless $chopped eq any @(%dict_hash{$bag});
                                 };
-  print $*ERR: " done\n";
+  print $*ERR: " done; dict_hash has %dict_hash.elems() elements\n";
   close ($dict) or die "Closing $dict: $!";
-
+  %dict_hash;
 }
 
 my $cache_file_name = "dict.cache";
-if (-f $cache_file_name) {
-  %dict_hash = open("dict.cache").slurp.eval(:lang<yaml>);
+if ($cache_file_name ~~ :f) {
+  @dict = open("dict.cache").slurp.eval(:lang<yaml>);
   say "Slurped $cache_file_name";
 } else {
   say "Slurping word list ...";
-  snarf_wordlist();
+
+  for (snarf_wordlist().pairs) -> $p {
+                                      my $bag = $p[0];
+                                      my @words=$p[1];
+                                      push @dict, [$bag, @words];
+                                     }
+
+
   {
     my $cache = open($cache_file_name, :w)
       or die "Can't open $cache_file_name for writing 'cuz $!; stopped";
-    $cache.print(%dict_hash.yaml);
-    say "Wrote $cache";
+    $cache.print(@dict.yaml);
+    say "Wrote @dict.elems() elements to $cache_file_name";
     close ($cache) or die "Closing $cache";
   }
 }
-
-say "Word list hath ", %dict_hash.elems, " pairs";
-for (%dict_hash.keys) -> $bag {
-                          my @words = %dict_hash{$bag};
-                               push @dict, [$bag, @words];
-                         }
 
 1;

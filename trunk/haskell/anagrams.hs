@@ -80,7 +80,7 @@ anagrams bag (x:xs) =
              []) ++ anagrams bag xs
 
 main= do
-      x <- readFile ("/usr/share/dict/words")
+      x <- readFile ("../words")
 
       args <- System.getArgs
       let dict = M.toList (from_strings (filter acceptable (map (map toLower) (lines x))));

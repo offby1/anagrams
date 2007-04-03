@@ -18,9 +18,9 @@ sub anagrams (Int $bag, Int $l, @dict) {
 
   # I originally had ``while (@dict) { ... @dict.shift} '' but that
   # modified the input.  Grr.
-  my @pruned = grep {
+  my @pruned = @dict.grep:{
     Bag::subtract_bags($bag, $_[0])> 0;
-  }, @dict;
+  } ;
 
   loop (;
        @pruned;
@@ -52,4 +52,4 @@ sub anagrams (Int $bag, Int $l, @dict) {
 sub test (Str $s) {
   say ($s => anagrams(Bag::bag($s), 0, @dict::dict).perl);
 }
-for (<<dog noraa>>, "noraa dog", "noraa dogx") -> $s { test ($s); }
+for (qw<dog noraa>, "noraa dog", "noraa dogx") -> $s { test ($s); }

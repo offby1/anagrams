@@ -1,5 +1,5 @@
-p=/usr/local/src/langs/my-parrot-branch/parrot
-pdb=/usr/local/src/langs/my-parrot-branch/pdb
+p=/usr/local/src/langs/parrot/parrot
+pdb=/usr/local/src/langs/parrot/pdb
 
 sources=bag dict anagrams
 pbcs=$(addsuffix .pbc, $(sources))
