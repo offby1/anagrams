@@ -1,0 +1,8 @@
+http://www.hinterlands.org/clabbers/
+
+is a program written by "SlayerXP", a denizen of the #svn IRC channel
+on irc.freenode.net.  It's not quite the same as mine: it finds all
+words that can be made from a pile of letters, including those that
+don't use all the letters.  For example, given "dgo", my program will
+find "god" and "dog"; clabbers will find both of those, but also "go"
+and "do".

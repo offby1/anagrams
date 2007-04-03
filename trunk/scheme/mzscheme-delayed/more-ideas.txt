@@ -1,0 +1,2 @@
+Try the bag implementation in
+http://ja.soegaard.net/planet/html/soegaard/galore.plt/current/doc.txt

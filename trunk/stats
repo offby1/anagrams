@@ -1,0 +1,153 @@
+dell optiplex:
+processor       : 0
+vendor_id       : GenuineIntel
+cpu family      : 15
+model           : 2
+model name      : Intel(R) Pentium(R) 4 CPU 2.40GHz
+stepping        : 7
+cpu MHz         : 2391.191
+cache size      : 512 KB
+fdiv_bug        : no
+hlt_bug         : no
+f00f_bug        : no
+coma_bug        : no
+fpu             : yes
+fpu_exception   : yes
+cpuid level     : 2
+wp              : yes
+flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe cid
+bogomips        : 4771.02
+-----
+Lenovo T60 laptop:
+two processors (although all of these anagram programs are single-threaded)
+cpu MHz: either 1,000 or 2,000; it's not clear
+model name: T2400
+
+time ./anagrams  > /dev/null
+
+All times are on the dell optiplex, unless otherwise noted.
+
+For testing a new implementation, note that the words file should wind
+up with 72717 words (66890 distinct bags), and after pruning for
+"Ernest Hemingway", it should have 1716 entries.  Unfortunatley that
+file seems to exist in different versions on different *nix distros,
+which is why I've checked in my own copy.  I suspect that many of the
+implementations here that got the wrong answer did so not because
+they're buggy, but only because I unknowingly tested them against a
+different version of the dictionary than the Common Lisp version.
+
+Also note that the times are meaningless if the answer isn't correct.
+For example, if the answer contains too few items, then the time will
+be notably lower than if the answer were correct.
+
+"Correct answer" basically means "did it get the same results as the Common Lisp version?"
+
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|language         |machine                |correct|time            |time "st        |time "est      |time "Ernes      |time "Ernest     |bag           |dictionary    |
+|                 |                       |answer?|"hemingway"     |hemingway"      |hemingway"     |Hemingway"       |Hemingway"       |implementation|cached?       |
+|                 |                       |       |                |                |               |(113466 anagrams)|(457602 anagrams)|              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|      common lisp|optiplex               |yes    |                |                |               |                 |                 |bignums       |yes           |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|sbcl             |optiplex               |       |                |                |               |                 |7 user seconds   |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|cmucl            |optiplex               |       |1 seconds       |2 seconds       |               |                 |10 user seconds  |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|clisp            |optiplex               |       |                |                |               |                 |20 user seconds  |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|          schemes|optiplex               |       |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|mzscheme v301.4  |optiplex               |yes    |                |                |               |10 user seconds  |40 user seconds  |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|mzscheme v369.7  |optiplex               |yes    |                |                |               |                 |44 user seconds  |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|bigloo 2.9a      |optiplex               |yes    |                |                |               |14 user seconds  |runs outta memory|strings       |yes           |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|mit-scheme 7.7.90|optiplex               |       |                |                |15 user seconds|40 user seconds  |180 user seconds |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|gambit 4b17      |optiplex               |not    |5 user seconds  |6 user seconds  |9 user seconds |41 user seconds  |200 user seconds |bignums       |no            |
+|                 |                       |quite  |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|scheme48 1.3     |optiplex               |no     |                |                |16 user seconds|55 user seconds  |272 user seconds |bignums       |no(!)         |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|chicken (302)    |optiplex               |no     |3 user seconds  |6 user seconds  |14 user seconds|                 |420 user seconds |strings       |yes           |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|guile 1.7 (gmp)  |optiplex               |no; way|                |                |40 user seconds|                 |2400 user seconds|bignums       |yes           |
+|                 |                       |too    |                |                |               |                 |                 |              |              |
+|                 |                       |many   |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|gauche 0.8.3     |optiplex               |no     |8 user seconds  |16 userseconds  |46 user seconds|                 |9400 seconds(!)  |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|scsh             |optiplex               |no     |48 user seconds |80 seconds      |107 seconds    |                 |                 |bignums       |yes (code too)|
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|             misc|                       |       |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|haskell (ghc     |optiplex               |yes    |                |                |               |                 |30 user seconds  |bignums       |no            |
+|6.6) -O          |                       |       |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|c++ (-O2)        |optiplex               |yes    |                |                |               |                 |90 user seconds  |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|python           |optiplex               |       |4 seconds       |6 seconds       |15 user seconds|                 |270 user seconds |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|perl5            |optiplex               |not    |                |                |18 user seconds|                 |300 user seconds |strings       |yes           |
+|                 |                       |quite  |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|perl5 numeric    |optiplex               |       |                |                |               |                 |> 27 minutes     |bignums       |yes           |
+|                 |                       |       |                |                |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|ruby             |optiplex               |       |8 seconds       |14 user seconds |37 user seconds|                 |960 user seconds |bignums       |yes           |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|parrot           |optiplex               |no     |                |                |100 seconds    |                 |                 |bignums       |yes           |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|c-sharp          |lenovo                 |       |10 wallclock    |144 wallclock   |               |                 |                 |strings       |sort of       |
+|                 |                       |       |seconds         |seconds         |               |                 |                 |              |              |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+
+
+---
+Note: when gathering data to fill in the above, be sure that none of
+the programs or libraries were compiled for profiling -- because they
+run much slower than normal libraries.
+
+The really interesting question isn't so much "how fast is this
+language", but rather "does this language have an easy-to-use
+profiler".  So far, the answer in most cases has been "no" :-| 
+
+* C++ has gperf, which takes a bit of doing, but provides useful numbers; 
+
+* some of the Common Lisps have something similar
+
+* most of the Schemes, python, and ruby have nothing, so far as I can
+  tell
+
+* mzscheme has a decent one, which you activate by requiring
+  errortrace.ss, then turning on a bunch of profiling parameters
+
+* Haskell's profiler was quite easy to use
+
+For comparison, note that the program "an"
+(http://ftp.debian.org/pool/main/a/an/) appears to be about three
+times faster than my SBCL version:
+
+time an -m 2 -l 4  "Intelligent Design" | LANG= wc
+=>
+ 291684 1158130 6532034
+
+real	0m1.536s
+user	0m1.464s
+sys	0m0.032s
+
+whereas
+
+(time (length (remove-if-not #'(lambda (seq) (= 4 (length seq))) (anagrams::anagrams "Intelligent Design"))))
+=>
+Evaluation took:
+  4.483 seconds of real time
+  4.232265 seconds of user run time
+  0.212013 seconds of system run time
+  0 page faults and
+  228,563,456 bytes consed.
+105533
+
+So: 1.5 seconds versus my 4.2 seconds, and it found 300,000 results
+whereas I found only 100,000.  Hmph.

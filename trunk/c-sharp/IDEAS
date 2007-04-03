@@ -1,0 +1,32 @@
+-*-text-*-
+Stuff I might want to do:
+
+* Make it easy to interrupt.  (Perhaps by writing it in a
+  multi-threaded way.)  The way it is now, if I wanted to write code
+  that allows me to interrupt it, I could have an "interrupt" button
+  that clears a global flag named something like "ok_to_run", but then
+  each loop would have to check that variable's value, which is ugly.
+  In a perfect world, the loops would run in a separate thread, and
+  the button would simply kill that thread.
+
+* See if C# has something like this nifty feature in Delphi: you can
+  write a function that enables a control based on the states of other
+  controls, and have the system call your function "in the
+  background", when nothing is happening.  Thus you can keep all the
+  code for enabling that control in one place, rather than scattered
+  throughout the program.
+
+  The documentation has a broken link for something called
+  "Event-based Asynchronous Pattern" that might be this.
+
+* Somehow sort something so that bigger words come first.
+
+* Make Control-A do its thing no matter where the focus is in the form
+  -- currently it works only if the input box has the focus.
+
+* Investigate the ListView.BeginUpdate method for adding listview
+  items; it might speed that operation up.
+
+* Add the usual "Help" menu item with an "About" entry.
+
+* Precompile the dictionary so we don't have to wait at startup
