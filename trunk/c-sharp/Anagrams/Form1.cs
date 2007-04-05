@@ -260,5 +260,11 @@ namespace Anagrams
                 }
             }
         }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(String.Format("version {0}",Application.ProductVersion), 
+                Application.ProductName);
+        }
     }
 }
