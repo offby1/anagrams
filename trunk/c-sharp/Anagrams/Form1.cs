@@ -123,6 +123,7 @@ namespace Anagrams
             input.Enabled = false;
             Bag input_bag = new Bag(input.Text);
             listView1.Items.Clear();
+            fileToolStripMenuItem.Enabled = false;
             DateTime start = DateTime.Now;
             uint prune_passes_started = 0;
             Anagrams.anagrams(input_bag, dictionary, 0,
@@ -175,6 +176,7 @@ namespace Anagrams
             // Another workaround is for me to handle the
             // DrawColumnHeader event myself, but I'm too lazy to do that.
             listView1.Columns[0].Text = "                   Click to sort";
+            fileToolStripMenuItem.Enabled = true;
         }
 
         private void input_KeyPress(object sender, KeyPressEventArgs e)
@@ -238,6 +240,25 @@ namespace Anagrams
             listView1.Sorting = SortOrder.Ascending;
             listView1.Sorting = SortOrder.None;
             listView1.Columns[0].Text = "";
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveFileDialog1.FileName = input.Text;
+            saveFileDialog1.InitialDirectory = Application.LocalUserAppDataPath;
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(saveFileDialog1.OpenFile()))
+                {
+                    sw.WriteLine("{0} anagrams of '{1}'",
+                        listView1.Items.Count, input.Text);
+                    sw.WriteLine("-----------------------");
+                    foreach (ListViewItem it in listView1.Items)
+                    {
+                        sw.WriteLine(it.Text);
+                    }
+                }
+            }
         }
     }
 }
