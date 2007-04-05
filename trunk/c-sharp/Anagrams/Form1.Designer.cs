@@ -36,7 +36,6 @@ namespace Anagrams
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.input = new System.Windows.Forms.TextBox();
-            this.Sort_em = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -85,6 +84,7 @@ namespace Anagrams
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.Resize += new System.EventHandler(this.listView1_Resize);
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.listView1_ColumnClick);
             // 
             // columnHeader1
             // 
@@ -99,12 +99,11 @@ namespace Anagrams
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.89626F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.10373F));
-            this.tableLayoutPanel1.Controls.Add(this.Sort_em, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.input, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.input, 0, 2);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.97285F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.02715F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
@@ -121,17 +120,6 @@ namespace Anagrams
             this.input.Size = new System.Drawing.Size(464, 20);
             this.input.TabIndex = 12;
             this.input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.input_KeyPress);
-            // 
-            // Sort_em
-            // 
-            this.Sort_em.Enabled = false;
-            this.Sort_em.Location = new System.Drawing.Point(3, 193);
-            this.Sort_em.Name = "Sort_em";
-            this.Sort_em.Size = new System.Drawing.Size(75, 23);
-            this.Sort_em.TabIndex = 13;
-            this.Sort_em.Text = "Sort!";
-            this.Sort_em.UseVisualStyleBackColor = true;
-            this.Sort_em.Click += new System.EventHandler(this.sort_em_Click);
             // 
             // Form1
             // 
@@ -164,7 +152,6 @@ namespace Anagrams
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox input;
-        private System.Windows.Forms.Button Sort_em;
     }
 }
 

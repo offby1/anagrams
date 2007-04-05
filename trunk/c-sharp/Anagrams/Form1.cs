@@ -169,7 +169,6 @@ namespace Anagrams
                 stop.Subtract(start));
             listView1.EnsureVisible(0);
             input.Enabled = true;
-            Sort_em.Enabled = true;
             input.Focus();
         }
 
@@ -229,11 +228,10 @@ namespace Anagrams
                 Clipboard.SetText(selected_text);
         }
 
-        private void sort_em_Click(object sender, EventArgs e)
+        private void listView1_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             listView1.Sorting = SortOrder.Ascending;
             listView1.Sorting = SortOrder.None;
-            Sort_em.Enabled = false;
         }
     }
 }
