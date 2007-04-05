@@ -19,14 +19,30 @@ Stuff I might want to do:
   The documentation has a broken link for something called
   "Event-based Asynchronous Pattern" that might be this.
 
-* Somehow sort something so that bigger words come first.
+* Sorting ideas:
+
+** Bigger words first.
+
+** Fewest words first.
+
+** Recover a previous sort.  For example, in r14, the initial sort
+   order is ... I don't know what; probably biggest-word-first.  Then
+   when you click the column header, you get alphabetical sorting.
+   But if you change you mind and want biggest-word-first back, you
+   can't get it without recomputing all the anagrams.
+
 
 * Make Control-A do its thing no matter where the focus is in the form
   -- currently it works only if the input box has the focus.
 
-* Investigate the ListView.BeginUpdate method for adding listview
-  items; it might speed that operation up.
-
 * Add the usual "Help" menu item with an "About" entry.
 
 * Precompile the dictionary so we don't have to wait at startup
+---
+done:
+
+* Investigate the ListView.BeginUpdate method for adding listview
+  items; it might speed that operation up.  
+
+It doesn't seem to, but simply avoiding Application.DoEvents seems to
+work fine.
