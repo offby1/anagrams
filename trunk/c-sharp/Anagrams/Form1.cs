@@ -170,6 +170,11 @@ namespace Anagrams
             listView1.EnsureVisible(0);
             input.Enabled = true;
             input.Focus();
+            // the leading spaces work around a bug in the control: I
+            // want the text centered, but that doesn't work.
+            // Another workaround is for me to handle the
+            // DrawColumnHeader event myself, but I'm too lazy to do that.
+            listView1.Columns[0].Text = "                   Click to sort";
         }
 
         private void input_KeyPress(object sender, KeyPressEventArgs e)
@@ -232,6 +237,7 @@ namespace Anagrams
         {
             listView1.Sorting = SortOrder.Ascending;
             listView1.Sorting = SortOrder.None;
+            listView1.Columns[0].Text = "";
         }
     }
 }

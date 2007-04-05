@@ -30,3 +30,5 @@ Stuff I might want to do:
 * Add the usual "Help" menu item with an "About" entry.
 
 * Precompile the dictionary so we don't have to wait at startup
+
+* Allow saving the output to a file.
