@@ -168,7 +168,7 @@ namespace Anagrams
             toolStripStatusLabel1.Text = String.Format("Done.  {0} anagrams; took {1}.",
                 listView1.Items.Count,
                 stop.Subtract(start));
-            listView1.EnsureVisible(0);
+            if (listView1.Items.Count > 0) listView1.EnsureVisible(0);
             input.Enabled = true;
             input.Focus();
             // the leading spaces work around a bug in the control: I
