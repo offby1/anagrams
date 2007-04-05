@@ -6,6 +6,14 @@ from types import *
 import sys
 from optparse import OptionParser
 
+try:
+    import psyco
+    psyco.full()
+    print >> sys.stderr, "Psyco loaded OK"
+except ImportError:
+    print >> sys.stderr, "Psyco didn't load"
+    pass # Sorry, no optimizations for you.
+
 def combine (words, anagrams):
 
     rv = []

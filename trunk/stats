@@ -29,7 +29,7 @@ All times are on the dell optiplex, unless otherwise noted.
 
 For testing a new implementation, note that the words file should wind
 up with 72717 words (66890 distinct bags), and after pruning for
-"Ernest Hemingway", it should have 1716 entries.  Unfortunatley that
+"Ernest Hemingway", it should have 1716 entries.  Unfortunately that
 file seems to exist in different versions on different *nix distros,
 which is why I've checked in my own copy.  I suspect that many of the
 implementations here that got the wrong answer did so not because
@@ -87,7 +87,9 @@ be notably lower than if the answer were correct.
 +-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
 |c++ (-O2)        |optiplex               |yes    |                |                |               |                 |90 user seconds  |bignums       |no            |
 +-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
-|python           |optiplex               |       |4 seconds       |6 seconds       |15 user seconds|                 |270 user seconds |bignums       |no            |
+|python           |optiplex               |       |4 seconds       |6 seconds       |15 user seconds|                 |200 user seconds |bignums       |no            |
++-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|python with psyco|optiplex               |       |                |                |               |                 |75 user seconds  |bignums       |no            |
 +-----------------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
 |perl5            |optiplex               |not    |                |                |18 user seconds|                 |300 user seconds |strings       |yes           |
 |                 |                       |quite  |                |                |               |                 |                 |              |              |
