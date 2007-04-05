@@ -36,7 +36,7 @@ namespace Anagrams
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.input = new System.Windows.Forms.TextBox();
-            this.sort_em_checkBox = new System.Windows.Forms.CheckBox();
+            this.Sort_em = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -78,7 +78,7 @@ namespace Anagrams
             this.listView1.Enabled = false;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(464, 193);
+            this.listView1.Size = new System.Drawing.Size(464, 184);
             this.listView1.TabIndex = 11;
             this.listView1.TabStop = false;
             this.listView1.UseCompatibleStateImageBehavior = false;
@@ -99,14 +99,14 @@ namespace Anagrams
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 74.89626F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.10373F));
+            this.tableLayoutPanel1.Controls.Add(this.Sort_em, 0, 1);
             this.tableLayoutPanel1.Controls.Add(this.input, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.sort_em_checkBox, 0, 1);
             this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 12);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 90.04525F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 9.954751F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 85.97285F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.02715F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(470, 242);
             this.tableLayoutPanel1.TabIndex = 12;
@@ -122,16 +122,16 @@ namespace Anagrams
             this.input.TabIndex = 12;
             this.input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.input_KeyPress);
             // 
-            // sort_em_checkBox
+            // Sort_em
             // 
-            this.sort_em_checkBox.AutoSize = true;
-            this.sort_em_checkBox.Location = new System.Drawing.Point(3, 202);
-            this.sort_em_checkBox.Name = "sort_em_checkBox";
-            this.sort_em_checkBox.Size = new System.Drawing.Size(102, 16);
-            this.sort_em_checkBox.TabIndex = 13;
-            this.sort_em_checkBox.Text = "Keep \'em sorted";
-            this.sort_em_checkBox.UseVisualStyleBackColor = true;
-            this.sort_em_checkBox.CheckedChanged += new System.EventHandler(this.sort_em_checkBox_CheckedChanged);
+            this.Sort_em.Enabled = false;
+            this.Sort_em.Location = new System.Drawing.Point(3, 193);
+            this.Sort_em.Name = "Sort_em";
+            this.Sort_em.Size = new System.Drawing.Size(75, 23);
+            this.Sort_em.TabIndex = 13;
+            this.Sort_em.Text = "Sort!";
+            this.Sort_em.UseVisualStyleBackColor = true;
+            this.Sort_em.Click += new System.EventHandler(this.sort_em_Click);
             // 
             // Form1
             // 
@@ -164,7 +164,7 @@ namespace Anagrams
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox input;
-        private System.Windows.Forms.CheckBox sort_em_checkBox;
+        private System.Windows.Forms.Button Sort_em;
     }
 }
 
