@@ -10,7 +10,11 @@
  */
 public class NewJFrame extends javax.swing.JFrame {
     
-    /** Creates new form NewJFrame */
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/** Creates new form NewJFrame */
     public NewJFrame() {
         initComponents();
     }
