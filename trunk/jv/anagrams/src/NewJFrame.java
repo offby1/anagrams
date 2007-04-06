@@ -66,7 +66,7 @@ public class NewJFrame extends javax.swing.JFrame {
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
-        jTextArea1.append("yo!");
+        jTextArea1.append("yo!\n");
         
         
     }//GEN-LAST:event_jTextField1KeyTyped
