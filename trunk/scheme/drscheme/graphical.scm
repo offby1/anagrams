@@ -1,8 +1,7 @@
 ;;; Further ideas
 
 ;;; * pause, cancel, continue buttons.
-;;; * keep track of the number of anagrams generated so far, and display it somewhere.
-;;; * likewise for the elapsed time.
+;;; * keep track of the elapsed time.
 ;;; * Perhaps use a progress meter for feedback when reading the dictionary.
 ;;; * prevent user from screwing up the output by clicking in the
 ;;;   middle of it while it's being produced -- that appears to move
