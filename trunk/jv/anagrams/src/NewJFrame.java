@@ -32,6 +32,12 @@ public class NewJFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusable(false);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
         jScrollPane2.setFocusable(false);
         jTextArea1.setColumns(20);
         jTextArea1.setEditable(false);
@@ -67,12 +73,14 @@ public class NewJFrame extends javax.swing.JFrame {
         );
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
+    }//GEN-LAST:event_formWindowOpened
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
         jTextArea1.append("yo!\n");
-        
-        
     }//GEN-LAST:event_jTextField1KeyTyped
     
     /**
