@@ -9,6 +9,12 @@ Stuff I might want to do:
   In a perfect world, the loops would run in a separate thread, and
   the button would simply kill that thread.
 
+  Another idea might be to use Iterators.  Not sure what they are,
+  exactly, but they might let me structure the anagrams function as a
+  loop that calls "yield", so that each time I call the function, I
+  get one more anagram.  That would probably make it easy to
+  interrupt: just stop calling it :-)
+
 * See if C# has something like this nifty feature in Delphi: you can
   write a function that enables a control based on the states of other
   controls, and have the system call your function "in the
