@@ -9,7 +9,7 @@
  * @author  Eric
  */
 public class NewJFrame extends javax.swing.JFrame {
-    
+    private java.util.Vector strings;
     /**
 	 * 
 	 */
@@ -76,11 +76,14 @@ public class NewJFrame extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
+        strings = new java.util.Vector();
+        strings.add("hey there");
+        strings.add("ho there");
     }//GEN-LAST:event_formWindowOpened
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
-        jTextArea1.append("yo!\n");
+        jTextArea1.append(strings + "\n");
     }//GEN-LAST:event_jTextField1KeyTyped
     
     /**
