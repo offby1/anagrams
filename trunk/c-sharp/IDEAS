@@ -31,11 +31,11 @@ Stuff I might want to do:
    But if you change you mind and want biggest-word-first back, you
    can't get it without recomputing all the anagrams.
 
+   I would expect this would require that I store a "sort index" in
+   the list view, along with each actual string.
 
 * Make Control-A do its thing no matter where the focus is in the form
   -- currently it works only if the input box has the focus.
-
-* Add the usual "Help" menu item with an "About" entry.
 
 * Precompile the dictionary so we don't have to wait at startup
 ---
