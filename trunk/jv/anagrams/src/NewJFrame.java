@@ -98,12 +98,14 @@ public class NewJFrame extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
         
-        jTextArea1.append(String.format("mad: %d" ,new Bag("mad").hashCode()));
-        jTextArea1.append(String.format("dam: %d" ,new Bag("dam").hashCode()));
-        
+        jTextArea1.append(String.format("mad: %d; dam: %d\n",
+                                        new Bag("mad").hashCode(),
+                                        new Bag("dam").hashCode()));
+
         jProgressBar1.setMinimum(0);
         ht = new Hashtable<Bag, java.util.Vector<String>>();
-        
+        DictionaryReaderWorker drw = new DictionaryReaderWorker();
+        drw.doInBackground();
     }//GEN-LAST:event_formWindowOpened
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
