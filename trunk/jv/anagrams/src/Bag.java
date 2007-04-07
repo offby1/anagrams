@@ -40,6 +40,10 @@ public class Bag {
     new java.math.BigInteger("101")};
     private java.math.BigInteger guts;
     /** Creates a new instance of Bag */
+    public Bag(java.math.BigInteger b) {
+        guts = b;
+    }
+    
     public Bag(String s) {
         s = s.toLowerCase();
         guts = java.math.BigInteger.ONE;
@@ -48,12 +52,25 @@ public class Bag {
             if (c >= 'a' && c <= 'z') {
                 guts = guts.multiply(primes[c - 'a']);
             }
-            
         }
     }
     
     public Boolean empty() {
         return guts == java.math.BigInteger.ONE;
     }
+    
+    public Boolean equals(Bag other){
+        // needed only for testing, I think.
+        return guts.equals(other.guts);
+    }
+    
+    public Bag subtract(Bag other){
+        java.math.BigInteger rem = guts.remainder(other.guts);
+        if (!java.math.BigInteger.ZERO.equals(rem))
+            return null;
+        java.math.BigInteger quo = guts.divide(other.guts);
+        return new Bag(quo);
+    }
+    
     
 }
