@@ -1,6 +1,7 @@
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
 import java.util.Vector;
+import javax.swing.UnsupportedLookAndFeelException;
 /*
  * NewJFrame.java
  *
@@ -19,7 +20,19 @@ public class NewJFrame extends javax.swing.JFrame {
     private static final long serialVersionUID = 1L;
     /** Creates new form NewJFrame */
     public NewJFrame() {
-        initComponents();
+        try {
+            javax.swing.UIManager.setLookAndFeel(
+                javax.swing.UIManager.getSystemLookAndFeelClassName());
+            initComponents();
+        } catch (InstantiationException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        } catch (IllegalAccessException ex) {
+            ex.printStackTrace();
+        }
     }
     
     /** This method is called from within the constructor to
