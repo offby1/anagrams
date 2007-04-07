@@ -103,15 +103,17 @@ public class NewJFrame extends javax.swing.JFrame {
                     if (line.contains("a") || line.contains("e") || line.contains("i") || line.contains("o") || line.contains("u") || line.contains("y")) {
                         Bag linebag = new Bag(line);
                         if (line.equals("dog") || line.equals("god"))
-                            jTextArea1.append(String.format ("%s: %d\n", line, linebag.guts()));
+                            jTextArea1.append(String.format("%s: %d\n", line, linebag.guts()));
                         java.util.Vector<String> existing = ht.get(linebag);
                         if (existing == null)
                             existing = new java.util.Vector<String>();
-                        else
-                            jTextArea1.append(existing.toString());
+                        
+                        
                         if (!existing.contains(line))
                             existing.add(line);
                         ht.put(linebag, existing);
+                        
+                        if (existing.size() > 1) jTextArea1.append(existing.toString() + "\n");
                     }
                 }
                 strings.add(line);
