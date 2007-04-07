@@ -12,13 +12,14 @@
  * @author Eric
  */
 public class Bag {
-    
+    private String guts;
     /** Creates a new instance of Bag */
     public Bag(String s) {
+        guts = s;
     }
     
     public Boolean empty() {
-        return true;
+        return guts.length() == 0;
     }
     
 }

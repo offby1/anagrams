@@ -22,8 +22,10 @@ public class BagTest extends TestCase {
     protected void tearDown() throws Exception {
     }
     
-    public void testYow() {
+    public void testEmpty() {
         Bag b = new Bag("");
         assertTrue(b.empty());
+        Bag c = new Bag("sam");
+        assertFalse(c.empty());
     }
 }
