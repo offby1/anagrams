@@ -89,13 +89,11 @@ public class NewJFrame extends javax.swing.JFrame {
             java.io.BufferedReader in
                     = new java.io.BufferedReader(new java.io.FileReader(System.getProperty("user.home") + "/doodles/anagrams/words"));
             String line;
-            int lines_read = 0;
             jProgressBar1.setMinimum(0);
             jProgressBar1.setIndeterminate(true);
             while ((line = in.readLine()) != null) {
                 strings.add(line);
-                lines_read++;
-                jProgressBar1.setValue(lines_read);
+                jProgressBar1.setValue(strings.size());
             }
             jProgressBar1.setIndeterminate(false);
         } catch (Exception ex) {
