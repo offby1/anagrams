@@ -62,11 +62,11 @@ public class Bag {
         return guts.hashCode();
     }
     public Boolean empty() {
-        return guts == java.math.BigInteger.ONE;
+        return guts.equals(java.math.BigInteger.ONE);
     }
     
-    public Boolean equals(Bag other){
-        return guts.equals(other.guts);
+    public boolean equals(Object other){
+        return guts.equals(((Bag)other).guts);
     }
     
     public Bag subtract(Bag other){

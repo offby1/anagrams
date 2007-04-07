@@ -1,3 +1,4 @@
+import java.util.Hashtable;
 import junit.framework.*;
 /*
  * BagTest.java
@@ -12,12 +13,14 @@ import junit.framework.*;
  */
 public class BagTest extends TestCase {
     Bag sam;
+    Bag mas;
     public BagTest(String testName) {
         super(testName);
     }
     
     protected void setUp() throws Exception {
         sam = new Bag("sam");
+        mas = new Bag("mas");
     }
     
     protected void tearDown() throws Exception {
@@ -31,7 +34,6 @@ public class BagTest extends TestCase {
         assertFalse(c.empty());
     }
     public void testEquality(){
-        Bag mas = new Bag("mas");
         assertTrue(mas.equals(sam));
     }
     public void testSubtract(){
@@ -40,5 +42,13 @@ public class BagTest extends TestCase {
         assertTrue(actual.equals(expected));
         actual = actual.subtract(new Bag("x"));
         assertNull(actual);
+    }
+    public void testHash(){
+        int c1 = sam.hashCode();
+        int c2 = mas.hashCode();
+        assertEquals(c1, c2);
+        Hashtable<Bag, String> ht = new Hashtable<Bag, String>();
+        ht.put(sam, "hey");
+        assertEquals( "hey", ht.get(mas));
     }
 }
