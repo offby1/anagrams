@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.UnsupportedLookAndFeelException;
 /*
@@ -13,7 +14,6 @@ import javax.swing.UnsupportedLookAndFeelException;
  * @author  Eric
  */
 public class NewJFrame extends javax.swing.JFrame {
-    private java.util.Vector strings;
     /**
      *
      */
@@ -22,7 +22,7 @@ public class NewJFrame extends javax.swing.JFrame {
     public NewJFrame() {
         try {
             javax.swing.UIManager.setLookAndFeel(
-                javax.swing.UIManager.getSystemLookAndFeelClassName());
+                    javax.swing.UIManager.getSystemLookAndFeelClassName());
             initComponents();
         } catch (InstantiationException ex) {
             ex.printStackTrace();
@@ -98,7 +98,7 @@ public class NewJFrame extends javax.swing.JFrame {
     private Hashtable<Bag, java.util.Vector<String>> ht;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
-        strings = new java.util.Vector();
+        
         jTextArea1.append(String.format("mad: %d" ,new Bag("mad").hashCode()));
         jTextArea1.append(String.format("dam: %d" ,new Bag("dam").hashCode()));
         
@@ -106,33 +106,47 @@ public class NewJFrame extends javax.swing.JFrame {
         try {
             java.io.BufferedReader in
                     = new java.io.BufferedReader(new java.io.FileReader(System.getProperty("user.home") + "/doodles/anagrams/words"));
-            String line;
+            
             jProgressBar1.setMinimum(0);
-            jProgressBar1.setIndeterminate(true);
-            ht = new Hashtable<Bag, java.util.Vector<String>>();
-            while ((line = in.readLine()) != null) {
-                line = line.toLowerCase();
-                if (line.length() > 1 || line == "i" || line == "a"){
-                    if (line.contains("a") || line.contains("e") || line.contains("i") || line.contains("o") || line.contains("u") || line.contains("y")) {
-                        Bag linebag = new Bag(line);
-                        if (line.equals("dog") || line.equals("god"))
-                            jTextArea1.append(String.format("%s: %d\n", line, linebag.guts()));
-                        java.util.Vector<String> existing = ht.get(linebag);
-                        if (existing == null)
-                            existing = new java.util.Vector<String>();
-                        
-                        
-                        if (!existing.contains(line))
-                            existing.add(line);
-                        ht.put(linebag, existing);
-                        
-                        if (existing.size() > 1) jTextArea1.append(existing.toString() + "\n");
+
+            // We'll loop twice: once to read the word file into a simple list, and again to convert the list into a hash table.
+            // Since the first loop is fast and the second slow, this lets us initialize a progress bar for the second loop,
+            // since we'll know how many items need to be processed.
+            java.util.Vector<String> words_from_file = new java.util.Vector<String>();
+            {
+                String line;
+                
+                while ((line = in.readLine()) != null) {
+                    // TODO -- do the Java equivalent of C sharps "Application.DoEvents()" here
+                    line = line.toLowerCase();
+                    if (line.length() > 1 || line == "i" || line == "a"){
+                        if (line.contains("a") || line.contains("e") || line.contains("i") || line.contains("o") || line.contains("u") || line.contains("y")) {
+                            words_from_file.add(line);
+                        }
                     }
                 }
-                strings.add(line);
-                jProgressBar1.setValue(strings.size());
             }
-            jProgressBar1.setIndeterminate(false);
+            ht = new Hashtable<Bag, java.util.Vector<String>>();
+            jProgressBar1.setMaximum(words_from_file.size());
+            for (Iterator it = words_from_file.iterator(); it.hasNext();) {
+                String line = (String) it.next();
+                
+                Bag linebag = new Bag(line);
+                if (line.equals("dog") || line.equals("god"))
+                    jTextArea1.append(String.format("%s: %d\n", line, linebag.guts()));
+                java.util.Vector<String> existing = ht.get(linebag);
+                if (existing == null)
+                    existing = new java.util.Vector<String>();
+                
+                
+                if (!existing.contains(line))
+                    existing.add(line);
+                ht.put(linebag, existing);
+                
+                if (existing.size() > 1) jTextArea1.append(existing.toString() + "\n");
+                jProgressBar1.setValue((100 * ht.size()) / words_from_file.size());
+            }
+            
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -140,8 +154,8 @@ public class NewJFrame extends javax.swing.JFrame {
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
-        jTextArea1.append(String.format("%d words, %d bags\n",
-                strings.size(), ht.size()));
+        jTextArea1.append(String.format("%d bags\n",
+                ht.size()));
     }//GEN-LAST:event_jTextField1KeyTyped
     
     /**
