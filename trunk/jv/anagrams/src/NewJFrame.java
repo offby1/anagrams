@@ -1,3 +1,5 @@
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -13,7 +15,8 @@ import javax.swing.UnsupportedLookAndFeelException;
  *
  * @author  Eric
  */
-public class NewJFrame extends javax.swing.JFrame {
+public class NewJFrame extends javax.swing.JFrame
+        implements PropertyChangeListener {
     /**
      *
      */
@@ -103,9 +106,17 @@ public class NewJFrame extends javax.swing.JFrame {
         jProgressBar1.setMinimum(0);
         ht = new Hashtable<Bag, java.util.Vector<String>>();
         drw = new DictionaryReaderWorker();
+        drw.addPropertyChangeListener(this);
+
         drw.execute();
     }//GEN-LAST:event_formWindowOpened
-    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt){
+        if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            jProgressBar1.setValue(progress);
+        }
+    }
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
         jTextArea1.append(String.format("Progress: %d; hash table has %d elements\n",
