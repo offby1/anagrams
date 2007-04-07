@@ -21,7 +21,7 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
             java.io.BufferedReader in
                     = new java.io.BufferedReader(new java.io.FileReader(System.getProperty("user.home") + "/doodles/anagrams/words"));
             
-            
+            setProgress(0);
             // We'll loop twice: once to read the word file into a simple list, and again to convert the list into a hash table.
             // Since the first loop is fast and the second slow, this lets us initialize a progress bar for the second loop,
             // since we'll know how many items need to be processed.
@@ -41,7 +41,7 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
             }
             NewJFrame.ht
                     = new Hashtable<Bag, java.util.Vector<String>>();
-            
+            int words_examined = 0;
             for (Iterator it = words_from_file.iterator(); it.hasNext();) {
                 String line = (String) it.next();
                 
@@ -55,7 +55,7 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
                     existing.add(line);
                 NewJFrame.ht.put(linebag, existing);
                 
-                
+                setProgress(++words_examined * 100 / words_from_file.size());
             }
             
         } catch (Exception ex) {

@@ -1,6 +1,7 @@
 import java.io.FileNotFoundException;
 import java.util.Hashtable;
 import java.util.Vector;
+import javax.swing.SwingWorker;
 import javax.swing.UnsupportedLookAndFeelException;
 /*
  * NewJFrame.java
@@ -95,22 +96,20 @@ public class NewJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     
     public static Hashtable<Bag, java.util.Vector<String>> ht;
+    private DictionaryReaderWorker drw;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
         
-        jTextArea1.append(String.format("mad: %d; dam: %d\n",
-                                        new Bag("mad").hashCode(),
-                                        new Bag("dam").hashCode()));
-
         jProgressBar1.setMinimum(0);
         ht = new Hashtable<Bag, java.util.Vector<String>>();
-        DictionaryReaderWorker drw = new DictionaryReaderWorker();
-        drw.doInBackground();
+        drw = new DictionaryReaderWorker();
+        drw.execute();
     }//GEN-LAST:event_formWindowOpened
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
-        jTextArea1.append(String.format("%d bags\n",
+        jTextArea1.append(String.format("Progress: %d; hash table has %d elements\n",
+                drw.getProgress(),
                 ht.size()));
     }//GEN-LAST:event_jTextField1KeyTyped
     
