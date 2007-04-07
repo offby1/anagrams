@@ -54,13 +54,18 @@ public class Bag {
             }
         }
     }
-    
+    public java.math.BigInteger guts ()
+    {
+        return guts;
+    }
+    public int hashCode() {
+        return guts.hashCode();
+    }
     public Boolean empty() {
         return guts == java.math.BigInteger.ONE;
     }
     
     public Boolean equals(Bag other){
-        // needed only for testing, I think.
         return guts.equals(other.guts);
     }
     

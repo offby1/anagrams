@@ -1,4 +1,6 @@
 import java.io.FileNotFoundException;
+import java.util.Hashtable;
+import java.util.Vector;
 /*
  * NewJFrame.java
  *
@@ -80,18 +82,38 @@ public class NewJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
+    private Hashtable<Bag, java.util.Vector<String>> ht;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
         strings = new java.util.Vector();
-        strings.add("hey there");
-        strings.add("ho there");
+        jTextArea1.append(String.format("mad: %d" ,new Bag("mad").hashCode()));
+        jTextArea1.append(String.format("dam: %d" ,new Bag("dam").hashCode()));
+        
+        
         try {
             java.io.BufferedReader in
                     = new java.io.BufferedReader(new java.io.FileReader(System.getProperty("user.home") + "/doodles/anagrams/words"));
             String line;
             jProgressBar1.setMinimum(0);
             jProgressBar1.setIndeterminate(true);
+            ht = new Hashtable<Bag, java.util.Vector<String>>();
             while ((line = in.readLine()) != null) {
+                line = line.toLowerCase();
+                if (line.length() > 1 || line == "i" || line == "a"){
+                    if (line.contains("a") || line.contains("e") || line.contains("i") || line.contains("o") || line.contains("u") || line.contains("y")) {
+                        Bag linebag = new Bag(line);
+                        if (line.equals("dog") || line.equals("god"))
+                            jTextArea1.append(String.format ("%s: %d\n", line, linebag.guts()));
+                        java.util.Vector<String> existing = ht.get(linebag);
+                        if (existing == null)
+                            existing = new java.util.Vector<String>();
+                        else
+                            jTextArea1.append(existing.toString());
+                        if (!existing.contains(line))
+                            existing.add(line);
+                        ht.put(linebag, existing);
+                    }
+                }
                 strings.add(line);
                 jProgressBar1.setValue(strings.size());
             }
@@ -103,7 +125,8 @@ public class NewJFrame extends javax.swing.JFrame {
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
-        jTextArea1.append(strings.size() + " words!\n");
+        jTextArea1.append(String.format("%d words, %d bags\n",
+                strings.size(), ht.size()));
     }//GEN-LAST:event_jTextField1KeyTyped
     
     /**
