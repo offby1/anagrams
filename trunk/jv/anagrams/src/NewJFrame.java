@@ -1,3 +1,4 @@
+import java.io.FileNotFoundException;
 /*
  * NewJFrame.java
  *
@@ -11,10 +12,10 @@
 public class NewJFrame extends javax.swing.JFrame {
     private java.util.Vector strings;
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	/** Creates new form NewJFrame */
+     *
+     */
+    private static final long serialVersionUID = 1L;
+    /** Creates new form NewJFrame */
     public NewJFrame() {
         initComponents();
     }
@@ -73,12 +74,22 @@ public class NewJFrame extends javax.swing.JFrame {
         );
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
         strings = new java.util.Vector();
         strings.add("hey there");
         strings.add("ho there");
+        try {
+            java.io.BufferedReader in
+                    = new java.io.BufferedReader(new java.io.FileReader(System.getProperty("user.home") + "/doodles/anagrams/words"));
+            String line;
+            while ((line = in.readLine()) != null) {
+                strings.add(line);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }//GEN-LAST:event_formWindowOpened
     
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
