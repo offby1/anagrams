@@ -108,8 +108,9 @@ public class NewJFrame extends javax.swing.JFrame
     private AnagrammerWorker arw;
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         if (evt.VK_ENTER == evt.getKeyChar()) {
-            // TODO -- maybe wait for the dictionary to complete loading
-            arw = new AnagrammerWorker(jTextField1.getText());
+            
+            arw = new AnagrammerWorker(jTextField1.getText(),
+                    jTextArea1);
             jTextField1.setEnabled(false);
             arw.execute();
         }
@@ -146,8 +147,7 @@ public class NewJFrame extends javax.swing.JFrame
             
             if(jLabel1.getText().length()== 0) {
                 jProgressBar1.setValue(jProgressBar1.getMinimum());
-            }
-            else
+            } else
                 jProgressBar1.setValue(progress);
         } else if ("state" == evt.getPropertyName()){
             SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
