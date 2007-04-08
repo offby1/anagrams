@@ -15,9 +15,10 @@ import javax.swing.SwingWorker;
  * @author Eric
  */
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
+    private String input;
     @Override
     public String doInBackground() {
-        JOptionPane.showMessageDialog(null, "Here I go, anagramming something");
+        JOptionPane.showMessageDialog(null, String.format ("Here I go, anagramming '%s'", input));
         return null;
     }
     @Override
@@ -26,7 +27,8 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     
     /** Creates a new instance of AnagrammerWorker */
-    public AnagrammerWorker() {
+    public AnagrammerWorker(String s) {
+        input = s;
     }
     
 }

@@ -109,7 +109,7 @@ public class NewJFrame extends javax.swing.JFrame
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         if (evt.VK_ENTER == evt.getKeyChar()) {
             // TODO -- maybe wait for the dictionary to complete loading
-            arw = new AnagrammerWorker();
+            arw = new AnagrammerWorker(jTextField1.getText());
             jTextField1.setEnabled(false);
             arw.execute();
         }
