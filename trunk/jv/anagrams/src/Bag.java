@@ -7,46 +7,47 @@
  * and open the template in the editor.
  */
 
+import java.math.BigInteger;
 /**
  *
  * @author Eric
  */
 public class Bag {
-    private static java.math.BigInteger primes[] = {new java.math.BigInteger("2"),
-    new java.math.BigInteger("3"),
-    new java.math.BigInteger("5"),
-    new java.math.BigInteger("7"),
-    new java.math.BigInteger("11"),
-    new java.math.BigInteger("13"),
-    new java.math.BigInteger("17"),
-    new java.math.BigInteger("19"),
-    new java.math.BigInteger("23"),
-    new java.math.BigInteger("29"),
-    new java.math.BigInteger("31"),
-    new java.math.BigInteger("37"),
-    new java.math.BigInteger("41"),
-    new java.math.BigInteger("43"),
-    new java.math.BigInteger("47"),
-    new java.math.BigInteger("53"),
-    new java.math.BigInteger("59"),
-    new java.math.BigInteger("61"),
-    new java.math.BigInteger("67"),
-    new java.math.BigInteger("71"),
-    new java.math.BigInteger("73"),
-    new java.math.BigInteger("79"),
-    new java.math.BigInteger("83"),
-    new java.math.BigInteger("89"),
-    new java.math.BigInteger("97"),
-    new java.math.BigInteger("101")};
-    private java.math.BigInteger guts;
+    private static BigInteger primes[] = {new BigInteger("2"),
+    new BigInteger("3"),
+    new BigInteger("5"),
+    new BigInteger("7"),
+    new BigInteger("11"),
+    new BigInteger("13"),
+    new BigInteger("17"),
+    new BigInteger("19"),
+    new BigInteger("23"),
+    new BigInteger("29"),
+    new BigInteger("31"),
+    new BigInteger("37"),
+    new BigInteger("41"),
+    new BigInteger("43"),
+    new BigInteger("47"),
+    new BigInteger("53"),
+    new BigInteger("59"),
+    new BigInteger("61"),
+    new BigInteger("67"),
+    new BigInteger("71"),
+    new BigInteger("73"),
+    new BigInteger("79"),
+    new BigInteger("83"),
+    new BigInteger("89"),
+    new BigInteger("97"),
+    new BigInteger("101")};
+    private BigInteger guts;
     /** Creates a new instance of Bag */
-    public Bag(java.math.BigInteger b) {
+    public Bag(BigInteger b) {
         guts = b;
     }
     
     public Bag(String s) {
         s = s.toLowerCase();
-        guts = java.math.BigInteger.ONE;
+        guts = BigInteger.ONE;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (c >= 'a' && c <= 'z') {
@@ -54,7 +55,7 @@ public class Bag {
             }
         }
     }
-    public java.math.BigInteger guts ()
+    public BigInteger guts ()
     {
         return guts;
     }
@@ -62,7 +63,7 @@ public class Bag {
         return guts.hashCode();
     }
     public Boolean empty() {
-        return guts.equals(java.math.BigInteger.ONE);
+        return guts.equals(BigInteger.ONE);
     }
     
     public boolean equals(Object other){
@@ -70,10 +71,10 @@ public class Bag {
     }
     
     public Bag subtract(Bag other){
-        java.math.BigInteger rem = guts.remainder(other.guts);
-        if (!java.math.BigInteger.ZERO.equals(rem))
+        BigInteger rem = guts.remainder(other.guts);
+        if (!BigInteger.ZERO.equals(rem))
             return null;
-        java.math.BigInteger quo = guts.divide(other.guts);
+        BigInteger quo = guts.divide(other.guts);
         return new Bag(quo);
     }
     

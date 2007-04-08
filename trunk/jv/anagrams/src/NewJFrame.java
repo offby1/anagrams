@@ -97,13 +97,13 @@ public class NewJFrame extends javax.swing.JFrame
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    public static Hashtable<Bag, java.util.Vector<String>> ht;
+    public static Hashtable<Bag, Vector<String>> ht;
     private DictionaryReaderWorker drw;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         javax.swing.JOptionPane.showMessageDialog(null, "It's active!");
         
         jProgressBar1.setMinimum(0);
-        ht = new Hashtable<Bag, java.util.Vector<String>>();
+        ht = new Hashtable<Bag, Vector<String>>();
         drw = new DictionaryReaderWorker();
         drw.addPropertyChangeListener(this);
         

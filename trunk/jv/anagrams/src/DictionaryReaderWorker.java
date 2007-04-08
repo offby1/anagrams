@@ -1,6 +1,7 @@
 import javax.swing.SwingWorker;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.Vector;
 /*
  * DictionaryReaderWorker.java
  *
@@ -25,7 +26,7 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
             // We'll loop twice: once to read the word file into a simple list, and again to convert the list into a hash table.
             // Since the first loop is fast and the second slow, this lets us initialize a progress bar for the second loop,
             // since we'll know how many items need to be processed.
-            java.util.Vector<String> words_from_file = new java.util.Vector<String>();
+            Vector<String> words_from_file = new Vector<String>();
             {
                 String line;
                 
@@ -40,15 +41,15 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
                 }
             }
             NewJFrame.ht
-                    = new Hashtable<Bag, java.util.Vector<String>>();
+                    = new Hashtable<Bag, Vector<String>>();
             int words_examined = 0;
             for (Iterator it = words_from_file.iterator(); it.hasNext();) {
                 String line = (String) it.next();
                 
                 Bag linebag = new Bag(line);
-                java.util.Vector<String> existing = NewJFrame.ht.get(linebag);
+                Vector<String> existing = NewJFrame.ht.get(linebag);
                 if (existing == null)
-                    existing = new java.util.Vector<String>();
+                    existing = new Vector<String>();
                 
                 
                 if (!existing.contains(line))
