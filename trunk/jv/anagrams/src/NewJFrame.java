@@ -1,9 +1,8 @@
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.FileNotFoundException;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Vector;
-import javax.swing.SwingWorker;
 import javax.swing.UnsupportedLookAndFeelException;
 /*
  * NewJFrame.java
@@ -107,7 +106,7 @@ public class NewJFrame extends javax.swing.JFrame
         ht = new Hashtable<Bag, java.util.Vector<String>>();
         drw = new DictionaryReaderWorker();
         drw.addPropertyChangeListener(this);
-
+        
         drw.execute();
     }//GEN-LAST:event_formWindowOpened
     @Override
@@ -119,9 +118,15 @@ public class NewJFrame extends javax.swing.JFrame
     }
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
 // TODO add your handling code here:
-        jTextArea1.append(String.format("Progress: %d; hash table has %d elements\n",
+        int strings_found = 0;
+        for (Iterator it = ht.values().iterator(); it.hasNext();) {
+            Object elem = (Object) it.next();
+            strings_found += ((Vector<String>)elem).size();
+        }
+        jTextArea1.append(String.format("Progress: %d; hash table has %d keys and %d words\n",
                 drw.getProgress(),
-                ht.size()));
+                ht.size(),
+                strings_found));
     }//GEN-LAST:event_jTextField1KeyTyped
     
     /**

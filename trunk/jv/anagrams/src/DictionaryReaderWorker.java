@@ -30,9 +30,9 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
                 String line;
                 
                 while ((line = in.readLine()) != null) {
-                    // TODO -- do the Java equivalent of C sharps "Application.DoEvents()" here
                     line = line.toLowerCase();
                     if (line.length() > 1 || line == "i" || line == "a"){
+                        line = line.replaceAll("\\W+", "");
                         if (line.contains("a") || line.contains("e") || line.contains("i") || line.contains("o") || line.contains("u") || line.contains("y")) {
                             words_from_file.add(line);
                         }
