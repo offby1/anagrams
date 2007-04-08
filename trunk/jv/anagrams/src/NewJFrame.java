@@ -4,6 +4,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JOptionPane;
+import javax.swing.SwingWorker;
 import javax.swing.UnsupportedLookAndFeelException;
 /*
  * NewJFrame.java
@@ -49,6 +50,7 @@ public class NewJFrame extends javax.swing.JFrame
         jTextArea1 = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
         jProgressBar1 = new javax.swing.JProgressBar();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFocusable(false);
@@ -83,7 +85,10 @@ public class NewJFrame extends javax.swing.JFrame
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE)))
+                        .addComponent(jTextField1, javax.swing.GroupLayout.DEFAULT_SIZE, 380, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel1)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -92,7 +97,9 @@ public class NewJFrame extends javax.swing.JFrame
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         pack();
@@ -114,20 +121,36 @@ public class NewJFrame extends javax.swing.JFrame
     public static Hashtable<Bag, Vector<String>> ht;
     private DictionaryReaderWorker drw;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        JOptionPane.showMessageDialog(null, "It's active!");
-        
         jProgressBar1.setMinimum(0);
         ht = new Hashtable<Bag, Vector<String>>();
         drw = new DictionaryReaderWorker();
         drw.addPropertyChangeListener(this);
-        
+        jLabel1.setText("Munging dictionary ...");
         drw.execute();
     }//GEN-LAST:event_formWindowOpened
     @Override
     public void propertyChange(PropertyChangeEvent evt){
         if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
-            jProgressBar1.setValue(progress);
+
+            // Kludge alert.  I want the progress bar to revert to 0
+            // when it's done reading the dictionary.  I'd have
+            // thought the following "else" clause to suffice, but it
+            // doesn't, since we will get a "progress" property change
+            // (with a value of 100) _after_ we get the "state" change
+            // that reports DONE.  So I check the label here -- if
+            // it's blank I take that as a sign that we're done, and
+            // thus I reset the progress bar to zero.
+            if(jLabel1.getText().length()== 0) 
+                jProgressBar1.setValue(jProgressBar1.getMinimum());
+            else
+                jProgressBar1.setValue(progress);
+        } else if ("state" == evt.getPropertyName()){
+            SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
+            if (s == SwingWorker.StateValue.DONE) {
+                jLabel1.setText("");
+                jProgressBar1.setValue(jProgressBar1.getMinimum());
+            }
         }
     }    
     /**
@@ -142,6 +165,7 @@ public class NewJFrame extends javax.swing.JFrame
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
