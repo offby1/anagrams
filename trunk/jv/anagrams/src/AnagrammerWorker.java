@@ -45,7 +45,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     @Override
     protected void done() {
-        JOptionPane.showMessageDialog(null, "I guess I'm done");
+        output_goes_here.setEnabled(true);
     }
     @Override
     protected void process(List<List<String>> some_anagrams){
