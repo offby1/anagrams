@@ -62,11 +62,12 @@ public class NewJFrame extends javax.swing.JFrame
 
         jScrollPane2.setFocusable(false);
         jTextArea1.setColumns(20);
-        jTextArea1.setEditable(false);
+        jTextArea1.setEnabled(false);
         jTextArea1.setRows(5);
         jTextArea1.setFocusable(false);
         jScrollPane2.setViewportView(jTextArea1);
 
+        jTextField1.setEnabled(false);
         jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 jTextField1KeyTyped(evt);
@@ -104,18 +105,14 @@ public class NewJFrame extends javax.swing.JFrame
         );
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private AnagrammerWorker arw;
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
-// TODO add your handling code here:
-        int strings_found = 0;
-        for (Iterator it = ht.values().iterator(); it.hasNext();) {
-            Object elem = (Object) it.next();
-            strings_found += ((Vector<String>)elem).size();
+        if (evt.VK_ENTER == evt.getKeyChar()) {
+            // TODO -- maybe wait for the dictionary to complete loading
+            arw = new AnagrammerWorker();
+            jTextField1.setEnabled(false);
+            arw.execute();
         }
-        jTextArea1.append(String.format("Progress: %d; hash table has %d keys and %d words\n",
-                drw.getProgress(),
-                ht.size(),
-                strings_found));
     }//GEN-LAST:event_jTextField1KeyTyped
     
     public static Hashtable<Bag, Vector<String>> ht;
@@ -132,7 +129,7 @@ public class NewJFrame extends javax.swing.JFrame
     public void propertyChange(PropertyChangeEvent evt){
         if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
-
+            
             // Kludge alert.  I want the progress bar to revert to 0
             // when it's done reading the dictionary.  I'd have
             // thought the following "else" clause to suffice, but it
@@ -141,14 +138,15 @@ public class NewJFrame extends javax.swing.JFrame
             // that reports DONE.  So I check the label here -- if
             // it's blank I take that as a sign that we're done, and
             // thus I reset the progress bar to zero.
-
+            
             // Now that I think about it, though, it is probably
             // simpler to just leave the progress bar as it is, and
             // reset it to 0 only when we're about to start some new
             // task (such as computing anagrams).
-
-            if(jLabel1.getText().length()== 0) 
+            
+            if(jLabel1.getText().length()== 0) {
                 jProgressBar1.setValue(jProgressBar1.getMinimum());
+            }
             else
                 jProgressBar1.setValue(progress);
         } else if ("state" == evt.getPropertyName()){
@@ -156,9 +154,12 @@ public class NewJFrame extends javax.swing.JFrame
             if (s == SwingWorker.StateValue.DONE) {
                 jLabel1.setText("");
                 jProgressBar1.setValue(jProgressBar1.getMinimum());
+                jTextField1.setEnabled(true);
+                
+                jTextField1.requestFocusInWindow();
             }
         }
-    }    
+    }
     /**
      * @param args the command line arguments
      */

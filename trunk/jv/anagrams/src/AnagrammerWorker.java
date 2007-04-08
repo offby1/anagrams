@@ -1,4 +1,5 @@
 import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 /*
  * AnagrammerWorker.java
@@ -16,11 +17,12 @@ import javax.swing.SwingWorker;
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     @Override
     public String doInBackground() {
+        JOptionPane.showMessageDialog(null, "Here I go, anagramming something");
         return null;
     }
     @Override
     protected void done() {
-        
+        JOptionPane.showMessageDialog(null, "I guess I'm done");
     }
     
     /** Creates a new instance of AnagrammerWorker */
