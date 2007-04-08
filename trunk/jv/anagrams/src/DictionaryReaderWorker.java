@@ -19,6 +19,11 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
     @Override
     public String doInBackground() {
         try {
+            // TODO -- Rather than hard-coding this, use a FileOpen
+            // dialog to get it; then cache the content somewhere.
+            // Not to save time (it's mighty fast as it is), but so
+            // that we don't have to see the dialog more than once per
+            // computer.
             java.io.BufferedReader in
                     = new java.io.BufferedReader(new java.io.FileReader(System.getProperty("user.home") + "/doodles/anagrams/words"));
             
