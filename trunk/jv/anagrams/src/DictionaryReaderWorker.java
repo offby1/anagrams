@@ -15,7 +15,7 @@ import java.util.Vector;
  *
  * @author Eric
  */
-public class DictionaryReaderWorker extends SwingWorker<String, Void> {
+public class DictionaryReaderWorker extends SwingWorker<Object, Void> {
     @Override
     public String doInBackground() {
         try {
@@ -67,7 +67,7 @@ public class DictionaryReaderWorker extends SwingWorker<String, Void> {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return "Useless";
+        return null;
     }
     
     @Override
