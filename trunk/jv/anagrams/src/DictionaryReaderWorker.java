@@ -16,15 +16,14 @@ import java.util.Vector;
  *
  * @author Eric
  */
-public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, Void> {
-    public Vector<Vector<Object>> rv ;
+public class DictionaryReaderWorker extends SwingWorker<Vector<DictionaryReaderWorker.entry>, Void> {
     public class entry {
         public Bag b;
         public String[] words;
     }
-    public Vector<entry> rv2;
+    public Vector<entry> rv;
     @Override
-    public Vector<Vector<Object>> doInBackground() {
+    public Vector<DictionaryReaderWorker.entry> doInBackground() {
         try {
             // TODO -- Rather than hard-coding this, use a FileOpen
             // dialog to get it; then cache the content somewhere.
@@ -71,21 +70,16 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, 
 
                 setProgress(++words_examined * 100 / words_from_file.size());
             }
-            rv = new Vector<Vector<Object>>();
-            rv2 = new Vector<entry>();
+            rv = new Vector<entry>();
             for (Enumeration<Bag> e = NewJFrame.ht.keys(); e.hasMoreElements();) {
                 Bag bag = e.nextElement();
                 Vector<String> words = NewJFrame.ht.get(bag);
-                Vector<Object> one_entry = new Vector<Object>();
-                one_entry.add(bag);
-                one_entry.add(words);
-                rv.add(one_entry);
 
                 entry ent = new entry();
                 ent.b = bag;
                 ent.words = new String[words.size()];
                 words.copyInto(ent.words);
-                rv2.add(ent);
+                rv.add(ent);
             }
         }
 
