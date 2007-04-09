@@ -26,16 +26,22 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     public String doInBackground() {
         Vector <String> publish_me = new Vector<String>();
         try {
-            publish_me.add(String.format("working ... on wordlist with %d elements ...\n",
+            publish_me.add(String.format("working ... on wordlist with %d elements ...",
                                          wordlist.size()));
             publish(publish_me);
 
             java.lang.Thread.sleep(1000);
-            
+            publish_me.clear();
+            publish_me.add("foo");
+            publish(publish_me);
+
+            java.lang.Thread.sleep(1000);
+            publish_me.clear();
             publish_me.add("bar");
             publish(publish_me);
             java.lang.Thread.sleep(1000);
             
+            publish_me.clear();
             publish_me.add("baz");
             publish(publish_me);
             java.lang.Thread.sleep(1000);
