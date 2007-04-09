@@ -1,4 +1,3 @@
-import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +34,6 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     private void do_em(Bag input, Vector<DictionaryReaderWorker.entry> wordlist) {
         int entries_examined = 0;
-        int things_published = 0;
         wordlist = prune(input, wordlist);
         for (Iterator it = wordlist.iterator(); it.hasNext();) {
             DictionaryReaderWorker.entry elem = (DictionaryReaderWorker.entry) it.next();
@@ -49,22 +47,18 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                 l.add(elem.words[i]);
             }
             publish(l);
-            things_published++;
             entries_examined++;
         }
-        JOptionPane.showMessageDialog(null, String.format("published %d gizmos", things_published));
     }
     @Override
     public String doInBackground() {
         Vector <String> publish_me = new Vector<String>();
-        try {
-            publish_me.add(String.format("working ... on wordlist with %d elements ...",
-                    wordlist.size()));
-            publish(publish_me);
-            do_em(new Bag(input), wordlist);
-        } catch (HeadlessException ex) {
-            ex.printStackTrace();
-        } 
+
+        publish_me.add(String.format("working ... on wordlist with %d elements ...",
+                                     wordlist.size()));
+        publish(publish_me);
+        do_em(new Bag(input), wordlist);
+
         return null;
     }
     @Override
