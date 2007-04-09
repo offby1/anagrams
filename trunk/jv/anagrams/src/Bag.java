@@ -85,5 +85,7 @@ public class Bag {
         return new Bag(quo);
     }
     
-    
+    public String toString() {
+        return guts.toString();
+    }
 }

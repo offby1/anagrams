@@ -44,6 +44,7 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<DictionaryReaderW
                 while ((line = in.readLine()) != null) {
                     line = line.toLowerCase();
                     if (line.length() > 1 || line == "i" || line == "a"){
+                        // BUGBUG -- this removes perfectly good vowels, like LATIN SMALL LETTER E WITH ACUTE
                         line = line.replaceAll("\\W+", "");
                         if (line.contains("a") || line.contains("e") || line.contains("i") || line.contains("o") || line.contains("u") || line.contains("y")) {
                             words_from_file.add(line);
