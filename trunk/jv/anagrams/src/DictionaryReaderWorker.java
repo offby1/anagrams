@@ -1,4 +1,3 @@
-import java.util.Enumeration;
 import javax.swing.SwingWorker;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -16,11 +15,9 @@ import java.util.Vector;
  *
  * @author Eric
  */
-public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, Void> {
-    public Vector<Vector<Object>> rv ;
-    
+public class DictionaryReaderWorker extends SwingWorker<Object, Void> {
     @Override
-    public Vector<Vector<Object>> doInBackground() {
+    public String doInBackground() {
         try {
             // TODO -- Rather than hard-coding this, use a FileOpen
             // dialog to get it; then cache the content somewhere.
@@ -66,23 +63,12 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, 
                 
                 setProgress(++words_examined * 100 / words_from_file.size());
             }
-            rv = new Vector<Vector<Object>>();
-            for (Enumeration<Bag> e = NewJFrame.ht.keys(); e.hasMoreElements();) {
-                Bag bag = e.nextElement();
-                Vector<String> words = NewJFrame.ht.get(bag);
-                Vector<Object> one_entry = new Vector<Object>();
-                one_entry.add(bag);
-                one_entry.add(words);
-                rv.add(one_entry);
-            }
-        }
-        
-        catch (Exception ex) {
+            
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return rv;
+        return null;
     }
-    
     
     @Override
     protected void done() {

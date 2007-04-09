@@ -110,8 +110,7 @@ public class NewJFrame extends javax.swing.JFrame
         if (evt.VK_ENTER == evt.getKeyChar()) {
             
             arw = new AnagrammerWorker(jTextField1.getText(),
-                    jTextArea1,
-                    drw.rv);
+                    jTextArea1);
             jTextField1.setEnabled(false);
             arw.execute();
         }

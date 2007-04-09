@@ -18,29 +18,26 @@ import javax.swing.SwingWorker;
  *
  * @author Eric
  */
-public class AnagrammerWorker extends SwingWorker<Object, Vector<String>> {
+public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
-    private Vector<Vector<Object>> wordlist;
-    
-    // I suspect that, in order to do things the Politically-Correct
-    // Java Way, I should make this member not a JTextArea, but
-    // rather the highest class that supports the few methods I call
-    // on it.
     private JTextArea output_goes_here;
-    
     @Override
-    protected String doInBackground() {
+    public String doInBackground() {
+        Vector <String> publish_me = new Vector<String>();
         try {
-            //anagrams (input, wordlist);
-            JOptionPane.showMessageDialog(null, "doin background got called");
-            Vector <String> publish_me = new Vector<String>();
-            publish_me.add(String.format("working ... on wordlist with %d elements ...\n",
-                    wordlist.size()));
+            publish_me.add("foo");
             publish(publish_me);
-            publish_me.clear();
-            publish_me.add("working ...");
+            java.lang.Thread.sleep(1000);
+            
+            publish_me.add("bar");
             publish(publish_me);
-            java.lang.Thread.sleep(5000);
+            java.lang.Thread.sleep(1000);
+            
+            publish_me.add("baz");
+            publish(publish_me);
+            java.lang.Thread.sleep(1000);
+        } catch (HeadlessException ex) {
+            ex.printStackTrace();
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
@@ -48,14 +45,12 @@ public class AnagrammerWorker extends SwingWorker<Object, Vector<String>> {
     }
     @Override
     protected void done() {
-        output_goes_here.append("OK, all done!");
         output_goes_here.setEnabled(true);
     }
     @Override
-    protected void process(List some_anagrams){
-        JOptionPane.showMessageDialog(null, "process got called");
+    protected void process(List<List<String>> some_anagrams){
         for (Iterator it = some_anagrams.iterator(); it.hasNext();) {
-            Vector<String> one_anagram = (Vector<String>) it.next();
+            List<String> one_anagram = (List<String>) it.next();
             String flattened = new String();
             for (Iterator it2 = one_anagram.iterator(); it2.hasNext();) {
                 Object elem = (Object) it2.next();
@@ -67,9 +62,7 @@ public class AnagrammerWorker extends SwingWorker<Object, Vector<String>> {
         }
     }
     /** Creates a new instance of AnagrammerWorker */
-    public AnagrammerWorker(String s,
-            JTextArea jta,
-            Vector<Vector<Object>> wordlist) {
+    public AnagrammerWorker(String s, JTextArea jta) {
         input = s;
         output_goes_here = jta;
     }
