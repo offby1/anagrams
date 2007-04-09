@@ -23,25 +23,33 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
     private Vector<DictionaryReaderWorker.entry> wordlist;
     private JTextArea output_goes_here;
+    private Vector<DictionaryReaderWorker.entry> prune(Bag input, Vector<DictionaryReaderWorker.entry> wordlist) {
+        Vector<DictionaryReaderWorker.entry> rv = new Vector<DictionaryReaderWorker.entry>();
+        for (Iterator it = wordlist.iterator(); it.hasNext();) {
+            DictionaryReaderWorker.entry elem = (DictionaryReaderWorker.entry ) it.next();
+            if (input.subtract(elem.b) != null) {
+                rv.add(elem);
+            }
+        }
+        return rv;
+    }
     private void do_em(Bag input, Vector<DictionaryReaderWorker.entry> wordlist) {
         int entries_examined = 0;
         int things_published = 0;
+        wordlist = prune(input, wordlist);
         for (Iterator it = wordlist.iterator(); it.hasNext();) {
             DictionaryReaderWorker.entry elem = (DictionaryReaderWorker.entry) it.next();
-            if (true) {
-                if (elem.words.length > 1) {
-                    ArrayList<String> l = new ArrayList<String>();
-                    l.add(String.format("%d: %s",
-                            entries_examined,
-                            elem.b.toString()));
+
+            ArrayList<String> l = new ArrayList<String>();
+            l.add(String.format("%d: %s",
+                                entries_examined,
+                                elem.b.toString()));
                     
-                    for (int i = 0; i < elem.words.length; i++) {
-                        l.add(elem.words[i]);
-                    }
-                    publish(l);
-                    things_published++;
-                }
+            for (int i = 0; i < elem.words.length; i++) {
+                l.add(elem.words[i]);
             }
+            publish(l);
+            things_published++;
             entries_examined++;
         }
         JOptionPane.showMessageDialog(null, String.format("published %d gizmos", things_published));
@@ -53,28 +61,10 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             publish_me.add(String.format("working ... on wordlist with %d elements ...",
                     wordlist.size()));
             publish(publish_me);
-            
-            java.lang.Thread.sleep(1000);
-            publish_me.clear();
-            publish_me.add(wordlist.get(0).words[0]);
-            publish(publish_me);
-            
-            java.lang.Thread.sleep(1000);
-            publish_me.clear();
-            publish_me.add(wordlist.get(1).words[0]);
-            publish(publish_me);
-            java.lang.Thread.sleep(1000);
-            
-            publish_me.clear();
-            publish_me.add(wordlist.get(2).words[0]);
-            publish(publish_me);
-            java.lang.Thread.sleep(1000);
             do_em(new Bag(input), wordlist);
         } catch (HeadlessException ex) {
             ex.printStackTrace();
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
+        } 
         return null;
     }
     @Override
