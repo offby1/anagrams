@@ -13,6 +13,7 @@ import java.math.BigInteger;
  * @author Eric
  */
 public class Bag {
+    // I know, I know.
     private static BigInteger primes[] = {new BigInteger("2"),
     new BigInteger("3"),
     new BigInteger("5"),
@@ -39,13 +40,19 @@ public class Bag {
     new BigInteger("89"),
     new BigInteger("97"),
     new BigInteger("101")};
+
     private BigInteger guts;
+    
+    // strictly for debugging: the string which we were created from
+    private String source;
+    
     /** Creates a new instance of Bag */
     public Bag(BigInteger b) {
         guts = b;
     }
     
     public Bag(String s) {
+        source = s;
         s = s.toLowerCase();
         guts = BigInteger.ONE;
         for (int i = 0; i < s.length(); i++) {

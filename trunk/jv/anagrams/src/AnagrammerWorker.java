@@ -22,6 +22,13 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
     private Vector<Vector<Object>> wordlist;
     private JTextArea output_goes_here;
+    private void do_em (Bag input, Vector<Vector<Object>> wordlist) {
+        for (Iterator it = wordlist.iterator(); it.hasNext();) {
+            Vector elem = (Vector) it.next();
+            Bag entry_bag = (Bag)elem.get(0);
+            // Vector<Object> words = elem.subList(1, elem.size() - 1);
+        }
+    }
     @Override
     public String doInBackground() {
         Vector <String> publish_me = new Vector<String>();
@@ -45,6 +52,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             publish_me.add("baz");
             publish(publish_me);
             java.lang.Thread.sleep(1000);
+            do_em (new Bag(input), wordlist);
         } catch (HeadlessException ex) {
             ex.printStackTrace();
         } catch (InterruptedException ex) {
