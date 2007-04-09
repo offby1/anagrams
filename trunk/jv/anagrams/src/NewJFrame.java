@@ -21,6 +21,21 @@ public class NewJFrame extends javax.swing.JFrame
     /**
      *
      */
+    private class anworklistener implements PropertyChangeListener {
+        @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+            if ("state" == evt.getPropertyName()){
+                SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
+                if (s == SwingWorker.StateValue.DONE) {
+                    jLabel1.setText("");
+                    jProgressBar1.setValue(jProgressBar1.getMinimum());
+                    jTextField1.setEnabled(true);
+                
+                    jTextField1.requestFocusInWindow();
+                }
+            }
+        }
+    }
     private static final long serialVersionUID = 1L;
     /** Creates new form NewJFrame */
     public NewJFrame() {
@@ -112,6 +127,8 @@ public class NewJFrame extends javax.swing.JFrame
             arw = new AnagrammerWorker(jTextField1.getText(),
                     jTextArea1,
                     drw.rv);
+            anworklistener anwl = new anworklistener();
+            arw.addPropertyChangeListener(anwl);
             jTextField1.setEnabled(false);
             arw.execute();
         }
@@ -129,12 +146,13 @@ public class NewJFrame extends javax.swing.JFrame
     }//GEN-LAST:event_formWindowOpened
     @Override
     public void propertyChange(PropertyChangeEvent evt){
+        
         if ("progress" == evt.getPropertyName()) {
             int progress = (Integer) evt.getNewValue();
             
             // Kludge alert.  I want the progress bar to revert to 0
             // when it's done reading the dictionary.  I'd have
-            // thought the following "else" clause to suffice, but it
+            // thought the following "else" clause would suffice, but it
             // doesn't, since we will get a "progress" property change
             // (with a value of 100) _after_ we get the "state" change
             // that reports DONE.  So I check the label here -- if
