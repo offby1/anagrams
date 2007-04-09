@@ -18,7 +18,11 @@ import java.util.Vector;
  */
 public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, Void> {
     public Vector<Vector<Object>> rv ;
-
+    public class entry {
+        public Bag b;
+        public String[] words;
+    }
+    public Vector<entry> rv2;
     @Override
     public Vector<Vector<Object>> doInBackground() {
         try {
@@ -68,6 +72,7 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, 
                 setProgress(++words_examined * 100 / words_from_file.size());
             }
             rv = new Vector<Vector<Object>>();
+            rv2 = new Vector<entry>();
             for (Enumeration<Bag> e = NewJFrame.ht.keys(); e.hasMoreElements();) {
                 Bag bag = e.nextElement();
                 Vector<String> words = NewJFrame.ht.get(bag);
@@ -75,6 +80,12 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<Vector<Object>>, 
                 one_entry.add(bag);
                 one_entry.add(words);
                 rv.add(one_entry);
+
+                entry ent = new entry();
+                ent.b = bag;
+                ent.words = new String[words.size()];
+                words.copyInto(ent.words);
+                rv2.add(ent);
             }
         }
 

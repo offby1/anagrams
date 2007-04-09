@@ -20,9 +20,9 @@ import javax.swing.SwingWorker;
  */
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
-    private Vector<Vector<Object>> wordlist;
+    private Vector<DictionaryReaderWorker.entry> wordlist;
     private JTextArea output_goes_here;
-    private void do_em (Bag input, Vector<Vector<Object>> wordlist) {
+    private void do_em (Bag input, Vector<DictionaryReaderWorker.entry> wordlist) {
         for (Iterator it = wordlist.iterator(); it.hasNext();) {
             Vector elem = (Vector) it.next();
             Bag entry_bag = (Bag)elem.get(0);
@@ -80,7 +80,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     /** Creates a new instance of AnagrammerWorker */
     public AnagrammerWorker(String s, JTextArea jta,
-                            Vector<Vector<Object>> wl) {
+                            Vector<DictionaryReaderWorker.entry> wl) {
         input = s;
         output_goes_here = jta;
         wordlist = wl;
