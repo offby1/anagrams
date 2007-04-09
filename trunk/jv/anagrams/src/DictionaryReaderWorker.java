@@ -1,3 +1,4 @@
+import java.util.Enumeration;
 import javax.swing.SwingWorker;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -16,6 +17,7 @@ import java.util.Vector;
  * @author Eric
  */
 public class DictionaryReaderWorker extends SwingWorker<Object, Void> {
+    public Vector<Vector<Object>> rv ;
     @Override
     public String doInBackground() {
         try {

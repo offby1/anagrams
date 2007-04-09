@@ -62,7 +62,8 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
     }
     /** Creates a new instance of AnagrammerWorker */
-    public AnagrammerWorker(String s, JTextArea jta) {
+    public AnagrammerWorker(String s, JTextArea jta,
+                            Vector<Vector<Object>> wordlist) {
         input = s;
         output_goes_here = jta;
     }
