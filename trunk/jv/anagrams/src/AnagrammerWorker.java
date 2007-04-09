@@ -20,13 +20,16 @@ import javax.swing.SwingWorker;
  */
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
+    private Vector<Vector<Object>> wordlist;
     private JTextArea output_goes_here;
     @Override
     public String doInBackground() {
         Vector <String> publish_me = new Vector<String>();
         try {
-            publish_me.add("foo");
+            publish_me.add(String.format("working ... on wordlist with %d elements ...\n",
+                                         wordlist.size()));
             publish(publish_me);
+
             java.lang.Thread.sleep(1000);
             
             publish_me.add("bar");
@@ -63,9 +66,10 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     /** Creates a new instance of AnagrammerWorker */
     public AnagrammerWorker(String s, JTextArea jta,
-                            Vector<Vector<Object>> wordlist) {
+                            Vector<Vector<Object>> wl) {
         input = s;
         output_goes_here = jta;
+        wordlist = wl;
     }
     
 }
