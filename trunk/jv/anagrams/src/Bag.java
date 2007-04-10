@@ -82,10 +82,12 @@ public class Bag {
         if (!BigInteger.ZERO.equals(rem))
             return null;
         BigInteger quo = guts.divide(other.guts);
-        return new Bag(quo);
+        Bag rv = new Bag(quo);
+        rv.source = rv.guts.toString();
+        return rv;
     }
     
     public String toString() {
-        return guts.toString();
+        return source;
     }
 }

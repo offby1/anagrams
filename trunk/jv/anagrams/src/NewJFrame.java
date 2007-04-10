@@ -1,9 +1,7 @@
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UnsupportedLookAndFeelException;
 /*
@@ -134,11 +132,11 @@ public class NewJFrame extends javax.swing.JFrame
         }
     }//GEN-LAST:event_jTextField1KeyTyped
     
-    public static Hashtable<Bag, Vector<String>> ht;
+    public static Hashtable<Bag, ArrayList<String>> ht;
     private DictionaryReaderWorker drw;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         jProgressBar1.setMinimum(0);
-        ht = new Hashtable<Bag, Vector<String>>();
+        ht = new Hashtable<Bag, ArrayList<String>>();
         drw = new DictionaryReaderWorker();
         drw.addPropertyChangeListener(this);
         jLabel1.setText("Munging dictionary ...");

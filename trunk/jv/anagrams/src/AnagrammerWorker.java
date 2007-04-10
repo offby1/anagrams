@@ -20,10 +20,10 @@ import javax.swing.SwingWorker;
  */
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
-    private Vector<DictionaryReaderWorker.entry> wordlist;
+    private ArrayList<DictionaryReaderWorker.entry> flummoxicillin;
     private JTextArea output_goes_here;
-    private Vector<DictionaryReaderWorker.entry> prune(Bag input, Vector<DictionaryReaderWorker.entry> wordlist) {
-        Vector<DictionaryReaderWorker.entry> rv = new Vector<DictionaryReaderWorker.entry>();
+    private ArrayList<DictionaryReaderWorker.entry> prune(Bag input, ArrayList<DictionaryReaderWorker.entry> wordlist) {
+        ArrayList<DictionaryReaderWorker.entry> rv = new ArrayList<DictionaryReaderWorker.entry>();
         for (Iterator it = wordlist.iterator(); it.hasNext();) {
             DictionaryReaderWorker.entry elem = (DictionaryReaderWorker.entry ) it.next();
             if (input.subtract(elem.b) != null) {
@@ -32,53 +32,101 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
         return rv;
     }
-    private Vector<Vector<String>> combine(String[] words, Vector<Vector<String>> ans) {
-        Vector<Vector<String>> rv = new Vector<Vector<String>> ();
+    private void pb(String s){
+        ArrayList <String> publish_me = new ArrayList<String>();
+        publish_me.add(s);
+        publish(publish_me);
+    }
+    
+    String flatten(ArrayList<String> words) {
+        String rv = new String();
+        for(String w: words) {
+            if(rv.length() > 0)
+                rv += ", ";
+            rv += w;
+        }
         return rv;
     }
-    private Vector<Vector<String>> do_em(Bag input, Vector<DictionaryReaderWorker.entry> wordlist) {
-        Vector<Vector<String>> rv = new Vector<Vector<String>>();
-        int entries_examined = 0;
+    
+    String flatten_ans(ArrayList<ArrayList<String>> ans) {
+        String rv = new String();
+        for (ArrayList<String> gram : ans) {
+            if (rv.length() > 0) rv += ", ";
+            rv += "[" + flatten(gram) + "]";
+        }
+        return rv;
+    }
+
+    private ArrayList<ArrayList<String>> combine(ArrayList<String> ws, ArrayList<ArrayList<String>> ans) {
+
+        ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>> ();
+
+        for (ArrayList<String> a : ans) {
+            for (String word : ws) {
+                ArrayList<String> bigger_anagram = new ArrayList<String>();
+                bigger_anagram.addAll(a);
+                bigger_anagram.add(word);
+                rv.add(bigger_anagram);
+            }
+        }
+        
+        pb(String.format("combining %s with %s yields %s",
+                         flatten(ws),
+                         flatten_ans(ans),
+                         flatten_ans(rv)));
+        
+        return rv;
+    }
+    
+    private ArrayList<ArrayList<String>> do_em(Bag input,
+            ArrayList<DictionaryReaderWorker.entry> wordlist,
+            int recursion_level) {
+        pb(String.format("level %d: %s; wordlist has %d elements ...",
+                recursion_level,
+                input.toString(),
+                wordlist.size()));
+        
+        ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>>();
+        
         wordlist = prune(input, wordlist);
-        for (Iterator it = wordlist.iterator(); it.hasNext();) {
-            DictionaryReaderWorker.entry elem = (DictionaryReaderWorker.entry) it.next();
+        while (wordlist.size() > 0) {
+            DictionaryReaderWorker.entry elem = wordlist.get(0);
             Bag diff = input.subtract(elem.b);
-            if (diff != null){
+            pb(String.format("%s - %s => %s",
+                    input.toString(), elem.b.toString(), diff.toString()));
+            if (diff != null) {
                 if (diff.empty()) {
-                    for (int i = 0; i < elem.words.length; i++) {
-                        Vector<String> loner = new Vector<String>();
-                        loner.add(elem.words[i]);
+                    pb("diff is empty");
+                    for (int i = 0; i < elem.words.size(); i++) {
+                        ArrayList<String> loner = new ArrayList<String>();
+                        loner.add(elem.words.get(i));
+                        if (recursion_level == 0)
+                            publish(loner);
                         rv.add(loner);
                     }
                 } else {
-                    // BUGBUG TODO YAYAYAYA -- don't pass wordlist; instead pass the dictionary starting at the current element.
-                    Vector<Vector<String>> from_smaller = do_em(diff, wordlist);
+                    pb("diff ain't empty");
+                    ArrayList<ArrayList<String>> from_smaller = do_em(
+                                                                      diff,
+                                                                      wordlist,
+                                                                      recursion_level + 1
+                                                                      );
                     if (from_smaller.size() > 0) {
                         rv.addAll(combine(elem.words, from_smaller));
                     }
                 }
             }
-            ArrayList<String> l = new ArrayList<String>();
-            l.add(String.format("%d: %s",
-                    entries_examined,
-                    elem.b.toString()));
-            
-            for (int i = 0; i < elem.words.length; i++) {
-                l.add(elem.words[i]);
-            }
-            publish(l);
-            entries_examined++;
+            int before = wordlist.size();
+            wordlist = (ArrayList<DictionaryReaderWorker.entry>)wordlist.subList(1, wordlist.size() - 1);
+            int after = wordlist.size();
+            pb(String.format("Hopefully, these differ by just one -- before: %d; after %d",
+                    before, after));
         }
         return rv;
     }
     @Override
     public String doInBackground() {
-        Vector <String> publish_me = new Vector<String>();
-        
-        publish_me.add(String.format("working ... on wordlist with %d elements ...",
-                wordlist.size()));
-        publish(publish_me);
-        do_em(new Bag(input), wordlist);
+        do_em(new Bag(input), flummoxicillin, 0);
         
         return null;
     }
@@ -102,10 +150,9 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     /** Creates a new instance of AnagrammerWorker */
     public AnagrammerWorker(String s, JTextArea jta,
-            Vector<DictionaryReaderWorker.entry> wl) {
+            ArrayList<DictionaryReaderWorker.entry> wl) {
         input = s;
         output_goes_here = jta;
-        wordlist = wl;
+        flummoxicillin = wl;
     }
-    
 }

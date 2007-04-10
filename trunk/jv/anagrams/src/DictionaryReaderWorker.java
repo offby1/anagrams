@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Enumeration;
 import javax.swing.SwingWorker;
 import java.util.Hashtable;
@@ -16,14 +17,14 @@ import java.util.Vector;
  *
  * @author Eric
  */
-public class DictionaryReaderWorker extends SwingWorker<Vector<DictionaryReaderWorker.entry>, Void> {
+public class DictionaryReaderWorker extends SwingWorker<ArrayList<DictionaryReaderWorker.entry>, Void> {
     public class entry {
         public Bag b;
-        public String[] words;
+        public ArrayList<String> words;
     }
-    public Vector<entry> rv;
+    public ArrayList<entry> rv;
     @Override
-    public Vector<DictionaryReaderWorker.entry> doInBackground() {
+    public ArrayList<DictionaryReaderWorker.entry> doInBackground() {
         try {
             // TODO -- Rather than hard-coding this, use a FileOpen
             // dialog to get it; then cache the content somewhere.
@@ -37,7 +38,7 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<DictionaryReaderW
             // We'll loop twice: once to read the word file into a simple list, and again to convert the list into a hash table.
             // Since the first loop is fast and the second slow, this lets us initialize a progress bar for the second loop,
             // since we'll know how many items need to be processed.
-            Vector<String> words_from_file = new Vector<String>();
+            ArrayList<String> words_from_file = new ArrayList<String>();
             {
                 String line;
 
@@ -53,15 +54,15 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<DictionaryReaderW
                 }
             }
             NewJFrame.ht
-                    = new Hashtable<Bag, Vector<String>>();
+                    = new Hashtable<Bag, ArrayList<String>>();
             int words_examined = 0;
             for (Iterator it = words_from_file.iterator(); it.hasNext();) {
                 String line = (String) it.next();
 
                 Bag linebag = new Bag(line);
-                Vector<String> existing = NewJFrame.ht.get(linebag);
+                ArrayList<String> existing = NewJFrame.ht.get(linebag);
                 if (existing == null)
-                    existing = new Vector<String>();
+                    existing = new ArrayList<String>();
 
 
                 if (!existing.contains(line))
@@ -71,15 +72,14 @@ public class DictionaryReaderWorker extends SwingWorker<Vector<DictionaryReaderW
 
                 setProgress(++words_examined * 100 / words_from_file.size());
             }
-            rv = new Vector<entry>();
+            rv = new ArrayList<entry>();
             for (Enumeration<Bag> e = NewJFrame.ht.keys(); e.hasMoreElements();) {
                 Bag bag = e.nextElement();
-                Vector<String> words = NewJFrame.ht.get(bag);
+                ArrayList<String> words = NewJFrame.ht.get(bag);
 
                 entry ent = new entry();
                 ent.b = bag;
-                ent.words = new String[words.size()];
-                words.copyInto(ent.words);
+                ent.words = words;
                 rv.add(ent);
             }
         }
