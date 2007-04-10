@@ -20,7 +20,7 @@ import javax.swing.SwingWorker;
  */
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
-    private ArrayList<DictionaryReaderWorker.entry> flummoxicillin;
+    private LinkedList<DictionaryReaderWorker.entry> flummoxicillin;
     private JTextArea output_goes_here;
     private ArrayList<DictionaryReaderWorker.entry> prune(Bag input, ArrayList<DictionaryReaderWorker.entry> wordlist) {
         ArrayList<DictionaryReaderWorker.entry> rv = new ArrayList<DictionaryReaderWorker.entry>();
@@ -117,7 +117,13 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                 }
             }
             int before = wordlist.size();
-            wordlist = (ArrayList<DictionaryReaderWorker.entry>)wordlist.subList(1, wordlist.size() - 1);
+            pb(String.format("before: %d ...",
+                    before));
+            // it occurs to me that a) this doesn't work; and b) it'd
+            // certainly be cleaner for the big list to be a _linked_
+            // list, whereupon I could call removeFirst and clone.
+            // It'd be just like Lisp!
+            wordlist = (ArrayList<DictionaryReaderWorker.entry>)wordlist.subList(1, wordlist.size());
             int after = wordlist.size();
             pb(String.format("Hopefully, these differ by just one -- before: %d; after %d",
                     before, after));
