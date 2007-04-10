@@ -32,11 +32,6 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
         return rv;
     }
-    private void pb(String s){
-        ArrayList <String> publish_me = new ArrayList<String>();
-        publish_me.add(s);
-        publish(publish_me);
-    }
     
     String flatten(ArrayList<String> words) {
         String rv = new String();
@@ -70,21 +65,12 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             }
         }
         
-        pb(String.format("combining %s with %s yields %s",
-                         flatten(ws),
-                         flatten_ans(ans),
-                         flatten_ans(rv)));
-        
         return rv;
     }
     
     private ArrayList<ArrayList<String>> do_em(Bag input,
             ArrayList<DictionaryReaderWorker.entry> wordlist,
             int recursion_level) {
-        pb(String.format("level %d: %s; wordlist has %d elements ...",
-                recursion_level,
-                input.toString(),
-                wordlist.size()));
         
         ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>>();
         
@@ -92,11 +78,10 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         while (wordlist.size() > 0) {
             DictionaryReaderWorker.entry elem = wordlist.get(0);
             Bag diff = input.subtract(elem.b);
-            pb(String.format("%s - %s => %s",
-                    input.toString(), elem.b.toString(), diff.toString()));
+            
             if (diff != null) {
                 if (diff.empty()) {
-                    pb("diff is empty");
+                    
                     for (int i = 0; i < elem.words.size(); i++) {
                         ArrayList<String> loner = new ArrayList<String>();
                         loner.add(elem.words.get(i));
@@ -105,7 +90,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                         rv.add(loner);
                     }
                 } else {
-                    pb("diff ain't empty");
+                    
                     ArrayList<ArrayList<String>> from_smaller = do_em(
                                                                       diff,
                                                                       wordlist,
@@ -119,9 +104,14 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             int before = wordlist.size();
             wordlist.remove(0);
             int after = wordlist.size();
-            pb(String.format("Hopefully, these differ by just one -- before: %d; after %d",
-                    before, after));
         }
+        if (recursion_level == 0)
+        {
+            for (ArrayList<String> an : rv) {
+                publish(an);
+            }
+        }
+        
         return rv;
     }
     @Override
