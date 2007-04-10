@@ -85,8 +85,6 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                     for (int i = 0; i < elem.words.size(); i++) {
                         ArrayList<String> loner = new ArrayList<String>();
                         loner.add(elem.words.get(i));
-                        if (recursion_level == 0)
-                            publish(loner);
                         rv.add(loner);
                     }
                 } else {
