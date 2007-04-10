@@ -121,7 +121,8 @@ public class NewJFrame extends javax.swing.JFrame
     private AnagrammerWorker arw;
     private void jTextField1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyTyped
         if (evt.VK_ENTER == evt.getKeyChar()) {
-            
+            jTextArea1.selectAll();
+            jTextArea1.replaceSelection("");
             arw = new AnagrammerWorker(jTextField1.getText(),
                     jTextArea1,
                     drw.rv);
