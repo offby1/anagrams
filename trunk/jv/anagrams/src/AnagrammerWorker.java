@@ -117,7 +117,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                 }
             }
             int before = wordlist.size();
-            wordlist = (ArrayList<DictionaryReaderWorker.entry>)wordlist.subList(1, wordlist.size() - 1);
+            wordlist.remove(0);
             int after = wordlist.size();
             pb(String.format("Hopefully, these differ by just one -- before: %d; after %d",
                     before, after));
