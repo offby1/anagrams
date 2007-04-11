@@ -13,7 +13,7 @@ namespace Anagrams
     public partial class Form1 : Form
     {
         List<bag_and_anagrams> dictionary;
-
+        DateTime start_time;
         public Form1()
         {
             InitializeComponent();
@@ -124,8 +124,10 @@ namespace Anagrams
             Bag input_bag = new Bag(input.Text);
             listView1.Items.Clear();
             fileToolStripMenuItem.Enabled = false;
-            DateTime start = DateTime.Now;
+            start_time = DateTime.Now;
             uint prune_passes_started = 0;
+            elapsed_time.Text = "00:00:00";
+            timer1.Enabled = true;
             Anagrams.anagrams(input_bag, dictionary, 0,
                 delegate(Bag filter, List<bag_and_anagrams> dict)
                 {
@@ -164,10 +166,9 @@ namespace Anagrams
                     }
 
                 });
-            DateTime stop = DateTime.Now;
-            toolStripStatusLabel1.Text = String.Format("Done.  {0} anagrams; took {1}.",
-                listView1.Items.Count,
-                stop.Subtract(start));
+            timer1.Enabled = false;
+            toolStripStatusLabel1.Text = String.Format("Done.  {0} anagrams",
+                listView1.Items.Count);
             if (listView1.Items.Count > 0) listView1.EnsureVisible(0);
             input.Enabled = true;
             input.Focus();
@@ -265,6 +266,11 @@ namespace Anagrams
         {
             MessageBox.Show(String.Format("version {0}",Application.ProductVersion), 
                 Application.ProductName);
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            elapsed_time.Text = DateTime.Now.Subtract(start_time).ToString();
         }
     }
 }

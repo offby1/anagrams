@@ -25,6 +25,10 @@ Stuff I might want to do:
   The documentation has a broken link for something called
   "Event-based Asynchronous Pattern" that might be this.
 
+  Java's "Swing" GUI thingy seems to have something called "Actions"
+  that is like this:
+  http://java.sun.com/docs/books/tutorial/uiswing/misc/action.html
+
 * Sorting ideas:
 
 ** Bigger words first.
