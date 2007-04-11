@@ -111,6 +111,8 @@ namespace Anagrams
                             strings loner = new strings();
                             loner.Add(w);
                             rv.Add(loner);
+                            if (recursion_level == 0)
+                                success_callback(loner);
                         }
                     }
                     else
@@ -120,9 +122,12 @@ namespace Anagrams
                             bottom,
                             done_pruning_callback,
                             success_callback);
-                        if (from_smaller.Count > 0)
+                        anagrams combined = combine(entry.words, from_smaller);
+                        foreach (strings an in combined)
                         {
-                            rv.AddRange(combine(entry.words, from_smaller));
+                            rv.Add(an);
+                            if (recursion_level == 0)
+                                success_callback(an);
                         }
                     }
                 }
@@ -131,14 +136,6 @@ namespace Anagrams
                     bottom();
 
                 Application.DoEvents();
-            }
-            if (recursion_level == 0)
-            {
-
-                foreach (strings anagram in rv)
-                {
-                    success_callback(anagram);
-                }
             }
             return rv;
         }
