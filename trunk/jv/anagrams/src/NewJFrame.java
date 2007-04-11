@@ -28,13 +28,12 @@ public class NewJFrame extends javax.swing.JFrame
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
             if ("progress" == evt.getPropertyName()) {
-            jProgressBar1.setValue((Integer) evt.getNewValue());
-
+                jProgressBar1.setValue((Integer) evt.getNewValue());
+                
             } else if ("state" == evt.getPropertyName()){
                 SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
                 if (s == SwingWorker.StateValue.DONE) {
                     jLabel1.setText("");
-                    jProgressBar1.setValue(jProgressBar1.getMinimum());
                     jTextField1.setEnabled(true);
                     jTextField1.requestFocusInWindow();
                     clock_updater.stop();
@@ -147,7 +146,7 @@ public class NewJFrame extends javax.swing.JFrame
             arw.addPropertyChangeListener(anwl);
             jTextField1.setEnabled(false);
             elapsed_time.setText("00:00:00");
-            jProgressBar1.setValue(0);
+
             clock_updater = new Timer(1000, new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     Date now = new Date();
@@ -180,31 +179,11 @@ public class NewJFrame extends javax.swing.JFrame
     public void propertyChange(PropertyChangeEvent evt){
         
         if ("progress" == evt.getPropertyName()) {
-            int progress = (Integer) evt.getNewValue();
-            
-            // Kludge alert.  I want the progress bar to revert to 0
-            // when it's done reading the dictionary.  I'd have
-            // thought the following "else" clause would suffice, but it
-            // doesn't, since we will get a "progress" property change
-            // (with a value of 100) _after_ we get the "state" change
-            // that reports DONE.  So I check the label here -- if
-            // it's blank I take that as a sign that we're done, and
-            // thus I reset the progress bar to zero.
-            
-            // Now that I think about it, though, it is probably
-            // simpler to just leave the progress bar as it is, and
-            // reset it to 0 only when we're about to start some new
-            // task (such as computing anagrams).
-            
-            if(jLabel1.getText().length()== 0) {
-                jProgressBar1.setValue(jProgressBar1.getMinimum());
-            } else
-                jProgressBar1.setValue(progress);
+            jProgressBar1.setValue((Integer) evt.getNewValue());
         } else if ("state" == evt.getPropertyName()){
             SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
             if (s == SwingWorker.StateValue.DONE) {
                 jLabel1.setText("");
-                jProgressBar1.setValue(jProgressBar1.getMinimum());
                 jTextField1.setEnabled(true);
                 
                 jTextField1.requestFocusInWindow();

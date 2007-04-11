@@ -101,7 +101,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             }
             
             pruned.remove(0);
-
+            
             if (recursion_level == 0) {
                 setProgress(java.lang.Math.round(100 * (1 - ((float)pruned.size()) / original_length)));
             }
