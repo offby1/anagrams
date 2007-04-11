@@ -2,8 +2,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 /*
@@ -76,6 +74,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         
         ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>>();
         ArrayList<DictionaryReaderWorker.entry> pruned = prune(input, wordlist);
+        int original_length = pruned.size();
         while (pruned.size() > 0) {
             DictionaryReaderWorker.entry elem = pruned.get(0);
             Bag diff = input.subtract(elem.b);
@@ -102,10 +101,10 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             }
             
             pruned.remove(0);
+
             if (recursion_level == 0) {
-                setProgress((int)(100 * (1 - ((float)pruned.size() / wordlist.size()))));
+                setProgress(java.lang.Math.round(100 * (1 - ((float)pruned.size()) / original_length)));
             }
-            
         }
         if (recursion_level == 0) {
             for (ArrayList<String> an : rv) {

@@ -27,7 +27,10 @@ public class NewJFrame extends javax.swing.JFrame
     private class anworklistener implements PropertyChangeListener {
         @Override
         public void propertyChange(PropertyChangeEvent evt) {
-            if ("state" == evt.getPropertyName()){
+            if ("progress" == evt.getPropertyName()) {
+            jProgressBar1.setValue((Integer) evt.getNewValue());
+
+            } else if ("state" == evt.getPropertyName()){
                 SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
                 if (s == SwingWorker.StateValue.DONE) {
                     jLabel1.setText("");
