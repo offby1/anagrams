@@ -75,10 +75,9 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             int recursion_level) {
         
         ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>>();
-        
-        wordlist = prune(input, wordlist);
-        while (wordlist.size() > 0) {
-            DictionaryReaderWorker.entry elem = wordlist.get(0);
+        ArrayList<DictionaryReaderWorker.entry> pruned = prune(input, wordlist);
+        while (pruned.size() > 0) {
+            DictionaryReaderWorker.entry elem = pruned.get(0);
             Bag diff = input.subtract(elem.b);
             
             if (diff != null) {
@@ -93,7 +92,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                     
                     ArrayList<ArrayList<String>> from_smaller = do_em(
                             diff,
-                            wordlist,
+                            pruned,
                             recursion_level + 1
                             );
                     if (from_smaller.size() > 0) {
@@ -101,9 +100,12 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                     }
                 }
             }
-            int before = wordlist.size();
-            wordlist.remove(0);
-            int after = wordlist.size();
+            
+            pruned.remove(0);
+            if (recursion_level == 0) {
+                setProgress((int)(100 * (1 - ((float)pruned.size() / wordlist.size()))));
+            }
+            
         }
         if (recursion_level == 0) {
             for (ArrayList<String> an : rv) {
@@ -115,6 +117,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     }
     @Override
     public String doInBackground() {
+        setProgress(0);
         do_em(new Bag(input), flummoxicillin, 0);
         
         return null;
