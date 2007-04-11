@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -22,6 +23,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
     private ArrayList<DictionaryReaderWorker.entry> flummoxicillin;
     private JTextArea output_goes_here;
+    public Date time_started;
     private ArrayList<DictionaryReaderWorker.entry> prune(Bag input, ArrayList<DictionaryReaderWorker.entry> wordlist) {
         ArrayList<DictionaryReaderWorker.entry> rv = new ArrayList<DictionaryReaderWorker.entry>();
         for (Iterator it = wordlist.iterator(); it.hasNext();) {
@@ -51,11 +53,11 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
         return rv;
     }
-
+    
     private ArrayList<ArrayList<String>> combine(ArrayList<String> ws, ArrayList<ArrayList<String>> ans) {
-
+        
         ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>> ();
-
+        
         for (ArrayList<String> a : ans) {
             for (String word : ws) {
                 ArrayList<String> bigger_anagram = new ArrayList<String>();
@@ -90,10 +92,10 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                 } else {
                     
                     ArrayList<ArrayList<String>> from_smaller = do_em(
-                                                                      diff,
-                                                                      wordlist,
-                                                                      recursion_level + 1
-                                                                      );
+                            diff,
+                            wordlist,
+                            recursion_level + 1
+                            );
                     if (from_smaller.size() > 0) {
                         rv.addAll(combine(elem.words, from_smaller));
                     }
@@ -103,8 +105,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             wordlist.remove(0);
             int after = wordlist.size();
         }
-        if (recursion_level == 0)
-        {
+        if (recursion_level == 0) {
             for (ArrayList<String> an : rv) {
                 publish(an);
             }
@@ -142,5 +143,6 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         input = s;
         output_goes_here = jta;
         flummoxicillin = wl;
+        time_started = new Date();
     }
 }

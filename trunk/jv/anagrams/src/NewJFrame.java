@@ -1,7 +1,11 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Hashtable;
+import javax.swing.Timer;
 import javax.swing.SwingWorker;
 import javax.swing.UnsupportedLookAndFeelException;
 /*
@@ -19,17 +23,18 @@ public class NewJFrame extends javax.swing.JFrame
     /**
      *
      */
+    Timer clock_updater;
     private class anworklistener implements PropertyChangeListener {
         @Override
-            public void propertyChange(PropertyChangeEvent evt) {
+        public void propertyChange(PropertyChangeEvent evt) {
             if ("state" == evt.getPropertyName()){
                 SwingWorker.StateValue s = (SwingWorker.StateValue)evt.getNewValue();
                 if (s == SwingWorker.StateValue.DONE) {
                     jLabel1.setText("");
                     jProgressBar1.setValue(jProgressBar1.getMinimum());
                     jTextField1.setEnabled(true);
-                
                     jTextField1.requestFocusInWindow();
+                    clock_updater.stop();
                 }
             }
         }
@@ -138,6 +143,22 @@ public class NewJFrame extends javax.swing.JFrame
             anworklistener anwl = new anworklistener();
             arw.addPropertyChangeListener(anwl);
             jTextField1.setEnabled(false);
+            elapsed_time.setText("00:00:00");
+            jProgressBar1.setValue(0);
+            clock_updater = new Timer(1000, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    Date now = new Date();
+                    // it's hard to believe I have to do this myself, and yet I cannot find anything in the Java
+                    // runtime that will do it for me.
+                    long total_seconds = (now.getTime() - arw.time_started.getTime()) / 1000;
+                    long displayed_seconds = total_seconds % 60;
+                    long displayed_minutes = ((total_seconds - displayed_seconds) / 60) % 60;
+                    long displayed_hours = (total_seconds - displayed_minutes * 60) / 3600;
+                    
+                    elapsed_time.setText(String.format("%02d:%02d:%02d", displayed_hours, displayed_minutes, displayed_seconds));
+                }
+            });
+            clock_updater.start();
             arw.execute();
         }
     }//GEN-LAST:event_jTextField1KeyTyped
