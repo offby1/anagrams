@@ -20,7 +20,7 @@ import javax.swing.SwingWorker;
  */
 public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
-    private ArrayList<DictionaryReaderWorker.entry> flummoxicillin;
+    private ArrayList<DictionaryReaderWorker.entry> initial_wordlist;
     private JTextArea output_goes_here;
     private JLabel count_goes_here;
     private int found_so_far;
@@ -122,7 +122,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     @Override
     public String doInBackground() {
         setProgress(0);
-        do_em(new Bag(input), flummoxicillin, 0);
+        do_em(new Bag(input), initial_wordlist, 0);
         
         return null;
     }
@@ -153,7 +153,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         input = s;
         output_goes_here = output;
         count_goes_here = count;
-        flummoxicillin = wl;
+        initial_wordlist = wl;
         time_started = new Date();
         found_so_far = 0;
     }
