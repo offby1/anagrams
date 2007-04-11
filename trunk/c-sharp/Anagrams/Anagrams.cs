@@ -14,9 +14,9 @@ namespace Anagrams
 
     // callback functions to indicate progress.
     public delegate void started_pruning(Bag filter, List<bag_and_anagrams> dict, uint recursion_level);
-    public delegate void bottom_of_main_loop(uint recursion_level);
+    public delegate void bottom_of_main_loop();
     public delegate void done_pruning(uint recursion_level, List<bag_and_anagrams> pruned);
-    public delegate void found_anagram(strings words, int work_done, int total_work);
+    public delegate void found_anagram(strings words);
 
     // each entry is a bag followed by words that can be made from that bag.
 
@@ -128,7 +128,7 @@ namespace Anagrams
                 }
                 pruned.RemoveAt(0);
                 if (recursion_level == 0)
-                    bottom(recursion_level);
+                    bottom();
 
                 Application.DoEvents();
             }
@@ -137,7 +137,7 @@ namespace Anagrams
 
                 foreach (strings anagram in rv)
                 {
-                    success_callback(anagram, pruned.Count, pruned_initial_size);
+                    success_callback(anagram);
                 }
             }
             return rv;

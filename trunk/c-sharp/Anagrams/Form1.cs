@@ -142,13 +142,10 @@ namespace Anagrams
                 },
 
                 // bottom of main loop
-                delegate(uint recursion_level)
+                delegate()
                 {
-                    if (recursion_level == 0)
-                    {
-                        Application.DoEvents();
-                        ProgressBar.PerformStep();
-                    }
+                    ProgressBar.PerformStep();
+                    Application.DoEvents();
                 },
 
                 // done pruning
@@ -162,7 +159,7 @@ namespace Anagrams
                 },
 
                 // found a top-level anagram
-                delegate(strings words, int num_done, int total_to_do)
+                delegate(strings words)
                 {
                     string display_me = "";
                     foreach (string s in words)
