@@ -13,7 +13,6 @@ namespace Anagrams
     }
 
     // callback functions to indicate progress.
-    public delegate void started_pruning(Bag filter, List<bag_and_anagrams> dict, uint recursion_level);
     public delegate void bottom_of_main_loop();
     public delegate void done_pruning(uint recursion_level, List<bag_and_anagrams> pruned);
     public delegate void found_anagram(strings words);
@@ -65,9 +64,8 @@ namespace Anagrams
         }
 
         // return a list that is like d, but which contains only those items which can be made from the letters in b.
-        private static List<bag_and_anagrams> prune(Bag bag, List<bag_and_anagrams> dictionary, started_pruning started_pruning_callback, done_pruning done_pruning_callback, uint recursion_level)
+        private static List<bag_and_anagrams> prune(Bag bag, List<bag_and_anagrams> dictionary, done_pruning done_pruning_callback, uint recursion_level)
         {
-            started_pruning_callback(bag, dictionary, recursion_level);
             List<bag_and_anagrams> rv = new List<bag_and_anagrams>();
             foreach (bag_and_anagrams pair in dictionary)
             {
@@ -85,7 +83,6 @@ namespace Anagrams
         public static anagrams anagrams(Bag bag,
             List<bag_and_anagrams> dictionary,
             uint recursion_level,
-            started_pruning started_pruning_callback,
             bottom_of_main_loop bottom,
             done_pruning done_pruning_callback,
             found_anagram success_callback)
@@ -93,7 +90,6 @@ namespace Anagrams
             anagrams rv = new anagrams();
             List<bag_and_anagrams> pruned = prune(bag,
                 dictionary,
-                started_pruning_callback,
                 done_pruning_callback,
                 recursion_level);
             int pruned_initial_size = pruned.Count;
@@ -118,7 +114,6 @@ namespace Anagrams
                     else
                     {
                         anagrams from_smaller = anagrams(diff, pruned, recursion_level + 1,
-                            started_pruning_callback,
                             bottom,
                             done_pruning_callback,
                             success_callback);

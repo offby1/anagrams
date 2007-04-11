@@ -89,9 +89,6 @@ namespace Anagrams
                     linesRead++;
                     ProgressBar.Increment(line.Length + 1); // the +1 is for the line ending character, I'd guess.
 
-#if DEBUG
-                    //if (linesRead == 10000) break;
-#endif
                     Application.DoEvents();
                 }
 
@@ -125,21 +122,10 @@ namespace Anagrams
             listView1.Items.Clear();
             fileToolStripMenuItem.Enabled = false;
             start_time = DateTime.Now;
-            uint prune_passes_started = 0;
             elapsed_time.Text = "00:00:00";
             timer1.Enabled = true;
             ProgressBar.Value = 0;
             Anagrams.anagrams(input_bag, dictionary, 0,
-
-                // Started pruning
-                delegate(Bag filter, List<bag_and_anagrams> dict, uint recursion_level)
-                {
-                    if (++prune_passes_started % 10000 == 0)
-                    {
-                        toolStripStatusLabel1.Text = "Pruning for '" + filter.AsString() + "' ...";
-                        Application.DoEvents();
-                    }
-                },
 
                 // bottom of main loop
                 delegate()

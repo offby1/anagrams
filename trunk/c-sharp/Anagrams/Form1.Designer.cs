@@ -65,6 +65,7 @@ namespace Anagrams
             this.ProgressBar.Name = "ProgressBar";
             this.ProgressBar.Size = new System.Drawing.Size(300, 16);
             this.ProgressBar.Step = 1;
+            this.ProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             // 
             // toolStripStatusLabel1
             // 
