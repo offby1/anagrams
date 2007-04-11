@@ -2,6 +2,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.SwingWorker;
 /*
@@ -21,6 +22,8 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
     private String input;
     private ArrayList<DictionaryReaderWorker.entry> flummoxicillin;
     private JTextArea output_goes_here;
+    private JLabel count_goes_here;
+    private int found_so_far;
     public Date time_started;
     private ArrayList<DictionaryReaderWorker.entry> prune(Bag input, ArrayList<DictionaryReaderWorker.entry> wordlist) {
         ArrayList<DictionaryReaderWorker.entry> rv = new ArrayList<DictionaryReaderWorker.entry>();
@@ -104,11 +107,13 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             
             if (recursion_level == 0) {
                 setProgress(java.lang.Math.round(100 * (1 - ((float)pruned.size()) / original_length)));
+                
             }
         }
         if (recursion_level == 0) {
             for (ArrayList<String> an : rv) {
                 publish(an);
+                found_so_far++;
             }
         }
         
@@ -138,13 +143,18 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
             }
             output_goes_here.append(flattened + "\n");
         }
+        count_goes_here.setText(String.format("Found so far: %d", found_so_far));
     }
     /** Creates a new instance of AnagrammerWorker */
-    public AnagrammerWorker(String s, JTextArea jta,
+    public AnagrammerWorker(String s,
+            JTextArea output,
+            JLabel count,
             ArrayList<DictionaryReaderWorker.entry> wl) {
         input = s;
-        output_goes_here = jta;
+        output_goes_here = output;
+        count_goes_here = count;
         flummoxicillin = wl;
         time_started = new Date();
+        found_so_far = 0;
     }
 }
