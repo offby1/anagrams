@@ -54,8 +54,8 @@ namespace Anagrams
             System.Diagnostics.Trace.Assert(wordlist_stream != null,
                 "Uh oh, can't find word list inside myself!");
             toolStripStatusLabel1.Text = "Compiling dictionary ...";
-            toolStripProgressBar1.Value = 0;
-            toolStripProgressBar1.Maximum = (int)wordlist_stream.Length;
+            ProgressBar.Value = 0;
+            ProgressBar.Maximum = (int)wordlist_stream.Length;
             listView1_Resize(sender, e);
             using (StreamReader sr = new StreamReader(wordlist_stream))
             {
@@ -87,7 +87,7 @@ namespace Anagrams
                             l.Add(line);
                     }
                     linesRead++;
-                    toolStripProgressBar1.Increment(line.Length + 1); // the +1 is for the line ending character, I'd guess.
+                    ProgressBar.Increment(line.Length + 1); // the +1 is for the line ending character, I'd guess.
 
 #if DEBUG
                     //if (linesRead == 10000) break;
@@ -128,26 +128,41 @@ namespace Anagrams
             uint prune_passes_started = 0;
             elapsed_time.Text = "00:00:00";
             timer1.Enabled = true;
+            ProgressBar.Value = 0;
             Anagrams.anagrams(input_bag, dictionary, 0,
-                delegate(Bag filter, List<bag_and_anagrams> dict)
+
+                // Started pruning
+                delegate(Bag filter, List<bag_and_anagrams> dict, uint recursion_level)
                 {
-                    if (++prune_passes_started % 1000 == 0)
+                    if (++prune_passes_started % 10000 == 0)
                     {
                         toolStripStatusLabel1.Text = "Pruning for '" + filter.AsString() + "' ...";
                         Application.DoEvents();
                     }
-                    toolStripProgressBar1.Value = 0;
-                    toolStripProgressBar1.Maximum = dict.Count;
                 },
-                delegate()
+
+                // bottom of main loop
+                delegate(uint recursion_level)
                 {
-                    //toolStripProgressBar1.PerformStep();
+                    if (recursion_level == 0)
+                    {
+                        Application.DoEvents();
+                        ProgressBar.PerformStep();
+                    }
                 },
-                delegate()
+
+                // done pruning
+                delegate(uint recursion_level, List<bag_and_anagrams> pruned_dict)
                 {
-                    //toolStripStatusLabel1.Text = "";
+                    if (recursion_level == 0)
+                    {
+                        ProgressBar.Maximum = pruned_dict.Count;
+                        Application.DoEvents();
+                    }
                 },
-                delegate(strings words)
+
+                // found a top-level anagram
+                delegate(strings words, int num_done, int total_to_do)
                 {
                     string display_me = "";
                     foreach (string s in words)
@@ -169,7 +184,8 @@ namespace Anagrams
             timer1.Enabled = false;
             toolStripStatusLabel1.Text = String.Format("Done.  {0} anagrams",
                 listView1.Items.Count);
-            if (listView1.Items.Count > 0) listView1.EnsureVisible(0);
+            if (listView1.Items.Count > 0)
+                listView1.EnsureVisible(0);
             input.Enabled = true;
             input.Focus();
             // the leading spaces work around a bug in the control: I
@@ -264,7 +280,7 @@ namespace Anagrams
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(String.Format("version {0}",Application.ProductVersion), 
+            MessageBox.Show(String.Format("version {0}", Application.ProductVersion),
                 Application.ProductName);
         }
 

@@ -13,10 +13,10 @@ namespace Anagrams
     }
 
     // callback functions to indicate progress.
-    public delegate void started_pruning(Bag filter, List<bag_and_anagrams> dict);
-    public delegate void pruned_one();
-    public delegate void done_pruning();
-    public delegate void found_anagram(strings words);
+    public delegate void started_pruning(Bag filter, List<bag_and_anagrams> dict, uint recursion_level);
+    public delegate void bottom_of_main_loop(uint recursion_level);
+    public delegate void done_pruning(uint recursion_level, List<bag_and_anagrams> pruned);
+    public delegate void found_anagram(strings words, int work_done, int total_work);
 
     // each entry is a bag followed by words that can be made from that bag.
 
@@ -65,9 +65,9 @@ namespace Anagrams
         }
 
         // return a list that is like d, but which contains only those items which can be made from the letters in b.
-        private static List<bag_and_anagrams> prune(Bag bag, List<bag_and_anagrams> dictionary, started_pruning started_pruning_callback, pruned_one pruned_one_callback, done_pruning done_pruning_callback, uint recursion_level)
+        private static List<bag_and_anagrams> prune(Bag bag, List<bag_and_anagrams> dictionary, started_pruning started_pruning_callback, done_pruning done_pruning_callback, uint recursion_level)
         {
-            started_pruning_callback(bag, dictionary);
+            started_pruning_callback(bag, dictionary, recursion_level);
             List<bag_and_anagrams> rv = new List<bag_and_anagrams>();
             foreach (bag_and_anagrams pair in dictionary)
             {
@@ -76,9 +76,8 @@ namespace Anagrams
                 {
                     rv.Add(pair);
                 }
-                pruned_one_callback();
             }
-            done_pruning_callback();
+            done_pruning_callback(recursion_level, rv);
             return rv;
         }
 
@@ -87,7 +86,7 @@ namespace Anagrams
             List<bag_and_anagrams> dictionary,
             uint recursion_level,
             started_pruning started_pruning_callback,
-            pruned_one pruned_one_callback,
+            bottom_of_main_loop bottom,
             done_pruning done_pruning_callback,
             found_anagram success_callback)
         {
@@ -95,9 +94,9 @@ namespace Anagrams
             List<bag_and_anagrams> pruned = prune(bag,
                 dictionary,
                 started_pruning_callback,
-                pruned_one_callback,
                 done_pruning_callback,
                 recursion_level);
+            int pruned_initial_size = pruned.Count;
             while (pruned.Count > 0)
             {
                 bag_and_anagrams entry = pruned[0];
@@ -118,7 +117,7 @@ namespace Anagrams
                     {
                         anagrams from_smaller = anagrams(diff, pruned, recursion_level + 1,
                             started_pruning_callback,
-                            pruned_one_callback,
+                            bottom,
                             done_pruning_callback,
                             success_callback);
                         if (from_smaller.Count > 0)
@@ -128,6 +127,9 @@ namespace Anagrams
                     }
                 }
                 pruned.RemoveAt(0);
+                if (recursion_level == 0)
+                    bottom(recursion_level);
+
                 Application.DoEvents();
             }
             if (recursion_level == 0)
@@ -135,7 +137,7 @@ namespace Anagrams
 
                 foreach (strings anagram in rv)
                 {
-                    success_callback(anagram);
+                    success_callback(anagram, pruned.Count, pruned_initial_size);
                 }
             }
             return rv;

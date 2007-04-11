@@ -30,19 +30,19 @@ namespace Anagrams
         {
             this.components = new System.ComponentModel.Container();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.ProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.input = new System.Windows.Forms.TextBox();
+            this.elapsed_time = new System.Windows.Forms.Label();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.elapsed_time = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -52,7 +52,7 @@ namespace Anagrams
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripProgressBar1,
+            this.ProgressBar,
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 260);
             this.statusStrip1.Name = "statusStrip1";
@@ -60,11 +60,11 @@ namespace Anagrams
             this.statusStrip1.TabIndex = 10;
             this.statusStrip1.Text = "statusStrip1";
             // 
-            // toolStripProgressBar1
+            // ProgressBar
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(100, 16);
-            this.toolStripProgressBar1.Step = 1000;
+            this.ProgressBar.Name = "ProgressBar";
+            this.ProgressBar.Size = new System.Drawing.Size(300, 16);
+            this.ProgressBar.Step = 1;
             // 
             // toolStripStatusLabel1
             // 
@@ -126,6 +126,16 @@ namespace Anagrams
             this.input.TabIndex = 12;
             this.input.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.input_KeyPress);
             // 
+            // elapsed_time
+            // 
+            this.elapsed_time.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.elapsed_time.AutoSize = true;
+            this.elapsed_time.Location = new System.Drawing.Point(418, 185);
+            this.elapsed_time.Name = "elapsed_time";
+            this.elapsed_time.Size = new System.Drawing.Size(49, 13);
+            this.elapsed_time.TabIndex = 13;
+            this.elapsed_time.Text = "00:00:00";
+            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -168,16 +178,6 @@ namespace Anagrams
             this.aboutToolStripMenuItem.Text = "&About...";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // elapsed_time
-            // 
-            this.elapsed_time.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.elapsed_time.AutoSize = true;
-            this.elapsed_time.Location = new System.Drawing.Point(418, 185);
-            this.elapsed_time.Name = "elapsed_time";
-            this.elapsed_time.Size = new System.Drawing.Size(49, 13);
-            this.elapsed_time.TabIndex = 13;
-            this.elapsed_time.Text = "00:00:00";
-            // 
             // timer1
             // 
             this.timer1.Interval = 1000;
@@ -211,7 +211,7 @@ namespace Anagrams
         #endregion
 
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripProgressBar ProgressBar;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
