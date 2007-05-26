@@ -18,7 +18,9 @@ mzscheme
      in-bag
      (init in-bag dict-file-name)
      0
-     display)))
+     (lambda (x)
+       (display x)
+       (newline)))))
 
 (define (all-anagrams-internal bag dict level callback)
 
