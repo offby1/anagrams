@@ -50,33 +50,33 @@ regard to order."
 (test/text-ui
  (test-suite
   "The one and only suite"
-  (test-case "sam" (check-true (bag-empty? (bag ""))))
+  (test-true  "sam" (bag-empty? (bag "")))
 
-  (test-case "fred" (check-false (bag-empty? (bag "a"))))
-  (test-case "tim" (check-true  (bags=? (bag "abc")
-                                         (bag "cba"))))
+  (test-false "fred" (bag-empty? (bag "a")))
+  (test-true  "tim"  (bags=? (bag "abc")
+                             (bag "cba")))
 
-  (test-case "harry" (check-true (bags=? (bag "X")
-                                          (bag "x"))))
-  (test-case "mumble" (check-true (bags=? (bag "a!")
-                                           (bag "a"))))
-  (test-case "frotz" (check-false  (bags=? (bag "abc")
-                                            (bag "bc"))))
+  (test-true  "harry" (bags=? (bag "X")
+                              (bag "x")))
+  (test-true  "mumble" (bags=? (bag "a!")
+                               (bag "a")))
+  (test-false  "frotz"  (bags=? (bag "abc")
+                                (bag "bc")))
 
-  (test-case "zimbalist" (check-true (bags=? (bag "a")
-                                              (subtract-bags (bag "ab")
-                                                             (bag "b")))))
+  (test-true  "zimbalist" (bags=? (bag "a")
+                                  (subtract-bags (bag "ab")
+                                                 (bag "b"))))
 
-  (test-case "ethel" (check-false  (subtract-bags (bag "a")
-                                                   (bag "b"))))
-  (test-case "grunt" (check-false  (subtract-bags (bag "a")
-                                                   (bag "aa"))))
+  (test-false  "ethel"  (subtract-bags (bag "a")
+                                       (bag "b")))
+  (test-false  "grunt"  (subtract-bags (bag "a")
+                                       (bag "aa")))
 
   (let ((empty-bag (subtract-bags (bag "a")
                                   (bag "a"))))
     0
-    (test-case "snork" (check-pred bag-empty? empty-bag))
-    (test-case "qquuzz" (check-false (not empty-bag)))
+    (test-pred  "snork" bag-empty? empty-bag)
+    (test-false  "qquuzz" (not empty-bag))
     )
 
   ))
