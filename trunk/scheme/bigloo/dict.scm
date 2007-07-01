@@ -41,7 +41,7 @@
 
   (let ((ht  (make-hashtable)))
     (call-with-input-file
-        "words"
+        "../../words"
       (lambda (p)
         (display "Reading dictionary ... ")
         (newline)
@@ -55,7 +55,7 @@
                   (display " words ...")
                   (newline))
                 (if (word-acceptable? word)
-                    (let* ((key (bag->string (bag word)))
+                    (let* ((key (bag word))
                            (prev (or (hashtable-get ht key) '())))
                       (if (not (member word prev))
                           (set! prev (cons word prev)))

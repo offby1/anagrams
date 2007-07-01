@@ -1,14 +1,13 @@
 (module bag
-    (export bag-empty? subtract-bags bag bag->string))
+    (export bag-empty? subtract-bags bag ))
 
 (define (bag s)
   "Return an object that describes all the letters in S, without
 regard to order."
-  (sort (filter char-alphabetic? (string->list (string-downcase s))) char<?))
+  (list->string (sort (filter char-alphabetic? (string->list (string-downcase s))) char<?)))
 
-(define bag-empty? null?)
-(define bags=? equal?)
-(define bag->string list->string)
+(define (bag-empty? s) (string=? s ""))
+(define bags=? string=?)
 
 ;; top minus bottom.
 
@@ -18,30 +17,32 @@ regard to order."
 
 (define (subtract-bags top bottom)
 
-  (define (internal top bottom result)
+  (define (string-cdr s)
+    (substring s 1 (string-length s)))
+
+  (let loop ((top top)
+             (bottom bottom)
+             (result ""))
     (cond
-     ((null? bottom)
-      (append (reverse result) top))
-     ((null? top)
+     ((string=? bottom "")
+      (string-append result top))
+     ((string=? top "")
       #f)
      (else
-      (let ((t (car top))
-            (b (car bottom)))
+      (let ((t (string-ref top    0))
+            (b (string-ref bottom 0)))
         (cond
          ((char=? t b)
-          (internal (cdr top)
-                    (cdr bottom)
-                    result))
+          (loop (string-cdr top)
+                (string-cdr bottom)
+                result))
          ((char<? t b)
-          (internal (cdr top)
-                    bottom
-                    (cons t result)))
+          (loop (string-cdr top)
+                bottom
+                (string-append result (make-string 1 t))))
          (else
           #f))))))
-
-  (cond
-   ((internal top bottom '()) => values)
-   (else #f)))
+)
 
 
 
@@ -98,11 +99,11 @@ regard to order."
   (my-assert (not (not empty-bag))))
 
 (my-assert (bags=? (bag "g") (subtract-bags (bag "dgo") (bag "do"))))
-(my-assert (string=? (bag->string (bag "g")) "g"))
-(my-assert (string=? (bag->string (bag "Dog!")) "dgo"))
+(my-assert (string=?  (bag "g") "g"))
+(my-assert (string=?  (bag "Dog!") "dgo"))
 
 ;; ensure we maintain alphabetical order
-(my-assert (string=? (bag->string (subtract-bags (bag "Fonda") (bag "fa"))) "dno"))
+(my-assert (string=?  (subtract-bags (bag "Fonda") (bag "fa")) "dno"))
 
 (display  "bag tests passed.")
 (newline)
