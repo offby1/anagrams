@@ -68,6 +68,9 @@ be notably lower than if the answer were correct.
 |gambit 4b17      |no! fixme |optiplex               |not    |5 user seconds  |6 user seconds  |9 user seconds |41 user seconds  |200 user seconds |bignums       |no            |
 |                 |          |                       |quite  |                |                |               |                 |                 |              |              |
 +-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
+|gambit 4.0b22    |yes       |lenovo                 |not    |4 user seconds  |5 user seconds  |7 user seconds |                 |160 user seconds |bignums       |no            |
+|                 |          |                       |quite  |                |                |               |                 |                 |              |              |
++-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------|
 |scheme48 1.3     |          |optiplex               |no     |                |                |16 user seconds|55 user seconds  |272 user seconds |bignums       |no(!)         |
 +-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
 |chicken (315)    |yes: -O2, |optiplex               |no     |3 user seconds  |6 user seconds  |14 user seconds|                 |420 user seconds |strings       |yes           |
@@ -123,9 +126,9 @@ run much slower than normal libraries.
 
 The really interesting question isn't so much "how fast is this
 language", but rather "does this language have an easy-to-use
-profiler".  So far, the answer in most cases has been "no" :-| 
+profiler".  So far, the answer in most cases has been "no" :-|
 
-* C++ has gperf, which takes a bit of doing, but provides useful numbers; 
+* C++ has gperf, which takes a bit of doing, but provides useful numbers;
 
 * some of the Common Lisps have something similar
 
