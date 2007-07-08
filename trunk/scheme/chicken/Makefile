@@ -6,11 +6,10 @@ LDFLAGS:= $(shell chicken-config -libs)
 
 # The -profile option seems to slow it waaay down, at least with build
 # 315
-%.c : %.scm
-	chicken $^ # -profile
 
-%.o : %.c
-	gcc -c $^ $(CFLAGS)
+# "foof" on #scheme suggests I use -Ob, but that causes a segfault.
+%.o : %.scm
+	csc -c -O2 $^ # -profile
 
 anagrams: $(objs)
 	gcc $^ -o $@ $(LDFLAGS)
