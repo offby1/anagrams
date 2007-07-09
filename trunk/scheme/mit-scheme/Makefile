@@ -5,7 +5,7 @@ bench:  bag.scm dict.scm anagrams.scm
 	cat bag.scm dict.scm anagrams.scm >> bench.scm
 	mit-scheme --compiler --eval '(begin (cf "bench") (%exit))'
 
-check:
+check: bench
 	time mit-scheme --heap 10000 --load bench --eval \
 	'(begin (display (length (anagrams "Ernest Hemingway"))) (%exit))'
 
@@ -15,4 +15,4 @@ clean:
 distclean:
 	rm -f pruned-Ernest\ Hemingway
 
-.PHONY: check
+.PHONY: check clean distclean

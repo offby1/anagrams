@@ -19,12 +19,12 @@ regard to order."
       (loop (- chars-to-examine 1)
             (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
 
+;; thanks to "mejja", IRC denizen of #scheme on irc.freenode.org
 (define (subtract-bags b1 b2)
-  (if (bag-empty? b2)
-      (error "Hey!  Don't subtract the empty bag."))
-  (let ((quotient (/ b1 b2)))
-    (and (integer? quotient)
-          quotient)))
+  (if (bag-empty? b2) (error "Hey! Don't subtract the empty bag."))
+  (let ((q+r (integer-divide b1 b2)))
+    (and (zero? (integer-divide-remainder q+r))
+         (integer-divide-quotient q+r))))
 
 (define (bag-empty? b)
   (= 1  b))
