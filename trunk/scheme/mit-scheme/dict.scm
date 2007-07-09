@@ -17,8 +17,8 @@
              (not (re-string-search-forward has-non-letter-regexp word))
 
              ;; it's gotta be two letters long, unless it's `i' or `a'.
-             (or (string=? "i" word)
-                 (string=? "a" word)
+             (or (string-ci=? "i" word)
+                 (string-ci=? "a" word)
                  (< 1 l)))))))
 
 ;; return a dictionary of words that can be made from CRITERION-BAG.
