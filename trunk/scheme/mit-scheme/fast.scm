@@ -57,12 +57,12 @@
 	(word-list #f)
 	(hash-list #f)
 	(bags-list #f))
-    
+
     (if verbose (write-message "Reading dictionary"))
     (set! word-list (read-dict "/usr/share/dict/words"))
 
     (if verbose (write-message "Pruning dictionary"))
-    (keep-matching-items! word-list word-acceptable?)
+    (set! word-list (keep-matching-items! word-list word-acceptable?))
 
     (if verbose (write-message "Computing bags"))
     (set! hash-list (map (lambda (word) (bag word)) word-list))
@@ -71,7 +71,7 @@
     (for-each (lambda (word hash)
 		(hash-table/put! hash-table
 				 hash
-				 (cons word 
+				 (cons word
 				       (hash-table/get hash-table
 						       hash
 						       '()))))
@@ -82,7 +82,7 @@
     (set! bags-list (hash-table->alist hash-table))
 
     (if verbose (write-message "Filtering table"))
-    (set! bags-list (keep-matching-items! bags-list 
+    (set! bags-list (keep-matching-items! bags-list
 		      (lambda (entry)
 			(subtract-bags word-bag (car entry)))))
 
@@ -93,7 +93,7 @@
 	(with-output-to-file filename
 	  (lambda ()
 	    (write (sort bags-list (lambda (p1 p2) (< (car p1) (car p2))))))))
-    
+
     bags-list))
 
 (define (write-message . message)
@@ -148,7 +148,7 @@
 		      (let ((anagrams
 			       (all-anagrams-internal smaller-bag pruned)))
 			(if (pair? anagrams)
-			    (set! rv (append! rv 
+			    (set! rv (append! rv
 					      (combine words anagrams))))))))
 	    (loop (cdr dict)))
 	  rv))))
