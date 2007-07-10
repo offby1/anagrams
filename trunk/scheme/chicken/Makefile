@@ -8,18 +8,15 @@ LDFLAGS:= $(shell chicken-config -libs)
 # 315
 
 # "foof" on #scheme suggests I use -Ob, but that causes a segfault.
-%.o : %.scm
-	csc -c -O2 $^ # -profile
-
-anagrams: $(objs)
-	gcc $^ -o $@ $(LDFLAGS)
+anagrams: $(srcs)
+	csc -disable-interrupts -lambda-lift -O3 $^
 
 words: /usr/share/dict/words
 	ln -sv $^ $@
 #head -10 $^  > $@
 
 check: anagrams words
-	time ./$< "Ernest Hemingway" > /dev/null && if [ -f PROFILE ]; then chicken-profile; fi
+	time ./$< "est Hemingway" > /dev/null && if [ -f PROFILE ]; then chicken-profile; fi
 
 clean:
 	rm -f $(objs) $(srcs:.scm=.c) anagrams PROFILE words
