@@ -5,7 +5,7 @@ all:        check fastcheck
 check:        bench
 	@echo "Running benchmark"
 	@time $(MITSCHEME) --load bench --eval                                 \
-	'(begin (write-line (length (anagrams "est Hemingway"))) (%exit))'
+	'(begin (write-line (length (anagrams "Ernest Hemingway"))) (%exit))'
 
 bench:        bench.scm
 	@echo "Compiling benchmark"
@@ -19,7 +19,7 @@ bench.scm: bag.scm dict.scm anagrams.scm
 fastcheck: fast
 	@echo "Running faster version"
 	@time $(MITSCHEME) --load fast --eval                                 \
-	'(begin (write-line (length (anagrams "est Hemingway"))) (%exit))'
+	'(begin (write-line (length (anagrams "Ernest Hemingway"))) (%exit))'
 
 fast:        fast.scm
 	@echo "Compiling faster version"
