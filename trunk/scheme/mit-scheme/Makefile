@@ -1,18 +1,37 @@
-# Contributed by "mejja", denizen of #scheme on irc.freenode.org
+MITSCHEME = mit-scheme --batch-mode --heap 10000 --stack 500
 
-bench:  bag.scm dict.scm anagrams.scm
-	echo "(declare (usual-integrations))" > bench.scm
-	cat bag.scm dict.scm anagrams.scm >> bench.scm
-	mit-scheme --compiler --eval '(begin (cf "bench") (%exit))'
+all:        check fastcheck
 
-check: bench
-	time mit-scheme --heap 10000 --load bench --eval \
-	'(begin (display (length (anagrams "Ernest Hemingway"))) (%exit))'
+check:        bench
+	@echo "Running benchmark"
+	@time $(MITSCHEME) --load bench --eval                                 \
+	'(begin (write-line (length (anagrams "est Hemingway"))) (%exit))'
+
+bench:        bench.scm
+	@echo "Compiling benchmark"
+	@$(MITSCHEME) --compiler --eval '(begin (cf "bench") (%exit))'
+
+bench.scm: bag.scm dict.scm anagrams.scm
+	@echo "Generating benchmark"
+	@echo "(declare (usual-integrations))" > bench.scm
+	@cat bag.scm dict.scm anagrams.scm >> bench.scm
+
+fastcheck: fast
+	@echo "Running faster version"
+	@time $(MITSCHEME) --load fast --eval                                 \
+	'(begin (write-line (length (anagrams "est Hemingway"))) (%exit))'
+
+fast:        fast.scm
+	@echo "Compiling faster version"
+	@$(MITSCHEME) --compiler --eval '(begin (cf "fast") (%exit))'
 
 clean:
 	rm -f bench.scm bench.com bench.bci bench.bin
 
-distclean:
-	rm -f pruned-Ernest\ Hemingway
+fastclean:
+	rm -f fast.so fast.o fast.c fast.com fast.bin fast.bci
 
-.PHONY: check clean distclean
+distclean: clean fastclean
+	rm -f pruned-*
+
+.PHONY: all check fastcheck fast clean fastclean distclean
