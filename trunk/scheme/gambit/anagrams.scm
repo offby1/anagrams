@@ -53,15 +53,15 @@ list of anagrams, each of which begins with one of the WORDS."
                             anagrams))
                      words)))
 
-(let ((b (bag (apply string-append (cdr (command-line))))))
+(let ((b (bag (apply string-append (cddr (command-line))))))
   (init b  (find file-exists? (list
                                  "/usr/share/dict/words"
                                  "/usr/share/dict/american-english") )
            )
   (let ((result (all-anagrams-internal b *dictionary*)))
-    (display (length result)      (current-error-port))
-    (display " anagrams of "      (current-error-port))
-    (display (cdr (command-line)) (current-error-port))
-    (newline                      (current-error-port))
+    (display (length result)        (current-error-port))
+    (display " anagrams of "        (current-error-port))
+    (display (cddr (command-line)) (current-error-port))
+    (newline                        (current-error-port))
     (write result)
     (newline)))

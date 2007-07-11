@@ -9,21 +9,32 @@
             (vector-ref primes index))
         1))))
 
+(define (binary-splitting-product list)
+  (let loop ((list list)
+	     (next-list '()))
+    (cond ((null? list)
+	   (cond ((null? next-list)
+		  1)
+		 ((null? (cdr next-list))
+		  (car next-list))
+		 (else (loop next-list '()))))
+	  ((null? (cdr list))
+	   (loop (cdr list)
+		 (cons (car list) next-list)))
+	  (else
+	   (loop (cddr list)
+		 (cons (* (car list) (cadr list))
+		       next-list))))))
+
 (define (bag s)
   "Return an object that describes all the letters in S, without
 regard to order."
-  (let loop ((chars-to-examine (string-length s))
-             (product 1))
-    (if (zero? chars-to-examine)
-         product
-      (let ((factor (char->factor (string-ref s (- chars-to-examine 1)))))
-        (loop (- chars-to-examine 1)
-              (* product factor))))))
+  (binary-splitting-product (map char->factor (string->list s))))
 
 (define (subtract-bags b1 b2)
-  (let ((quotient (/ b1 b2)))
-    (and (integer? quotient)
-          quotient)))
+  (let ((qr (##exact-int.div b1 b2)))
+    (and (zero? (cdr qr))
+	 (car qr))))
 
 (define (bag-empty? b)
   (= 1  b))
