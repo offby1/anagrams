@@ -1,3 +1,7 @@
+;; to run me:
+
+;; time emacs -Q -nw -batch -l anagrams.el --eval '(anagrams "Hemingway")'> /dev/null 2>&1
+
 (eval-when-compile (require 'cl))
 
 ;; bag stuff
