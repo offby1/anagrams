@@ -10,7 +10,8 @@ differ:
 
 You'd think there'd be some hash-table SRFI that I could use in all of
 these versions (there's a SRFI 69, but it appears to be supported only
-by PLT scheme v300 and Chicken).
+by PLT scheme v300 and Chicken).  R6RS will probably include hash
+tables.
 
 * module systems
 
