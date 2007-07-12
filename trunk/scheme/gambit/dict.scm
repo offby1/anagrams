@@ -10,7 +10,6 @@
       (let ((dict (make-table init: #f
                               test: eqv?
                               size: 90000
-                              hash: (lambda (x) (remainder x 65535))
                               )))
         (display  "Reading dictionary ... " (current-error-port))
         (let loop ((words-saved 0))
