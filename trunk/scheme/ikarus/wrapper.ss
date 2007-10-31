@@ -6,4 +6,4 @@
 (printf "Let's try something for real: ~s~%"
         (init
          710                            ;"cat"
-         "/home/erich/doodles/anagrams/words.utf8"))
+         "tiny-dictionary"))

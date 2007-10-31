@@ -98,7 +98,7 @@
                (< 1 l))))))
 
 (define (init bag-to-meet dict-file-name)
-  (let ((result (filter (lambda (entry)
+  (let ((result (filter (trace-lambda bag-filter (entry)
                           (subtract-bags bag-to-meet (car entry)))
                         (vector->list
                          (let ((h (wordlist->hash dict-file-name)))
