@@ -11,7 +11,9 @@
        (if (char-alphabetic? c)
            (let ((index (- (char->integer (char-downcase c))
                            a-code)))
-             (vector-ref primes index))
+             (if (< index (vector-length primes))
+                 (vector-ref primes index)
+                 1))
            1))))
 
  (define (bag s)

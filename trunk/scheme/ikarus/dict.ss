@@ -104,7 +104,7 @@
                          (let ((h (wordlist->hash dict-file-name)))
                            (vector-map
                             (lambda (key)
-                              (cons key (hashtable-ref h)))
+                              (cons key (hashtable-ref h key #f)))
                             (hashtable-keys h)))
                          )
                         )))
