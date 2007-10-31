@@ -6,27 +6,44 @@
          (rnrs hashtables (6))
          (ikarus))
 
+(define (my-get-line ip)
+  (let loop ((line-chars '()))
+    (let ((one-char (read-char ip)))
+      (cond
+       ((eof-object? one-char)
+        (if (null? line-chars)
+            one-char
+            (list->string (reverse line-chars))))
+       ((member one-char '(#\newline #\return))
+        (list->string (reverse line-chars)))
+       (else
+        (loop (cons one-char line-chars)))))))
+
 (define (wordlist->hash fn)
-  (with-input-from-file fn
-    (lambda ()
-      (let ((dict (make-eqv-hashtable)))
+  (call-with-input-file fn
+    (lambda (ip)
+      (let ((dict (make-eq-hashtable)))
         (fprintf (standard-error-port) "Reading dictionary ~s ... " fn)
         (let loop ((words-read 0))
-          (let ((word (get-line)))
+          (let ((word (my-get-line ip)))
             (when (not (eof-object? word))
-              (let ((word (string-downcase word)))
+              (let ((word (list->string (map char-downcase (string->list word)))))
                 (when (word-acceptable? word)
                   (adjoin-word! dict word))
                 (loop (+ 1 words-read))))))
         (fprintf (standard-error-port) "done; ~s words, ~a distinct bags~%"
-                 (length (apply append (let-values (((keys values)
-                                                     (hashtable-entries dict)))
-                                         values)))
+                 (apply
+                  +
+                  (vector->list
+                   (vector-map
+                    (lambda (key)
+                      (length (hashtable-ref dict key '())))
+                    (hashtable-keys dict))))
                  (hashtable-size dict))
         dict))))
 
 (define (adjoin-word! dict word)
-  (let ((bag (bag word)))
+  (let ((bag (string->symbol (number->string (bag word)))))
 
     (define (! thing)
       (hashtable-set! dict bag thing))
