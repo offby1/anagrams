@@ -6,4 +6,4 @@
 (printf "Let's try something for real: ~s~%"
         (init
          710                            ;"cat"
-         "tiny-dictionary"))
+         "../../words.utf8"))
