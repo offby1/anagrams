@@ -1,5 +1,5 @@
 (import (rnrs)
-        (duh)
+        (dict)
         (ikarus))
 
 (printf "Well, that was exciting.~%")
