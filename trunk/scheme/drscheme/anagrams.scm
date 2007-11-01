@@ -41,13 +41,13 @@ mzscheme
                   (begin
                     (let ((combined (map list words)))
                       (if top-level? (callback combined))
-                      (set! rv (append! rv combined))))
+                      (set! rv (append! combined rv))))
                 (let ((anagrams (all-anagrams-internal smaller-bag dict #f callback)))
                   (if (not (null? anagrams))
                       (begin
                         (let ((combined (combine words anagrams)))
                           (if top-level? (callback combined))
-                          (set! rv (append! rv combined)))))))))
+                          (set! rv (append! combined rv)))))))))
 
         (loop (cdr dict))))))
 

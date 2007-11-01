@@ -11,7 +11,7 @@ anagrams: $(addsuffix .o,anagrams bag dict)
 	bigloo -g4 -o $@ $^
 
 check: anagrams
-	LD_LIBRARY_PATH=/usr/local/lib:$(LD_LIBRARY_PATH) time ./$^ "Ernes Hemingway" > /dev/null
+	time LD_LIBRARY_PATH=/usr/local/lib:$(LD_LIBRARY_PATH) ./$^ "Ernes Hemingway" > /dev/null
 
 clean:
 	rm -f anagrams *.o cached-dictionary

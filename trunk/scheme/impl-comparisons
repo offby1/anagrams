@@ -3,31 +3,26 @@
 For no good reason, I'm wondering if I could merge all these
 mostly-the-same-but-slightly-different versions into one.
 
-Here are the ways in which the various implementations most seem to
-differ: 
+* Here are the ways in which the various implementations most seem to
+  differ: 
 
-* hash tables
+** hash tables
 
 You'd think there'd be some hash-table SRFI that I could use in all of
 these versions (there's a SRFI 69, but it appears to be supported only
-by PLT scheme v300 and Chicken).  R6RS will probably include hash
-tables.
+by PLT scheme v300 and Chicken).
 
-* module systems
+** module systems
 
-This will probably never be standardized; it seems too contentious.
+** bignums
 
-* regular expressions
+Some have 'em; some don't.
+
+** regular expressions
 
 SRFI?  Prolly not.
 
-On a Debian system with mzscheme installed, the SRFIs live at
-/usr/lib/plt/collects/doc/srfi/index.htm ... although on _this_ box,
-it's at /usr/local/stow/plt/collects/srfi
-
-* bignums
-
-Some have 'em; some don't.
+Note that R6RS standardizes hash tables, module systems, and bignums.
 
 * SRFI 7
 

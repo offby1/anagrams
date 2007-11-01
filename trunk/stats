@@ -72,7 +72,7 @@ be notably lower than if the answer were correct.
 |Ikarus 0.0.1     |no        |optiplex               |close  |2.4 user seconds|2.8 user seconds|3.7 user       |10.4 user seconds|46 user seconds  |bignums       |no            |
 |                 |          |                       |       |                |                |seconds        |                 |                 |              |              |
 +-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
-|bigloo 3.0a      |          |optiplex               |       |                |                |               |14 user seconds  |segfaults        |strings       |yes           |
+|bigloo 3.0a      |          |optiplex               |       |                |                |               |11 user seconds  |57 user seconds  |strings       |yes           |
 +-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
 |gambit 4.0b22    |yes       |lenovo                 |not    |1 user seconds  |1 user seconds  |1 user seconds |                 |84 user seconds  |bignums       |no            |
 |                 |          |                       |quite  |                |                |               |                 |                 |              |              |
