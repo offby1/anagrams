@@ -1,2 +1,2 @@
 check:
-	GAUCHE_LOAD_PATH=. time gosh main.scm "Ernest hemingway"
+	time GAUCHE_LOAD_PATH=. gosh main.scm "Ernes hemingway" > /dev/null

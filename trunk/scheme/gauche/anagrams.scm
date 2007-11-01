@@ -17,13 +17,13 @@
               (if (bag-empty? smaller-bag)
                   (begin
                     (let ((combined (map list words)))
-                      (set! rv (append! rv combined))))
+                      (set! rv (append! combined rv))))
                 (let ((anagrams (all-anagrams-internal smaller-bag dict)))
                   (if (not (null? anagrams))
                       (begin
                         (let ((combined (combine words anagrams)))
-                          (set! rv (append! rv combined)))))))))
-        
+                          (set! rv (append! combined rv)))))))))
+
         (loop (cdr dict))))))
 
 
