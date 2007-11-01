@@ -13,11 +13,11 @@
               (if (bag-empty? smaller-bag)
                   (begin
                     (let ((combined (map list words)))
-                      (set! rv (append! rv combined))))
+                      (set! rv (append! combined rv))))
                 (let ((anagrams (all-anagrams-internal smaller-bag pruned (+ 1 level))))
                   (if (not (null? anagrams))
-                      (set! rv (append! rv (combine words anagrams  (and #f (zero? level))))))))))
-        
+                      (set! rv (append! (combine words anagrams  (and #f (zero? level))) rv)))))))
+
         (loop (cdr dict))))))
 
 

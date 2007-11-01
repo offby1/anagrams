@@ -35,7 +35,7 @@
                      =))
          (*the-table* (ht-ctor 65000)))
     (call-with-input-file
-        "/usr/share/dict/words"
+        "../../words"
       (lambda (p)
         (display "Reading dictionary ... ")
         (let loop ((word (read-line p))

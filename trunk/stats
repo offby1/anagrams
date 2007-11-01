@@ -62,7 +62,7 @@ be notably lower than if the answer were correct.
 |mit-scheme 7.7.90|I think so|lenovo                 |close  |                |                |               |                 |29 user seconds  |bignums       |no            |
 |+ 20070623       |          |                       |       |                |                |               |                 |                 |              |              |
 +-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
-|mit-scheme 7.7.90|yes       |optiplex               |close  |                |                |               |                 |34 user seconds  |bignums       |no            |
+|mit-scheme 7.7.90|yes       |optiplex               |close  |                |                |               |                 |31 user seconds  |bignums       |no            |
 |+ 20070623       |          |                       |       |                |                |               |                 |(!)              |              |              |
 +-----------------+----------+-----------------------+-------+----------------+----------------+---------------+-----------------+-----------------+--------------+--------------+
 |mzscheme v301.4  |          |optiplex               |yes    |                |                |               |10 user seconds  |40 user seconds  |bignums       |no            |

@@ -31,7 +31,7 @@
 (define-macro (update! stuff)
   `(begin
      (maybe-dump ,stuff)
-     (set! rv (append! rv ,stuff))))
+     (set! rv (append! ,stuff rv))))
 
 (define (all-anagrams-internal bag dict depth)
   (let ((rv '()))

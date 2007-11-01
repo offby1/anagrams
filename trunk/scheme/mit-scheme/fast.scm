@@ -59,7 +59,7 @@
         (bags-list #f))
 
     (if verbose (write-message "Reading dictionary"))
-    (set! word-list (read-dict "words"))
+    (set! word-list (read-dict "../../words"))
 
     (if verbose (write-message "Pruning dictionary"))
     (set! word-list (keep-matching-items! word-list word-acceptable?))
