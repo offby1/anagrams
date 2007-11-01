@@ -16,7 +16,7 @@ words: /usr/share/dict/words
 #head -10 $^  > $@
 
 check: anagrams words
-	time ./$< "est Hemingway" > /dev/null && if [ -f PROFILE ]; then chicken-profile; fi
+	time ./$< "Ernest Hemingway" > /dev/null && if [ -f PROFILE ]; then chicken-profile; fi
 
 clean:
 	rm -f $(objs) $(srcs:.scm=.c) anagrams PROFILE words

@@ -13,7 +13,7 @@
               (if (bag-empty? smaller-bag)
                   (begin
                     (let ((combined (map list words)))
-                      (set! rv (append rv combined))))
+                      (set! rv (append combined rv))))
                 (let ((pruned
                        (filter (lambda (entry) (subtract-bags smaller-bag (car entry)))
                                dict)))
@@ -21,7 +21,7 @@
                     (if (not (null? anagrams))
                         (begin
                           (let ((combined (combine words anagrams)))
-                            (set! rv (append rv combined))))))))))
+                            (set! rv (append combined rv))))))))))
 
         (loop (cdr dict))))))
 

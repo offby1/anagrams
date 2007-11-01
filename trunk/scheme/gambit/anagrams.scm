@@ -34,12 +34,12 @@
                   (begin
                     (let ((combined (map list words)))
 
-                      (set! rv (append rv combined))))
+                      (set! rv (append combined rv))))
                 (let ((anagrams (all-anagrams-internal smaller-bag pruned)))
                   (if (not (null? anagrams))
                       (begin
                         (let ((combined (combine words anagrams)))
-                          (set! rv (append rv combined)))))))))
+                          (set! rv (append combined rv)))))))))
 
         (loop (cdr dict))))))
 
