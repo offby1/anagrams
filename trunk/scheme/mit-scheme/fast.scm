@@ -142,7 +142,7 @@
             (let ((smaller (subtract-bags bag key)))
               (if smaller
                   (if (bag-empty? smaller)
-                      (set! rv (append! rv (map list words)))
+                      (set! rv (append! (map list words) rv))
                       (let* ((pruned
                               (keep-matching-items dict
                                 (lambda (entry)
@@ -150,8 +150,8 @@
                              (anagrams
                               (all-anagrams-internal smaller pruned)))
                         (if (pair? anagrams)
-                            (set! rv (append! rv
-                                              (combine words anagrams))))))))
+                            (set! rv (append! (combine words anagrams)
+                                              rv)))))))
             (loop (cdr dict)))
           rv))))
 
