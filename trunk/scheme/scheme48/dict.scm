@@ -36,8 +36,7 @@
         (rv '()))
     (call-with-input-file
         (find file-readable? (list
-                              "/usr/share/dict/words"
-                              "/usr/share/dict/american-english") )
+                              "../../words") )
       (lambda (p)
         (display "Reading dictionary ... ")
         (let loop ((word (read-line p))

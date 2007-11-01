@@ -11,7 +11,7 @@ $(vm):
 	@false
 
 check: $(bytecode)
-	 time PATH=$$PATH:/usr/local/lib/scsh scshvm -h 12000000 -i ./$^ "Hemingway" > /dev/null
+	 time PATH=$$PATH:/usr/local/lib/scsh scshvm -h 12000000 -i ./$^ "St Hemingway" > /dev/null
 
 clean:
 	rm -f $(bytecode)
