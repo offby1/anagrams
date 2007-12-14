@@ -63,7 +63,7 @@ namespace Anagrams
             return rv;
         }
 
-        // return a list that is like d, but which contains only those items which can be made from the letters in b.
+        // return a list that is like dictionary, but which contains only those items which can be made from the letters in bag.
         private static List<bag_and_anagrams> prune(Bag bag, List<bag_and_anagrams> dictionary, done_pruning done_pruning_callback, uint recursion_level)
         {
             List<bag_and_anagrams> rv = new List<bag_and_anagrams>();
