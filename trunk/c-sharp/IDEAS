@@ -38,7 +38,7 @@ Stuff I might want to do:
 ** Recover a previous sort.  For example, in r14, the initial sort
    order is ... I don't know what; probably biggest-word-first.  Then
    when you click the column header, you get alphabetical sorting.
-   But if you change you mind and want biggest-word-first back, you
+   But if you change your mind and want biggest-word-first back, you
    can't get it without recomputing all the anagrams.
 
    I would expect this would require that I store a "sort index" in
