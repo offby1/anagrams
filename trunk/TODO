@@ -1,3 +1,0 @@
-foof (alex shinn) points out that "a lot of your [scheme] impls had
-(append accumulated-list small-list) instead of the reverse, which
-makes them O(n^2) instead of O(n)".  Hunt these down and kill them.
