@@ -108,4 +108,4 @@ for a in result:
             sys.stdout.write (" ")
         sys.stdout.write  (w)
     sys.stdout.write (")")
-    print
+    print ("")
