@@ -1,11 +1,6 @@
 #lang scheme
 
-(require "bag.ss"
-         (lib "trace.ss")
-                                        ;(only (lib "list.ss") quicksort)
-
-         ;(only (lib "1.ss" "srfi") filter)
-         )
+(require "bag.ss")
 
 (provide dict-init)
 
