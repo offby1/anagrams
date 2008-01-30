@@ -3,7 +3,5 @@
   s
   "/home/erich/doodles/anagrams/words-short"
   (readc s) ;;consume initial blank line
-  (let l (readline s)
-    (while l
-      (pushnew l (anagrams-by-bag (bag l)))
-      (= l (readline s)))))
+  (whiler l (readline s) nil
+    (pushnew l (anagrams-by-bag (bag l)))))
