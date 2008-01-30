@@ -14,4 +14,5 @@ exec /usr/local/src/langs/arc/mzscheme-352/bin/mzscheme --no-init-file --mute-ba
 (aload "arc.arc")
 (aload "libs.arc")
 
-(arc-eval '(prn "Hello, world"))
+(current-directory "/home/erich/doodles/anagrams/arc/")
+(aload "bag.arc")
