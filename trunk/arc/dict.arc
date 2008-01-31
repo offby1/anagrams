@@ -5,12 +5,13 @@
          (and (some [in _ #\a #\e #\i #\o #\u] word)
               (all  [and (>= _ #\a)
                          (<= _ #\z)] word))))
-(w/infile
+(time
+ (w/infile
   s
   "/home/erich/doodles/anagrams/words-short"
   (readc s) ;;consume initial blank line
   (whiler l (readline s) nil
-    (= l (downcase l))
-    (and (acceptable l)
-         (pushnew l (anagrams-by-bag (bag l)))))
-  anagrams-by-bag)
+          (= l (downcase l))
+          (and (acceptable l)
+               (pushnew l (anagrams-by-bag (bag l)))))
+  (prn (len anagrams-by-bag) " bags.")))
