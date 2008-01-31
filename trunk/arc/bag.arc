@@ -12,7 +12,7 @@
           (prn "top:" top "; bottom:" bottom)
 
           (if (is top "")    (throw nil)
-              (< (top 0) (bottom 0)) (throw nil)
+              (> (top 0) (bottom 0)) (throw nil)
               (is (top 0) (bottom 0)) (do (= top    (subseq top 1))
                                           (= bottom (subseq bottom 1)))
               (do
