@@ -12,7 +12,7 @@
                                                           (<= _ #\z)] word)))))
                  (w/infile
                   s
-                  "/home/erich/doodles/anagrams/words-short"
+                  "/home/erich/doodles/anagrams/words"
                   (readc s) ;;consume initial blank line
                   (time
 
