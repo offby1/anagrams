@@ -3,7 +3,7 @@
 arc=/usr/local/src/langs/arc
 (
     cat bag.arc dict.arc anagrams.arc
-    echo '(anagrams (bag "scate") dictionary*)'
+    echo '(time (len (anagrams (bag "Ernest Hemingway") dictionary*)))'
     echo '(quit)'
     ) \
         | \
