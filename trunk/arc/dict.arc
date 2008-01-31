@@ -11,6 +11,8 @@
                                                (some [in _ #\a #\e #\i #\o #\u] word)
                                                (all  [and (>= _ #\a)
                                                           (<= _ #\z)] word)))))
+            (prn "Gaah, the cached dictionary doesn't exist; gotta regenerate it.")
+            (prn "This'll take a while.  Chill.")
             (w/infile
              s
              "/home/erich/doodles/anagrams/words"
