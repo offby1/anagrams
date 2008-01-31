@@ -11,26 +11,26 @@
                                                (some [in _ #\a #\e #\i #\o #\u] word)
                                                (all  [and (>= _ #\a)
                                                           (<= _ #\z)] word)))))
-                 (w/infile
-                  s
-                  "/home/erich/doodles/anagrams/words"
-                  (readc s) ;;consume initial blank line
-                  (time
+            (w/infile
+             s
+             "/home/erich/doodles/anagrams/words"
+             (readc s) ;;consume initial blank line
+             (time
 
-                   (do
-                       (catch
-                        (whilet l (readline s)
-                                (= l (downcase l))
-                                (++ read)
-                                (if (is 0 (mod read 2000)) (prn read " read..."))
-                                (if (acceptable l)
-                                    (do (pushnew l (anagrams-by-bag (bag l)))
-                                        (++ saved)
-                                      (if (is 0 (mod saved 2000)) (prn saved " saved..."))))))
+              (do
+                (catch
+                 (whilet l (readline s)
+                         (= l (downcase l))
+                         (++ read)
+                         (if (is 0 (mod read 2000)) (prn read " read..."))
+                         (if (acceptable l)
+                             (do (pushnew l (anagrams-by-bag (bag l)))
+                                 (++ saved)
+                                 (if (is 0 (mod saved 2000)) (prn saved " saved..."))))))
 
-                       (= dictionary* (writefile1 (map cons
-                                                      (keys anagrams-by-bag)
-                                                      (vals anagrams-by-bag))
-                                                 cache-name))
-                     (prn "read " read " words, saved " saved " words"))))))
+                (= dictionary* (writefile1 (map cons
+                                                (keys anagrams-by-bag)
+                                                (vals anagrams-by-bag))
+                                           cache-name))
+                (prn "read " read " words, saved " saved " words"))))))
       (prn  (len dictionary*) " bags."))
