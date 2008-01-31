@@ -1,11 +1,9 @@
 ;; -*-arc-*-
 (def combine (words ans)
-     (pr "combine " words ", " ans ": ")
-     (prn
-      (mappend (fn (an)
-                   (map [cons _ an]
-                        words))
-               ans)))
+     (mappend (fn (an)
+                  (map [cons _ an]
+                       words))
+              ans))
 
 (def map+cdrs (f xs)
      (if (no xs)
