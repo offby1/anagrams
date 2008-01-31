@@ -1,13 +1,14 @@
 ;; -*-arc-*-
-(with (dictionary nil cache-name "/home/erich/doodles/anagrams/arc/dict")
+(with (cache-name "/home/erich/doodles/anagrams/arc/dict")
       (if (file-exists cache-name)
-          (= dictionary (readfile1  cache-name))
+          (= dictionary* (readfile1  cache-name))
           (with  (read 0 saved 0
                        anagrams-by-bag (table)
                        acceptable (fn (word)
                                       (or (is word "i")
                                           (is word "a")
-                                          (and (some [in _ #\a #\e #\i #\o #\u] word)
+                                          (and (< 1 (len word))
+                                               (some [in _ #\a #\e #\i #\o #\u] word)
                                                (all  [and (>= _ #\a)
                                                           (<= _ #\z)] word)))))
                  (w/infile
@@ -27,10 +28,9 @@
                                         (++ saved)
                                       (if (is 0 (mod saved 2000)) (prn saved " saved..."))))))
 
-                       (= dictionary (writefile1 (map cons
+                       (= dictionary* (writefile1 (map cons
                                                       (keys anagrams-by-bag)
                                                       (vals anagrams-by-bag))
                                                  cache-name))
                      (prn "read " read " words, saved " saved " words"))))))
-      (prn  (len dictionary) " bags."))
-
+      (prn  (len dictionary*) " bags."))
