@@ -1,13 +1,9 @@
 #!/bin/sh
 
-arc=/usr/local/src/langs/arc
+here=$(cd $(dirname "$0"); pwd)
+cd "$here"
 (
     cat bag.arc dict.arc anagrams.arc
     echo '(time (len (anagrams (bag "Ernest Hemingway") dictionary*)))'
     echo '(quit)'
-    ) \
-        | \
-        (
-    cd $arc/arc0
-    $arc/plt/bin/mzscheme -m -f as.scm
-    ) 
+    )  | /usr/local/src/langs/arc/arc0/arc.sh
