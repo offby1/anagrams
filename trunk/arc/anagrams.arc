@@ -24,7 +24,6 @@
        (fn (_ subdict)
            (if (is bag (car _))
                (map list (cdr _))
-               (let diff (subtract bag (car _))
-                 (and diff
-                      (combine (cdr _) (anagrams diff subdict))))))
+               (aif (subtract bag (car _))
+                    (combine (cdr _) (anagrams it subdict)))))
        dict))))
