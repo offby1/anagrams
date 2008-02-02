@@ -23,12 +23,10 @@
                 (catch
                  (whilet l (readline s)
                          (= l (downcase l))
-                         (++ read)
-                         (if (is 0 (mod read 2000)) (prn read " read..."))
+                         (when (multiple (++ read) 2000)(prn read " read..."))
                          (if (acceptable l)
                              (do (pushnew l (anagrams-by-bag (bag l)))
-                                 (++ saved)
-                                 (if (is 0 (mod saved 2000)) (prn saved " saved..."))))))
+                                 (when (multiple (++ saved) 2000) (prn saved " saved..."))))))
 
                 (= dictionary* (writefile1 (map cons
                                                 (keys anagrams-by-bag)
