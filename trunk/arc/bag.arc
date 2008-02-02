@@ -3,7 +3,7 @@
 
 (let a (coerce #\a 'int)
   (def bag (string)
-       (apply * (trues [primes (- (coerce _ 'int) a)]
+       (apply * (trues [errsafe (primes (- (coerce _ 'int) a))]
                        (coerce (downcase string) 'cons)))))
 
 (def subtract (top bottom)
