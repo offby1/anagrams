@@ -1,7 +1,7 @@
 #!/bin/sh
 
 here=$(cd $(dirname "$0"); pwd)
-arcdir=/usr/local/src/arc/arc-wiki
+arcdir=/usr/local/src/langs/arc/arc-wiki
 
 cd "$here"
 (
