@@ -84,19 +84,6 @@ for k in dict_hash_table.keys ():
     if (subtract_bags (the_phrase, k)):
         the_dict_list.append([k, dict_hash_table[k]])
 
-# Note that sorting entries "alphabetically" only makes partial sense,
-# since each entry is (at least potentially) more than one word (all
-# the words in an entry are anagrams of each other).
-def biggest_first_then_alphabetically (a, b):
-    a = a[1][0]
-    b = b[1][0]
-    result = cmp (len (b), len (a))
-    if (not result):
-        result = cmp (a, b)
-    return result
-
-the_dict_list.sort (biggest_first_then_alphabetically)
-
 print ("Pruned dictionary.  After:", len (the_dict_list), file=sys.stderr)
 result = anagrams (the_phrase, the_dict_list)
 print (len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
