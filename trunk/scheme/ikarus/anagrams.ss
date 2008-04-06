@@ -61,7 +61,7 @@ list of anagrams, each of which begins with one of the WORDS."
                      words)))
 
 (let ((in (cadr (command-line))))
-  (fprintf (standard-error-port)
+  (fprintf (current-error-port)
            "~a anagrams of ~s~%"
            (length
             (all-anagrams

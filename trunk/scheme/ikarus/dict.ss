@@ -23,7 +23,7 @@
   (call-with-input-file fn
     (lambda (ip)
       (let ((dict (make-eq-hashtable)))
-        (fprintf (standard-error-port) "Reading dictionary ~s ... " fn)
+        (fprintf (current-error-port) "Reading dictionary ~s ... " fn)
         (let loop ((words-read 0))
           (let ((word (my-get-line ip)))
             (when (not (eof-object? word))
@@ -31,7 +31,7 @@
                 (when (word-acceptable? word)
                   (adjoin-word! dict word))
                 (loop (+ 1 words-read))))))
-        (fprintf (standard-error-port) "done; ~s words, ~a distinct bags~%"
+        (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
                  (apply
                   +
                   (vector->list
@@ -109,7 +109,7 @@
                          )
                         )))
     (fprintf
-     (standard-error-port)
+     (current-error-port)
      "Pruned dictionary now has ~a words~%"
      (apply + (map (lambda (seq)
                      (length (cdr seq)))
