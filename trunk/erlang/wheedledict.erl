@@ -3,17 +3,23 @@
 -import (bag, [bag/1]).
 -export ([snarf/0]).
 
+dets_size (Dets)->
+    {value, {size, S}} = lists:keysearch(size, 1, dets:info (Dets)),
+    S.
+
 snarf ()->
-    {ok, S} = file:open ("/usr/share/dict/words", read),
-    Dict = dict:to_list(more (S, fun (_Candidate) -> true end, dict:new ())),
-    file:close (S),
-    io:format ("Stored ~p bags.~n", [length (Dict)]),
-    OFN = "snarfage",
-    {ok, W} = file:open (OFN, write),
-    io:format (W, "~p", [Dict]),
-    io:format ("Wrote to ~p~n", [OFN]),
-    file:close (W),
-    Dict.
+    {ok, Dets} = dets:open_file (snork, [{file, "dict.dets"}]),
+    case dets_size (Dets) of
+        0 -> 
+            {ok, S} = file:open ("/usr/share/dict/words", read),
+            fill_dets_from_stream (Dets, S),
+            file:close (S),
+            io:format ("Stored ~p bags.~n", [dets_size (Dets)]);
+        _ -> whatever
+    end,
+    BigList = dets:traverse (Dets, fun (Object) -> {continue, Object} end),
+    dets:close (Dets),
+    BigList.
 
 downcase (Char) ->
     case Char >= $A andalso Char =< $Z of 
@@ -24,18 +30,13 @@ downcase (Char) ->
 letters_only (String) ->
     [downcase(X) || X <- String,  (X >= $a andalso X =< $z) orelse (X >= $A andalso X =< $Z)].
 
-adjoin (Item, [])->
-    [Item];
-adjoin (Item, [Item|Rest]) ->
-    [Item|Rest];
-adjoin (Item, [H|T]) ->
-    [H|adjoin (Item, T)].
+acceptable (_Word) ->
+    true.
 
-%% Uh ... perhaps a better name would be in order?
-more (S, Criterion, SoFar)->
+fill_dets_from_stream (Dets, S) ->
     case io:get_line (S, '') of
         eof ->
-            SoFar;
+            dets:traverse (Dets, fun (Object) -> {continue, Object} end);
         Line ->
             %% Strip trailing newlines by (*sigh*) reversing the
             %% string, matching, then re-reversing.
@@ -43,13 +44,12 @@ more (S, Criterion, SoFar)->
             case Chars of
                 [$\n | T] ->
                     Word = lists:reverse (letters_only (T)),
-                    case  Criterion (Word) of
-                        true  -> more (S, 
-                                       Criterion, 
-                                       dict:update (bag (Word),
-                                                    fun (Words) -> adjoin (Word, Words) end,
-                                                    [Word], SoFar));
-                        false -> more (S, Criterion, [SoFar])
-                    end
+                    case acceptable (Word) of
+                        true  -> 
+                            dets:insert (Dets, {bag (Word), Word}) ;
+                        _ -> 
+                            dontcare
+                    end,
+                    fill_dets_from_stream (Dets, S)
             end
     end.

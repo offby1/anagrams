@@ -16,7 +16,10 @@ main ([])->
 main ([CriterionString])->
     Filtered = filter (bag:bag (CriterionString), 
                        wheedledict:snarf ()),
-    io:format ("Dictionary has ~p words that include ~p.~n", [length (Filtered), CriterionString]);
+    io:format ("Dictionary has ~p words that include ~p: ~p.~n",
+               [length (Filtered),
+                CriterionString,
+                Filtered]);
 main ([CriterionString|Crap]) ->
     io:format ("(ignoring ~p ...)", [Crap]),
     main ([CriterionString]).
