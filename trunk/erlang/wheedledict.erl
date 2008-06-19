@@ -1,17 +1,19 @@
 -module (wheedledict).
 -compile (export_all).
 -import (bag, [bag/1]).
+-export ([snarf/0]).
 
 snarf ()->
     {ok, S} = file:open ("/usr/share/dict/words", read),
-    Dict = more (S, fun (_Candidate) -> true end, dict:new ()),
+    Dict = dict:to_list(more (S, fun (_Candidate) -> true end, dict:new ())),
     file:close (S),
-    io:format ("Stored ~p bags.~n", [dict:size (Dict)]),
+    io:format ("Stored ~p bags.~n", [length (Dict)]),
     OFN = "snarfage",
     {ok, W} = file:open (OFN, write),
-    io:format (W, "~p", [dict:to_list (Dict)]),
+    io:format (W, "~p", [Dict]),
     io:format ("Wrote to ~p~n", [OFN]),
-    file:close (W).
+    file:close (W),
+    Dict.
 
 downcase (Char) ->
     case Char >= $A andalso Char =< $Z of 
