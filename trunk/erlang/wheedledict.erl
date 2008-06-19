@@ -13,19 +13,29 @@ snarf ()->
     io:format ("Wrote to ~p~n", [OFN]),
     file:close (W).
 
+downcase (Char) ->
+    case Char >= $A andalso Char =< $Z of 
+            true -> Char - $A + $a;
+        false -> Char
+    end.
+
+letters_only (String) ->
+    [downcase(X) || X <- String,  (X >= $a andalso X =< $z) orelse (X >= $A andalso X =< $Z)].
+
 more (S, Criterion, SoFar)->
     case io:get_line (S, '') of
         eof ->
             lists:reverse (SoFar);
         Line ->
+            %% Strip trailing newlines by (*sigh*) reversing the
+            %% string, matching, then re-reversing.
             Chars = lists:reverse (Line),
             case Chars of
                 [$\n | T] ->
-                    Word = lists:reverse (T),
+                    Word = lists:reverse (letters_only (T)),
                     case  Criterion (Word) of
                         true  -> more (S, Criterion, [{bag (Word), Word}|SoFar]);
                         false -> more (S, Criterion, [SoFar])
-
                     end
             end
     end.
