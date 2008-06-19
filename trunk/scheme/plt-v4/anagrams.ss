@@ -1,3 +1,5 @@
+#!/usr/bin/env mzscheme
+
 #lang scheme
 
 (require "dict.ss" "bag.ss" (lib "etc.ss"))

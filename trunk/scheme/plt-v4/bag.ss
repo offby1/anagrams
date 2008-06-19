@@ -1,10 +1,5 @@
 #lang scheme
 
-(require
- (planet "test.ss"     ("schematics" "schemeunit.plt" 2))
- (planet "text-ui.ss"  ("schematics" "schemeunit.plt" 2))
- (planet "util.ss"     ("schematics" "schemeunit.plt" 2)))
-
 (provide bag subtract-bags bag-empty? bags=?)
 (define primes #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101))
 
@@ -36,48 +31,3 @@ regard to order."
   (= 1  b))
 
 (define bags=? =)
-
-;;; unit tests
-
-;; Notes about bags in general:
-
-;; creating a bag from a string needn't be all that fast, since we'll
-;; probably only do it a few thousand times per application (namely,
-;; reading a dictionary of words), whereas subtracting bags needs to
-;; be *really* fast, since I suspect we do this O(n!) times where n is
-;; the length of the string being anagrammed.
-
-(test/text-ui
- (test-suite
-  "The one and only suite"
-  (test-true  "sam" (bag-empty? (bag "")))
-
-  (test-false "fred" (bag-empty? (bag "a")))
-  (test-true  "tim"  (bags=? (bag "abc")
-                             (bag "cba")))
-
-  (test-true  "harry" (bags=? (bag "X")
-                              (bag "x")))
-  (test-true  "mumble" (bags=? (bag "a!")
-                               (bag "a")))
-  (test-false  "frotz"  (bags=? (bag "abc")
-                                (bag "bc")))
-
-  (test-true  "zimbalist" (bags=? (bag "a")
-                                  (subtract-bags (bag "ab")
-                                                 (bag "b"))))
-
-  (test-false  "ethel"  (subtract-bags (bag "a")
-                                       (bag "b")))
-  (test-false  "grunt"  (subtract-bags (bag "a")
-                                       (bag "aa")))
-
-  (let ((empty-bag (subtract-bags (bag "a")
-                                  (bag "a"))))
-    0
-    (test-pred  "snork" bag-empty? empty-bag)
-    (test-false  "qquuzz" (not empty-bag))
-    )
-
-  ))
-
