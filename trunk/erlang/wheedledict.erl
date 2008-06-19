@@ -18,9 +18,14 @@ more (S, Criterion, SoFar)->
         eof ->
             lists:reverse (SoFar);
         Line ->
-            case  Criterion (Line) of
-                true  -> more (S, Criterion, [{bag (Line), Line}|SoFar]);
-                false -> more (S, Criterion, [SoFar])
-            end
+            Chars = lists:reverse (Line),
+            case Chars of
+                [$\n | T] ->
+                    Word = lists:reverse (T),
+                    case  Criterion (Word) of
+                        true  -> more (S, Criterion, [{bag (Word), Word}|SoFar]);
+                        false -> more (S, Criterion, [SoFar])
 
+                    end
+            end
     end.
