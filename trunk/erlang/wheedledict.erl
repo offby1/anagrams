@@ -4,12 +4,12 @@
 
 snarf ()->
     {ok, S} = file:open ("/usr/share/dict/words", read),
-    Lines = more (S, fun (_Candidate) -> true end, []),
+    Dict = more (S, fun (_Candidate) -> true end, dict:new ()),
     file:close (S),
-    io:format ("Read ~p lines.~n", [length (Lines)]),
+    io:format ("Stored ~p bags.~n", [dict:size (Dict)]),
     OFN = "snarfage",
     {ok, W} = file:open (OFN, write),
-    io:format (W, "~p", [Lines]),
+    io:format (W, "~p", [Dict]),
     io:format ("Wrote to ~p~n", [OFN]),
     file:close (W).
 
@@ -22,10 +22,17 @@ downcase (Char) ->
 letters_only (String) ->
     [downcase(X) || X <- String,  (X >= $a andalso X =< $z) orelse (X >= $A andalso X =< $Z)].
 
+adjoin (Item, [])->
+    [Item];
+adjoin (Item, [Item|Rest]) ->
+    [Item|Rest];
+adjoin (Item, [H|T]) ->
+    [H|adjoin (Item, T)].
+
 more (S, Criterion, SoFar)->
     case io:get_line (S, '') of
         eof ->
-            lists:reverse (SoFar);
+            SoFar;
         Line ->
             %% Strip trailing newlines by (*sigh*) reversing the
             %% string, matching, then re-reversing.
@@ -34,7 +41,11 @@ more (S, Criterion, SoFar)->
                 [$\n | T] ->
                     Word = lists:reverse (letters_only (T)),
                     case  Criterion (Word) of
-                        true  -> more (S, Criterion, [{bag (Word), Word}|SoFar]);
+                        true  -> more (S, 
+                                       Criterion, 
+                                       dict:update (bag (Word),
+                                                    fun (Words) -> adjoin (Word, Words) end,
+                                                    [Word], SoFar));
                         false -> more (S, Criterion, [SoFar])
                     end
             end
