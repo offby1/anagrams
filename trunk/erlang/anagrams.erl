@@ -13,7 +13,12 @@ filter (Bag, [{Candidate, Words}|T]) ->
             [{Candidate, Words} | filter (Bag, T)]
     end.
     
-main (CriterionString)->
+main ([])->
+    io:format ("Dude.  How 'bout an argument?~n");
+main ([CriterionString])->
     Filtered = filter (bag:bag (CriterionString), 
                        snarf ()),
-    io:format ("Dictionary has ~p words that include ~p.~n", [length (Filtered), CriterionString]).
+    io:format ("Dictionary has ~p words that include ~p.~n", [length (Filtered), CriterionString]);
+main ([CriterionString|Crap]) ->
+    io:format ("(ignoring ~p ...)", [Crap]),
+    main ([CriterionString]).
