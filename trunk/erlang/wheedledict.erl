@@ -9,7 +9,7 @@ snarf ()->
     io:format ("Stored ~p bags.~n", [dict:size (Dict)]),
     OFN = "snarfage",
     {ok, W} = file:open (OFN, write),
-    io:format (W, "~p", [Dict]),
+    io:format (W, "~p", [dict:to_list (Dict)]),
     io:format ("Wrote to ~p~n", [OFN]),
     file:close (W).
 
@@ -29,6 +29,7 @@ adjoin (Item, [Item|Rest]) ->
 adjoin (Item, [H|T]) ->
     [H|adjoin (Item, T)].
 
+%% Uh ... perhaps a better name would be in order?
 more (S, Criterion, SoFar)->
     case io:get_line (S, '') of
         eof ->
