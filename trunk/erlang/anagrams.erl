@@ -11,14 +11,10 @@ filter (Bag, [{Candidate, Words}|T]) ->
             [{Candidate, Words} | filter (Bag, T)]
     end.
 
-flatmap (Func, List) ->
-    {_List2, Acc1} = lists:mapfoldl (fun (Item, Accum)-> {Item, Func (Item) ++ Accum} end, [], List),
-    Acc1.
-
 combine (Words, Anagrams) ->
-    flatmap(fun (W) ->
-                    lists:map (fun (An) -> [W | An] end, Anagrams) end,
-            Words).
+    lists:flatmap(fun (W) ->
+                          lists:map (fun (An) -> [W | An] end, Anagrams) end,
+                  Words).
 
 anagrams (_Bag, [], _Accum) ->
     [];
@@ -51,7 +47,7 @@ main ([CriterionString])->
                        wheedledict:snarf ()),
     io:format ("Dictionary has ~p words that include ~p.~n",
                [length (Filtered), CriterionString]),
-    io:format ("~p~n", anagrams (B, Filtered, []));
+    io:format ("~p~n", [anagrams (B, Filtered, [])]);
 main ([CriterionString|Crap]) ->
     io:format ("(ignoring ~p ...)", [Crap]),
     main ([CriterionString]).
