@@ -9,7 +9,7 @@ BEAMS = $(SRCS:.erl=.beam)
 all: $(BEAMS)
 
 check: all
-	escript anagrams.erl cat
+	time escript anagrams.erl "Est Hemingway"
 
 cover: all
 	escript do_coverage.erl

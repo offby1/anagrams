@@ -46,14 +46,15 @@ main ([])->
 main ([CriterionString])->
     B = bag:bag (CriterionString),
 
-%%%     Filtered = filter (B, 
-%%%                        wheedledict:snarf ()),
+    Filtered = filter (B, 
+                       wheedledict:snarf ()),
 
-    Filtered = tinydict (),
+%%%     Filtered = tinydict (),
     
     io:format ("Dictionary has ~p entries that include ~p.~n",
                [length (Filtered), CriterionString]),
-    io:format ("~p~n", [anagrams (B, Filtered)]);
+    Tada = anagrams (B, Filtered),
+    io:format ("~p anagrams of ~p~n", [length (Tada), CriterionString]);
 main ([CriterionString|Crap]) ->
     io:format ("(ignoring ~p ...)", [Crap]),
     main ([CriterionString]).
