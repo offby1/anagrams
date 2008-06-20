@@ -11,10 +11,24 @@ snarf ()->
     {ok, Dets} = dets:open_file (snork, [{file, "dict.dets"}]),
     case dets_size (Dets) of
         0 -> 
-            {ok, S} = file:open ("/usr/share/dict/words", read),
-            fill_dets_from_stream (Dets, S),
+            {ok, S} = file:open (
+                        %%"words-small",
+                        "/usr/share/dict/words",
+                        read),
+            HT = hash_from_stream (S, dict:new ()),
             file:close (S),
-            io:format ("Stored ~p bags.~n", [dets_size (Dets)]);
+            dict:map (fun (K, V) -> 
+                              dets:insert (Dets, {K, V})
+                              end,
+                      HT),
+            io:format ("Stored ~p.~n",
+                       [dict:fold (fun (_Key, Value, AccIn)-> 
+                                           {{bags, B}, {words, W}} = AccIn,
+                                           {{bags, B + 1},
+                                            {words, W+ length (Value)}}
+                                   end,
+                                   {{bags, 0}, {words, 0}},
+                                   HT)]);
         _ -> whatever
     end,
     BigList = dets:traverse (Dets, fun (Object) -> {continue, Object} end),
@@ -33,10 +47,10 @@ letters_only (String) ->
 acceptable (_Word) ->
     true.
 
-fill_dets_from_stream (Dets, S) ->
+hash_from_stream (S, HT) ->
     case io:get_line (S, '') of
         eof ->
-            dets:traverse (Dets, fun (Object) -> {continue, Object} end);
+            HT;
         Line ->
             %% Strip trailing newlines by (*sigh*) reversing the
             %% string, matching, then re-reversing.
@@ -46,10 +60,18 @@ fill_dets_from_stream (Dets, S) ->
                     Word = lists:reverse (letters_only (T)),
                     case acceptable (Word) of
                         true  -> 
-                            dets:insert (Dets, {bag (Word), Word}) ;
+                            hash_from_stream(S,
+                                             dict:update (bag (Word),
+                                                          fun (Val) ->
+                                                                  case lists:member (Word, Val) of
+                                                                      true -> Val;
+                                                                      _ -> [Word|Val]
+                                                                  end
+                                                          end,
+                                                          [Word],
+                                                          HT)) ;
                         _ -> 
-                            dontcare
-                    end,
-                    fill_dets_from_stream (Dets, S)
+                            hash_from_stream (S, HT)
+                    end
             end
     end.
