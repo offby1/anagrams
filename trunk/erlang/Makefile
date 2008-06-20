@@ -1,6 +1,11 @@
 # On Ubuntu Hardy, at least, "sudo aptitude install erlang" should get
 # you everything you need.
-check: wheedledict.beam bag.beam
+SRCS  = $(wildcard *.erl)
+BEAMS = $(SRCS:.erl=.beam)
+
+all: $(BEAMS)
+
+check: all
 	escript anagrams.erl Ernestx
 
 %.beam: %.erl
@@ -9,4 +14,4 @@ check: wheedledict.beam bag.beam
 clean:
 	-rm *.beam *.dets
 
-.PHONY: check clean
+.PHONY: all check clean

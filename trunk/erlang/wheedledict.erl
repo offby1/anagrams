@@ -41,11 +41,20 @@ downcase (Char) ->
         false -> Char
     end.
 
-letters_only (String) ->
+letters_only_lowercased (String) ->
     [downcase(X) || X <- String,  (X >= $a andalso X =< $z) orelse (X >= $A andalso X =< $Z)].
 
-acceptable (_Word) ->
-    true.
+acceptable (Word, _Sym)->
+    io:format ("Testing ~p...", [Word]),
+    RV = acceptable (Word),
+    io:format ("=> ~p~n", [RV]),
+    RV.
+
+acceptable ([]) -> false;
+acceptable ([$a])-> true;
+acceptable ([$i])-> true;
+acceptable ([_SingleLetter]) -> false;
+acceptable ([_H|_T])-> true.
 
 hash_from_stream (S, HT) ->
     case io:get_line (S, '') of
@@ -57,8 +66,8 @@ hash_from_stream (S, HT) ->
             Chars = lists:reverse (Line),
             case Chars of
                 [$\n | T] ->
-                    Word = lists:reverse (letters_only (T)),
-                    case acceptable (Word) of
+                    Word = lists:reverse (letters_only_lowercased (T)),
+                    case acceptable (Word, debug) of
                         true  -> 
                             hash_from_stream(S,
                                              dict:update (bag (Word),
