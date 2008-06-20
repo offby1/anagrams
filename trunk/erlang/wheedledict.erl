@@ -67,7 +67,7 @@ hash_from_stream (S, HT) ->
             case Chars of
                 [$\n | T] ->
                     Word = lists:reverse (letters_only_lowercased (T)),
-                    case acceptable (Word, debug) of
+                    case acceptable (Word) of
                         true  -> 
                             hash_from_stream(S,
                                              dict:update (bag (Word),

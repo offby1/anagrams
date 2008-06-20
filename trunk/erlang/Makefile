@@ -3,15 +3,18 @@
 SRCS  = $(wildcard *.erl)
 BEAMS = $(SRCS:.erl=.beam)
 
+%.beam: %.erl
+	erlc -W $<
+
 all: $(BEAMS)
 
 check: all
 	escript anagrams.erl Ernestx
 
-%.beam: %.erl
-	erlc -W $<
+cover: all
+	escript do_coverage.erl
 
 clean:
 	-rm *.beam *.dets
 
-.PHONY: all check clean
+.PHONY: all check clean cover

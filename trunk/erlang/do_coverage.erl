@@ -2,7 +2,10 @@
 -compile (export_all).
 
 main (_)->
-    {ok, Module} = cover:compile (anagrams),
+    lists:map (fun (ModuleName) -> 
+                       {ok, Module} = cover:compile (ModuleName)
+               end,
+               [anagrams, bag, wheedledict]),
     anagrams:main (["dog"]),
-    {ok, Answer} = cover:analyse (Module, calls, line),
+    {ok, Answer} = cover:analyse (anagrams, calls, line),
     io:format ("And the answer is ~p~n", [Answer]).
