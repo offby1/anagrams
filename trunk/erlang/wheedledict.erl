@@ -54,7 +54,11 @@ acceptable ([]) -> false;
 acceptable ([$a])-> true;
 acceptable ([$i])-> true;
 acceptable ([_SingleLetter]) -> false;
-acceptable ([_H|_T])-> true.
+acceptable ([H|T]) ->
+    case lists:member (H, [$a, $e, $i, $o, $u]) of
+        true -> true;
+        _ -> acceptable (T)
+    end.
 
 hash_from_stream (S, HT) ->
     case io:get_line (S, '') of

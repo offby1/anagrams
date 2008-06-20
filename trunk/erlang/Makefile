@@ -9,7 +9,7 @@ BEAMS = $(SRCS:.erl=.beam)
 all: $(BEAMS)
 
 check: all
-	escript anagrams.erl Ernestx
+	escript anagrams.erl cat
 
 cover: all
 	escript do_coverage.erl
