@@ -14,13 +14,13 @@ $(CACHE): all
 	@escript anagrams.erl ""
 
 check: all $(CACHE)
-	time escript anagrams.erl "Es Hemingway"
+	time escript anagrams.erl "Est Hemingway"
 
 profile: all
 	-rm -f fprof.trace
 	escript do_profile.erl "Hemingway"
 
 clean:
-	-rm *.{beam,dets,analysis,trace}
+	-rm *.beam *.dets *.analysis *.trace
 
 .PHONY: all check clean profile
