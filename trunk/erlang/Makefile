@@ -11,10 +11,11 @@ all: $(BEAMS)
 check: all
 	time escript anagrams.erl "Est Hemingway"
 
-cover: all
-	escript do_coverage.erl
+profile: all
+	-rm -f fprof.trace
+	escript do_profile.erl "Hemingway"
 
 clean:
 	-rm *.beam *.dets
 
-.PHONY: all check clean cover
+.PHONY: all check clean profile
