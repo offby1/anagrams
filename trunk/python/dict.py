@@ -35,7 +35,7 @@ def snarf_dictionary_from_IO (I):
     print >> sys.stderr, "done"
     return hash_table
 
-hash_cache = "hash.cache"
+hash_cache = os.path.join(os.path.dirname(__file__), "hash.cache")
 
 def snarf_dictionary (fn):
     try:
