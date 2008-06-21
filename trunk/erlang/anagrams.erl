@@ -51,7 +51,7 @@ main ([CriterionString])->
 
 %%%     Filtered = tinydict (),
     
-    io:format ("Dictionary has ~p entries that include ~p.~n",
+    io:format ("Dictionary has ~p entries that are included in ~p.~n",
                [length (Filtered), CriterionString]),
     Tada = anagrams (B, Filtered),
     io:format ("~p anagrams of ~p~n", [length (Tada), CriterionString]);
