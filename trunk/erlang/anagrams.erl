@@ -17,15 +17,15 @@ combine (Words, Anagrams) ->
 
 anagrams (Bag, Dict)->
     pairfold:pairfold (
-      fun (Dict, Accum) ->
-              [{ThisKey, TheseWords}|_] = Dict,
+      fun (SubDict, Accum) ->
+              [{ThisKey, TheseWords}|_] = SubDict,
               SmallerBag = bag:subtract (Bag, ThisKey),
 
               case SmallerBag of
                   0 -> Accum;
                   1 -> [[W] || W <- TheseWords] ++ Accum;
                   _ ->
-                      FromSmallerBag = anagrams (SmallerBag, Dict),
+                      FromSmallerBag = anagrams (SmallerBag, SubDict),
                       case FromSmallerBag of
                           [] -> Accum;
                           _  -> combine (TheseWords, FromSmallerBag) ++ Accum

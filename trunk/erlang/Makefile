@@ -21,6 +21,6 @@ profile: all
 	escript do_profile.erl "Hemingway"
 
 clean:
-	-rm *.beam *.dets *.analysis *.trace
+	-rm -f *.beam *.dets *.analysis *.trace
 
 .PHONY: all check clean profile

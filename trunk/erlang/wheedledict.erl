@@ -8,7 +8,7 @@ dets_size (Dets)->
     S.
 
 snarf ()->
-    {ok, Dets} = dets:open_file (snork, [{file, "dict.dets"}]),
+    {ok, Dets} = dets:open_file (make_ref (), [{file, "dict.dets"}]),
     case dets_size (Dets) of
         0 -> 
             {ok, S} = file:open (
