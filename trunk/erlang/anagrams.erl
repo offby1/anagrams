@@ -19,17 +19,13 @@ anagrams (Bag, Dict)->
     pairfold:pairfold (
       fun (SubDict, Accum) ->
               [{ThisKey, TheseWords}|_] = SubDict,
-              SmallerBag = bag:subtract (Bag, ThisKey),
 
-              case SmallerBag of
+              case bag:subtract (Bag, ThisKey) of
                   0 -> Accum;
                   1 -> [[W] || W <- TheseWords] ++ Accum;
-                  _ ->
-                      FromSmallerBag = anagrams (SmallerBag, SubDict),
-                      case FromSmallerBag of
-                          [] -> Accum;
-                          _  -> combine (TheseWords, FromSmallerBag) ++ Accum
-                      end
+                  SmallerBag ->
+                      combine (TheseWords,
+                               anagrams (SmallerBag, SubDict)) ++ Accum
               end
       end,
       Dict).
@@ -54,7 +50,10 @@ main ([CriterionString])->
     io:format ("Dictionary has ~p entries that are included in ~p.~n",
                [length (Filtered), CriterionString]),
     Tada = anagrams (B, Filtered),
-    io:format ("~p anagrams of ~p~n", [length (Tada), CriterionString]);
+    io:format ("~p anagrams of ~p:~n~p~n",
+               [length (Tada),
+                CriterionString,
+                Tada]);
 main ([CriterionString|Crap]) ->
     io:format ("(ignoring ~p ...)", [Crap]),
     main ([CriterionString]).
