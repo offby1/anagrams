@@ -15,12 +15,9 @@
 (define (bag s)
   "Return an object that describes all the letters in S, without
 regard to order."
-  (let loop ((chars-to-examine (string-length s))
-             (product 1))
-    (if (zero? chars-to-examine)
-        product
-        (loop (- chars-to-examine 1)
-              (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
+  (for/fold ([product 1])
+            ([ch (in-string s)])
+            (* product (char->factor ch))))
 
 (define (subtract-bags b1 b2)
   (let ((quotient (/ b1 b2)))
