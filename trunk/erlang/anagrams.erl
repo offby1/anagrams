@@ -8,12 +8,9 @@ filter (CriterionBag, Dict) ->
                   Dict).
 
 combine (Words, Anagrams) ->
-    RV = lists:flatmap(fun (W) ->
+    lists:flatmap(fun (W) ->
                           lists:map (fun (An) -> [W | An] end, Anagrams) end,
-                  Words),
-%%%     io:format ("Combining ~p with a list ~p long, yielding ~p~n",
-%%%                [Words, length (Anagrams), RV]),
-    RV.
+                  Words).
 
 anagrams (Bag, Dict)->
     pairfold:pairfold (
@@ -25,7 +22,9 @@ anagrams (Bag, Dict)->
                   1 -> [[W] || W <- TheseWords] ++ Accum;
                   SmallerBag ->
                       combine (TheseWords,
-                               anagrams (SmallerBag, SubDict)) ++ Accum
+                               anagrams (SmallerBag,
+                                         filter (SmallerBag, SubDict)
+                                        )) ++ Accum
               end
       end,
       Dict).
@@ -50,10 +49,9 @@ main ([CriterionString])->
     io:format ("Dictionary has ~p entries that are included in ~p.~n",
                [length (Filtered), CriterionString]),
     Tada = anagrams (B, Filtered),
-    io:format ("~p anagrams of ~p:~n~p~n",
+    io:format ("~p anagrams of ~p:~n",
                [length (Tada),
-                CriterionString,
-                Tada]);
+                CriterionString]);
 main ([CriterionString|Crap]) ->
     io:format ("(ignoring ~p ...)", [Crap]),
     main ([CriterionString]).

@@ -7,18 +7,20 @@ CACHE = dict.dets
 %.beam: %.erl
 	erlc -W $<
 
-check: $(BEAMS) $(CACHE)
-	time escript anagrams.erl "Ernest"
+all: $(BEAMS) $(CACHE)
+
+check: all
+	time escript anagrams.erl "Ernes Hemingway"
 
 $(CACHE): $(BEAMS)
 	@echo "Rebuilding the dictionary cache \"$(CACHE)\"."
 	@escript anagrams.erl ""
 
 profile: all
-	-rm -f fprof.trace
-	escript do_profile.erl "Hemingway"
+	-rm -f *.trace *.analysis 
+	escript do_profile.erl "St Hemingway"
 
 clean:
 	-rm -f *.beam *.dets *.analysis *.trace
 
-.PHONY: check clean profile
+.PHONY: all check clean profile
