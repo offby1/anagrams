@@ -5,8 +5,7 @@
 (require "bag.ss"
          "dict.ss"
          (lib "1.ss" "srfi")
-         (lib "etc.ss")
-         )
+         (lib "etc.ss"))
 
 (provide all-anagrams)
 

@@ -20,9 +20,8 @@ regard to order."
             (* product (char->factor ch))))
 
 (define (subtract-bags b1 b2)
-  (let ((quotient (/ b1 b2)))
-    (and (integer? quotient)
-         quotient)))
+  (let-values (((q r) (quotient/remainder b1 b2)))
+    (and (zero? r) q)))
 
 (define (bag-empty? b)
   (= 1  b))
