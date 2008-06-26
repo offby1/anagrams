@@ -2,9 +2,10 @@
 
 from bag import bag, bag_empty, bags_equal, subtract_bags
 from dict import snarf_dictionary
-from types import *
-import sys
 from optparse import OptionParser
+from types import *
+import profile
+import sys
 
 try:
     import psyco
@@ -39,16 +40,17 @@ def anagrams (bag, dict):
         if (bag_empty (smaller_bag)):
             for w in words:
                 rv.append ([w])
-        else:
-            from_smaller_bag = anagrams (smaller_bag,
-                                         dict[words_processed:])
-            if (not len (from_smaller_bag)):
-                continue
+            continue
 
-            for new in combine (words, from_smaller_bag):
-                rv.append (new)
+        from_smaller_bag = anagrams (smaller_bag,
+                                     dict[words_processed:])
+        if (not len (from_smaller_bag)):
+            continue
+
+        rv.extend (combine (words, from_smaller_bag))
 
     return rv
+
 
 if __name__ == "__main__":
     parser = OptionParser(usage="usage: %prog [options] string")
@@ -70,7 +72,7 @@ if __name__ == "__main__":
     dict_hash_table = snarf_dictionary (options.dict_fn)
 
     the_phrase = bag (args[0])
-    print >> sys.stderr, "Pruning dictionary.  Before:", len (dict_hash_table.keys ())
+    print >> sys.stderr, "Pruning dictionary.  Before:", len (dict_hash_table.keys ()), "bags ...",
 
     # Now convert the hash table to a list, longest entries first.  (This
     # isn't necessary, but it makes the more interesting anagrams appear
@@ -79,10 +81,10 @@ if __name__ == "__main__":
     # While we're at it, prune the list, too.  That _is_ necessary for the
     # program to finish before you grow old and die.
 
-    the_dict_list = []
-    for k in dict_hash_table.keys ():
-        if (subtract_bags (the_phrase, k)):
-            the_dict_list.append([k, dict_hash_table[k]])
+
+    the_dict_list = [[k, dict_hash_table[k]]
+                     for k in dict_hash_table.keys ()
+                     if (subtract_bags (the_phrase, k))]
 
     # Note that sorting entries "alphabetically" only makes partial sense,
     # since each entry is (at least potentially) more than one word (all
@@ -97,9 +99,14 @@ if __name__ == "__main__":
 
     the_dict_list.sort (biggest_first_then_alphabetically)
 
-    print >> sys.stderr, "Pruned dictionary.  After:", len (the_dict_list)
-    result = anagrams (the_phrase, the_dict_list)
-    print >> sys.stderr, len(result), "anagrams of", sys.argv[1], ":"
+
+    print >> sys.stderr, "Pruned dictionary.  After:", len (the_dict_list), "bags."
+    profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
+    if "psyco" in globals():
+        result = anagrams (the_phrase, the_dict_list)
+    else:
+        profile.run("result = anagrams (the_phrase, the_dict_list)")
+        print >> sys.stderr, len(result), "anagrams of", sys.argv[1], ":"
 
     for a in result:
         sys.stdout.write ("(")
