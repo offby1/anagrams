@@ -38,8 +38,8 @@
         (! (cons word probe))))))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
-        (has-non-letter-regexp (regexp "[^a-zA-Z]")))
+  (let ((has-vowel-regexp (regexp "[aeiou]"))
+        (has-non-letter-regexp (regexp "[^a-z]")))
     (lambda (word)
       (let ((l (string-length word)))
         (and (not (zero? l))
