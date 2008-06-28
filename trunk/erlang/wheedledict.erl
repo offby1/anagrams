@@ -35,14 +35,8 @@ snarf ()->
     dets:close (Dets),
     BigList.
 
-downcase (Char) ->
-    case Char >= $A andalso Char =< $Z of 
-            true -> Char - $A + $a;
-        false -> Char
-    end.
-
-letters_only_lowercased (String) ->
-    [downcase(X) || X <- String,  (X >= $a andalso X =< $z) orelse (X >= $A andalso X =< $Z)].
+letters_only (String) ->
+    [X || X <- String,  (X >= $a andalso X =< $z)].
 
 acceptable (Word, _Sym)->
     io:format ("Testing ~p...", [Word]),
@@ -67,10 +61,10 @@ hash_from_stream (S, HT) ->
         Line ->
             %% Strip trailing newlines by (*sigh*) reversing the
             %% string, matching, then re-reversing.
-            Chars = lists:reverse (Line),
+            Chars = lists:reverse (string:to_lower (Line)),
             case Chars of
                 [$\n | T] ->
-                    Word = lists:reverse (letters_only_lowercased (T)),
+                    Word = lists:reverse (letters_only (T)),
                     case acceptable (Word) of
                         true  -> 
                             hash_from_stream(S,
