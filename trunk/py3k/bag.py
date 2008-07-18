@@ -2,12 +2,13 @@
 
 import string
 import sys
+import unittest
 
 def bag_empty (b):
     return b == 1
 
 def bag (str):
-    str = str.lower ()
+    str = string.lower (str)
     primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
     rv = 1
 
@@ -21,48 +22,56 @@ def bags_equal (s1, s2):
     return s1 == s2
 
 def subtract_bags (b1, b2):
-    quotient  = b1 // b2
+    quotient  = b1 / b2
     remainder = b1 % b2
     if (0 == remainder):
         return quotient
     else:
         return 0
 
-assert (bag_empty (bag ("")))
+class WhatchaMaDingy (unittest.TestCase):
+    def __init__ (self, methodName='runTest'):
+        self.done = False
+        unittest.TestCase.__init__ (self, methodName)
 
-assert (not (bag_empty (bag ("a"))))
+    def testAlWholeLottaStuff (self):
+        self.assert_ (bag_empty (bag ("")))
 
-assert (bags_equal (bag ("abc"),
-                    bag ("cba")))
+        self.assert_ (not (bag_empty (bag ("a"))))
 
-assert (not (bags_equal (bag ("abc"),
-                         bag ("bc"))))
+        self.assert_ (bags_equal (bag ("abc"),
+                            bag ("cba")))
 
-assert (bags_equal (bag ("a"),
-                      subtract_bags (bag("ab"),
-                                     bag ("b"))))
-assert (not (subtract_bags (bag ("a"),
-                            bag ("b"))))
+        self.assert_ (not (bags_equal (bag ("abc"),
+                                 bag ("bc"))))
 
-assert (not (subtract_bags (bag ("a"),
-                            bag ("aa"))))
+        self.assert_ (bags_equal (bag ("a"),
+                              subtract_bags (bag("ab"),
+                                             bag ("b"))))
+        self.assert_ (not (subtract_bags (bag ("a"),
+                                    bag ("b"))))
 
-silly_long_string = "When first I was a wee, wee lad\n\
-Eating on my horse\n\
-I had to take a farting duck\n\
-Much to my remorse.\n\
-Oh Sally can't you hear my plea\n\
-When Roe V Wade is nigh\n\
-And candles slide the misty morn\n\
-With dimples on your tie."
+        self.assert_ (not (subtract_bags (bag ("a"),
+                                    bag ("aa"))))
 
-ever_so_slightly_longer_string = silly_long_string + "x"
+        silly_long_string = "When first I was a wee, wee lad\n\
+        Eating on my horse\n\
+        I had to take a farting duck\n\
+        Much to my remorse.\n\
+        Oh Sally can't you hear my plea\n\
+        When Roe V Wade is nigh\n\
+        And candles slide the misty morn\n\
+        With dimples on your tie."
 
-assert (bags_equal (bag ("x"),
-                    subtract_bags (bag (ever_so_slightly_longer_string),
-                                   bag (silly_long_string))))
+        ever_so_slightly_longer_string = silly_long_string + "x"
+        self.assert_ (bags_equal (bag ("x"),
+                            subtract_bags (bag (ever_so_slightly_longer_string),
+                                           bag (silly_long_string))))
 
-assert (bags_equal (bag ("abc"),
-                    bag ("ABC")))
+        self.assert_ (bags_equal (bag ("abc"),
+                            bag ("ABC")))
 
-print (__name__, "tests passed.", file=sys.stderr)
+        self.done = True;
+
+if __name__ == "__main__":
+    exit(unittest.main ())
