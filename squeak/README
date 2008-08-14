@@ -1,0 +1,32 @@
+Since I'm barely competent with Squeak, here's instructions for getting this working:
+
+* Start a new Squeak
+
+* left-click the desktop background to bring up the "World" menu
+
+* choose "open ..."
+
+* choose "file list"
+
+* browse to this directory, and choose any of the ".cs" files
+
+* middle-click (on *nix; I think it's right-click on Windows) the file and choose "fileIn entire file"
+
+* repeat the last step for the other .cs files
+
+Now you've loaded the code.  To test it:
+
+* world menu/open/SUNit test runner
+
+* click the "deselect all" button
+
+* scroll through the list of classes until you find BagTest
+
+* click it
+
+* click "Run One"
+
+You should of course see the fabled green bar.
+
+If I ever get the code to the point where you can actually generate
+anagrams, I'll be sure to explain how to use it here.

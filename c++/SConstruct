@@ -1,0 +1,9 @@
+#-*-python-*-
+
+Program ('anagrams', 
+         ['numeric-bag.cc', 'dict.cc', 'anagrams.cc'], 
+         CXXFLAGS='-O2',
+         #CXXFLAGS='-O2 -pg',
+         #LINKFLAGS='-pg',
+         CPPPATH = '.',                 # dunno why this is needed ... but it is
+         LIBS = 'gmp')

@@ -1,0 +1,5 @@
+Note that
+http://planet.plt-scheme.org/300/docs/soegaard/galore.plt/1/0/doc.txt
+contains a bag implementation that (obviously) is intended to work
+with PLT scheme v300, but who knows ... perhaps it'd work on other
+schemes as well.
