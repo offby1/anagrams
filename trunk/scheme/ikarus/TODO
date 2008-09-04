@@ -1,5 +1,0 @@
-There are a couple of kludges to work around missing features in
-Ikarus; remove them once those features are added.  The one I can
-think of offhand is: Ikarus lacks "eqv" hash tables, but two equal
-bignums aren't "eq?", so in order to use bignums as hash table keys, I
-convert them to symbols first.

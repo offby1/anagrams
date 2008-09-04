@@ -1,7 +1,0 @@
-Profiling is agonizingly slow.  But I hear there's a package called
-"ZenHacks" (http://rubyforge.org/projects/zenhacks/) which includes a
-faster profiler.
-
-Also "omur is Unknown (n=om@unaffiliated/omur)" on IRC mentioned
-"ruby-prof" as a fast profiler:
-http://rubyforge.org/projects/ruby-prof/
