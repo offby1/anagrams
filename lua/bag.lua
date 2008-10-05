@@ -7,9 +7,8 @@
 function from_string (s)
    function is_uc_char (c)
       return ((string.byte (c) <= string.byte ("Z"))
-              and
-                 (string.byte (c) >= string.byte ("A"))
-           )
+           and
+           (string.byte (c) >= string.byte ("A")))
    end
 
    local bag = {}
