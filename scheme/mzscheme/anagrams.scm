@@ -3,11 +3,11 @@
 exec mzscheme -qu "$0" ${1+"$@"}
 |#
 
-(module anagrams
-mzscheme
+#lang scheme
+
 (require "dict.scm"
          "bag.scm"
-         (only (lib "1.ss"  "srfi") filter find take)
+;;;          (only (lib "1.ss"  "srfi") filter find take)
          (lib "etc.ss"))
 
 (provide all-anagrams)
@@ -17,12 +17,9 @@ mzscheme
     (all-anagrams-internal
      in-bag
      (init in-bag dict-file-name)
-     0
-     (lambda (x)
-       (display x)
-       (newline)))))
+     0)))
 
-(define (all-anagrams-internal bag dict level callback)
+(define (all-anagrams-internal bag dict level [callback #f])
 
   (let loop ((rv '())
              (dict dict))
@@ -50,12 +47,12 @@ mzscheme
                                 dict)
                         (add1 level)
                         callback)))))
-               (if (and (zero? level)
-                        (procedure? callback)
-                        (not (null? new-stuff)))
-                   (for-each (lambda (w)
-                               (callback w))
-                             new-stuff))
+               (when (and (zero? level)
+                          (procedure? callback)
+                          (not (null? new-stuff)))
+                 (for-each (lambda (w)
+                             (callback w))
+                           new-stuff))
                (append new-stuff rv))
            rv)
          (cdr dict))))))
@@ -69,17 +66,18 @@ list of anagrams, each of which begins with one of the WORDS."
                             anagrams))
                      words)))
 
-(let ((in (vector-ref
-           (current-command-line-arguments)
-           0)))
-  (fprintf (current-error-port)
-           "~a anagrams of ~s~%"
-           (length
-            (all-anagrams
-             in
-             (build-path (this-expression-source-directory) 'up 'up "words")
-             ))
-           in
-           )
-  (newline)))
+(define (length-of-longest words)
+  (apply max (map string-length words)))
+
+(let* ((in (vector-ref
+            (current-command-line-arguments)
+            0))
+       (results (all-anagrams
+                 in
+                 (build-path (this-expression-source-directory) 'up 'up "words")
+                 )))
+  (fprintf (current-error-port) "~a anagrams of ~s~%" (length results) in)
+  (for ([an (in-list (sort results > #:key length-of-longest))])
+    (display an)
+    (newline)))
 
