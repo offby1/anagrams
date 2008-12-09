@@ -7,7 +7,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 #lang scheme
 
 (require "dict.scm"
-         "bag.scm"
+         (except-in "bag.scm" main)
          (lib "etc.ss"))
 
 (provide all-anagrams)
@@ -69,16 +69,16 @@ list of anagrams, each of which begins with one of the WORDS."
                             anagrams))
                      words)))
 
-(let ((in (vector-ref
-           (current-command-line-arguments)
-           0)))
-  (fprintf (current-error-port)
-           "~a anagrams of ~s~%"
-           (length
-            (all-anagrams
+(provide main)
+(define (main . args)
+  (let ((in (car args)))
+    (fprintf (current-error-port)
+             "~a anagrams of ~s~%"
+             (length
+              (all-anagrams
+               in
+               (build-path (this-expression-source-directory) 'up 'up "words")
+               ))
              in
-             (build-path (this-expression-source-directory) 'up 'up "words")
-             ))
-           in
-           )
-  (newline))
+             )
+    (newline)))
