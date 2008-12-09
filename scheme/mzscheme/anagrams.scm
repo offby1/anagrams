@@ -1,13 +1,13 @@
 #! /bin/sh
 #| Hey Emacs, this is -*-scheme-*- code!
-exec mzscheme -qu "$0" ${1+"$@"}
+#$Id: v4-script-template.ss 5748 2008-11-17 01:57:34Z erich $
+exec  mzscheme --require "$0" --main -- ${1+"$@"}
 |#
 
-(module anagrams
-mzscheme
+#lang scheme
+
 (require "dict.scm"
          "bag.scm"
-         (only (lib "1.ss"  "srfi") filter find take)
          (lib "etc.ss"))
 
 (provide all-anagrams)
@@ -50,12 +50,12 @@ mzscheme
                                 dict)
                         (add1 level)
                         callback)))))
-               (if (and (zero? level)
-                        (procedure? callback)
-                        (not (null? new-stuff)))
-                   (for-each (lambda (w)
-                               (callback w))
-                             new-stuff))
+               (when (and (zero? level)
+                          (procedure? callback)
+                          (not (null? new-stuff)))
+                 (for-each (lambda (w)
+                             (callback w))
+                           new-stuff))
                (append new-stuff rv))
            rv)
          (cdr dict))))))
@@ -81,5 +81,4 @@ list of anagrams, each of which begins with one of the WORDS."
              ))
            in
            )
-  (newline)))
-
+  (newline))
