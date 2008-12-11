@@ -11,38 +11,35 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
 (provide init)
 
-(define (wordlist->hash fn)
-  (with-input-from-file fn
-    (lambda ()
-      (let ((dict (make-hash)))
-        (fprintf (current-error-port) "Reading dictionary ~s ... " fn)
-        (let loop ((words-read 0))
-          (let ((word (read-line)))
-            (when (not (eof-object? word))
-              (let ((word (string-downcase word)))
-                (when (word-acceptable? word)
-                  (adjoin-word! dict word))
-                (loop (+ 1 words-read))))))
-        (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
-                 (length (apply append (map cdr (hash-map dict cons))))
-                 (hash-count dict))
-        dict))))
+;; Takes either a file name, or an input port.  This makes testing easier.
+(define wordlist->hash
+  (match-lambda
+   [(? string? inp)
+    (let ((dict (call-with-input-file inp
+                  wordlist->hash)))
 
-(define (adjoin-word! dict word)
+
+
+      (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
+               (length (apply append (map cdr (hash-map dict cons))))
+               (hash-count dict))
+      dict)]
+   [(? input-port? inp)
+    (fprintf (current-error-port) "Reading dictionary ~s ... " inp)
+    (for/fold ([dict (make-hash)])
+        ([word (in-lines inp)])
+        (let ((word (string-downcase word)))
+          (if (word-acceptable? word)
+              (adjoin-word dict word)
+              dict)))]))
+
+(define (adjoin-word dict word)
   (let ((bag (bag word)))
 
-    (define (! thing)
-      (hash-set! dict bag thing))
-
-    (let ((probe (hash-ref
-                  dict
-                  bag
-                  (lambda ()
-                    (let ((new (list word)))
-                      (! new)
-                      new)))))
-      (when (not (member word probe))
-        (! (cons word probe))))))
+    (hash-update dict bag
+                 (lambda (old)
+                            (cons word old))
+                 '())))
 
 (define word-acceptable?
   (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
@@ -82,20 +79,18 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
    (run-tests
     (test-suite
      "yow"
-     (let ((d (make-hash)))
-       (adjoin-word! d "frotz")
-       (let ((alist (hash-map d cons)))
-         (check-equal? alist (list (cons  (bag "frotz")
-                                          (list "frotz")))))
-       (adjoin-word! d "zortf")
-       (let ((alist (hash-map d cons)))
-         (check-equal? (caar alist) (bag "frotz"))
-         (check-not-false (member "zortf" (cdar alist)))
-         (check-not-false (member "frotz" (cdar alist))))
+     (test-begin
+      (let ((d (adjoin-word (make-immutable-hash '()) "frotz")))
+        (let ((alist (hash-map d cons)))
+          (check-equal? alist (list (cons  (bag "frotz")
+                                           (list "frotz")))))
+        (let ((alist (hash-map (adjoin-word d "zortf") cons)))
+          (check-equal? (caar alist) (bag "frotz"))
+          (check-not-false (member "zortf" (cdar alist)))
+          (check-not-false (member "frotz" (cdar alist))))
 
-       (adjoin-word! d "plonk")
-       (let* ((alist (hash-map d cons))
-              (probe (assoc (bag "plonk" )
-                            alist)))
-         (check-equal? 2 (length alist))
-         (check-equal? probe (cons (bag "plonk") (list "plonk")))))))))
+        (let* ((alist (hash-map (adjoin-word d "plonk") cons))
+               (probe (assoc (bag "plonk" )
+                             alist)))
+          (check-equal? 2 (length alist))
+          (check-equal? probe (cons (bag "plonk") (list "plonk"))))))))))
