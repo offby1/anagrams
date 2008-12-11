@@ -28,28 +28,30 @@ mzscheme
      callback)))
 
 (define (all-anagrams-internal bag dict top-level? callback)
-  (define rv '())
-  (let loop ((dict dict))
+  (let loop ((rv '())
+             (dict dict))
     (if (null? dict)
         rv
       (let ((key   (caar dict))
             (words (cdar dict)))
         (yield)
-        (let ((smaller-bag (subtract-bags bag key)))
-          (if smaller-bag
-              (if (bag-empty? smaller-bag)
-                  (begin
-                    (let ((combined (map list words)))
-                      (if top-level? (callback combined))
-                      (set! rv (append! combined rv))))
-                (let ((anagrams (all-anagrams-internal smaller-bag dict #f callback)))
-                  (if (not (null? anagrams))
-                      (begin
-                        (let ((combined (combine words anagrams)))
-                          (if top-level? (callback combined))
-                          (set! rv (append! combined rv)))))))))
-
-        (loop (cdr dict))))))
+        (loop
+         (let ((smaller-bag (subtract-bags bag key)))
+           (if smaller-bag
+               (if (bag-empty? smaller-bag)
+                   (begin
+                     (let ((combined (map list words)))
+                       (if top-level? (callback combined))
+                       (append combined rv)))
+                   (let ((anagrams (all-anagrams-internal smaller-bag dict #f callback)))
+                     (if (null? anagrams)
+                         rv
+                         (begin
+                           (let ((combined (combine words anagrams)))
+                             (if top-level? (callback combined))
+                             (append combined rv))))))
+               rv))
+         (cdr dict))))))
 
 
 (define (combine words anagrams)
