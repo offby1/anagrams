@@ -1,6 +1,7 @@
 (module bag
   mzscheme
-  (require "assert.scm")                ;TODO: consider using SchemeUnit from PLaneT
+  (require  (planet schematics/schemeunit:3)
+            (planet schematics/schemeunit:3/text-ui))
   (provide bag subtract-bags bag-empty? bags=?)
 
 (define primes #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101))
@@ -46,27 +47,27 @@ regard to order."
 ;; be *really* fast, since I suspect we do this O(n!) times where n is
 ;; the length of the string being anagrammed.
 
-(assert (bag-empty? (bag "")))
-(assert (not (bag-empty? (bag "a"))))
-(assert (bags=? (bag "abc")
+(check-not-false (bag-empty? (bag "")))
+(check-not-false (not (bag-empty? (bag "a"))))
+(check-not-false (bags=? (bag "abc")
                 (bag "cba")))
 
-(assert (not (bags=? (bag "abc")
+(check-not-false (not (bags=? (bag "abc")
                      (bag "bc"))))
 
-(assert (bags=? (bag "a")
+(check-not-false (bags=? (bag "a")
                 (subtract-bags (bag "ab")
                                (bag "b"))))
 
-(assert (not (subtract-bags (bag "a")
+(check-not-false (not (subtract-bags (bag "a")
                             (bag "b"))))
-(assert (not (subtract-bags (bag "a")
+(check-not-false (not (subtract-bags (bag "a")
                             (bag "aa"))))
 
 (let ((empty-bag (subtract-bags (bag "a")
                                 (bag "a"))))
-  (assert (bag-empty? empty-bag))
-  (assert empty-bag))
+  (check-not-false (bag-empty? empty-bag))
+  (check-not-false empty-bag))
 
 (fprintf (current-error-port) (format "bag tests passed.~%"))
 )
