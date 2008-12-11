@@ -14,19 +14,22 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 ;; Takes either a file name, or an input port.  This makes testing easier.
 (define wordlist->hash
   (match-lambda
+
    [(? string? inp)
-    (let ((dict (call-with-input-file inp
-                  wordlist->hash)))
+    (wordlist->hash (build-path inp))]
 
+   [(? path? inp)
+    (fprintf (current-error-port) "Reading dictionary ~s ... " inp)
 
+    (let ((dict (call-with-input-file inp wordlist->hash)))
 
       (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
                (length (apply append (map cdr (hash-map dict cons))))
                (hash-count dict))
       dict)]
+
    [(? input-port? inp)
-    (fprintf (current-error-port) "Reading dictionary ~s ... " inp)
-    (for/fold ([dict (make-hash)])
+    (for/fold ([dict (make-immutable-hash '())])
         ([word (in-lines inp)])
         (let ((word (string-downcase word)))
           (if (word-acceptable? word)
@@ -72,7 +75,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
     result)
 
   )
-
+
 (provide main)
 (define (main . args)
   (exit
@@ -93,4 +96,9 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
                (probe (assoc (bag "plonk" )
                              alist)))
           (check-equal? 2 (length alist))
-          (check-equal? probe (cons (bag "plonk") (list "plonk"))))))))))
+          (check-equal? probe (cons (bag "plonk") (list "plonk"))))))
+     (test-begin
+      (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
+        (printf "~s~%" d)
+        (check-equal? 2 (hash-count d)))))
+    )))

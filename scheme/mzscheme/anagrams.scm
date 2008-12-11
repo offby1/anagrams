@@ -6,7 +6,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
 #lang scheme
 
-(require "dict.scm"
+(require (except-in "dict.scm" main)
          (except-in "bag.scm" main)
          (lib "etc.ss"))
 
