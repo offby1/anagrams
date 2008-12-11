@@ -1,8 +1,8 @@
-(module bag
-  mzscheme
-  (require  (planet schematics/schemeunit:3)
-            (planet schematics/schemeunit:3/text-ui))
-  (provide bag subtract-bags bag-empty? bags=?)
+#lang scheme
+
+(require  (planet schematics/schemeunit:3)
+          (planet schematics/schemeunit:3/text-ui))
+(provide bag subtract-bags bag-empty? bags=?)
 
 (define primes #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101))
 
@@ -13,7 +13,7 @@
           (let ((index (- (char->integer (char-downcase c))
                           a-code)))
             (vector-ref primes index))
-        1))))
+          1))))
 
 (define (bag s)
   "Return an object that describes all the letters in S, without
@@ -22,15 +22,15 @@ regard to order."
              (product 1))
     (if (zero? chars-to-examine)
         product
-      (loop (- chars-to-examine 1)
-            (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
+        (loop (- chars-to-examine 1)
+              (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
 
 (define (subtract-bags b1 b2)
-  (if (bag-empty? b2)
-      (error "Hey!  Don't subtract the empty bag."))
+  (when (bag-empty? b2)
+    (error "Hey!  Don't subtract the empty bag."))
   (let ((quotient (/ b1 b2)))
     (and (integer? quotient)
-          quotient)))
+         quotient)))
 
 (define (bag-empty? b)
   (= 1  b))
@@ -50,19 +50,19 @@ regard to order."
 (check-not-false (bag-empty? (bag "")))
 (check-not-false (not (bag-empty? (bag "a"))))
 (check-not-false (bags=? (bag "abc")
-                (bag "cba")))
+                         (bag "cba")))
 
 (check-not-false (not (bags=? (bag "abc")
-                     (bag "bc"))))
+                              (bag "bc"))))
 
 (check-not-false (bags=? (bag "a")
-                (subtract-bags (bag "ab")
-                               (bag "b"))))
+                         (subtract-bags (bag "ab")
+                                        (bag "b"))))
 
 (check-not-false (not (subtract-bags (bag "a")
-                            (bag "b"))))
+                                     (bag "b"))))
 (check-not-false (not (subtract-bags (bag "a")
-                            (bag "aa"))))
+                                     (bag "aa"))))
 
 (let ((empty-bag (subtract-bags (bag "a")
                                 (bag "a"))))
@@ -70,4 +70,3 @@ regard to order."
   (check-not-false empty-bag))
 
 (fprintf (current-error-port) (format "bag tests passed.~%"))
-)
