@@ -5,7 +5,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 |#
 #lang scheme
 
-(require  (planet schematics/schemeunit:3)
+(require  (planet schematics/schemeunit:3/main)
           (planet schematics/schemeunit:3/text-ui))
 (provide bag subtract-bags bag-empty? bags=?)
 
