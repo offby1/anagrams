@@ -1,3 +1,8 @@
+#! /bin/sh
+#| Hey Emacs, this is -*-scheme-*- code!
+#$Id: v4-script-template.ss 5748 2008-11-17 01:57:34Z erich $
+exec  mzscheme --require "$0" --main -- ${1+"$@"}
+|#
 #lang scheme
 
 (require  (planet schematics/schemeunit:3)
@@ -37,36 +42,38 @@ regard to order."
 
 (define bags=? =)
 
-;;; unit tests
+(provide main)
+(define (main . args)
+  (exit
+   (run-tests
+    (test-suite
+     "the one and only suite"
+     ;; Notes about bags in general:
 
-;; Notes about bags in general:
+     ;; creating a bag from a string needn't be all that fast, since we'll
+     ;; probably only do it a few thousand times per application (namely,
+     ;; reading a dictionary of words), whereas subtracting bags needs to
+     ;; be *really* fast, since I suspect we do this O(n!) times where n is
+     ;; the length of the string being anagrammed.
 
-;; creating a bag from a string needn't be all that fast, since we'll
-;; probably only do it a few thousand times per application (namely,
-;; reading a dictionary of words), whereas subtracting bags needs to
-;; be *really* fast, since I suspect we do this O(n!) times where n is
-;; the length of the string being anagrammed.
-
-(check-not-false (bag-empty? (bag "")))
-(check-not-false (not (bag-empty? (bag "a"))))
-(check-not-false (bags=? (bag "abc")
+     (check-true (bag-empty? (bag "")))
+     (check-false (bag-empty? (bag "a")))
+     (check-true (bags=? (bag "abc")
                          (bag "cba")))
 
-(check-not-false (not (bags=? (bag "abc")
-                              (bag "bc"))))
+     (check-false (bags=? (bag "abc")
+                          (bag "bc")))
 
-(check-not-false (bags=? (bag "a")
+     (check-true (bags=? (bag "a")
                          (subtract-bags (bag "ab")
                                         (bag "b"))))
 
-(check-not-false (not (subtract-bags (bag "a")
-                                     (bag "b"))))
-(check-not-false (not (subtract-bags (bag "a")
-                                     (bag "aa"))))
+     (check-false (subtract-bags (bag "a")
+                                 (bag "b")))
+     (check-false (subtract-bags (bag "a")
+                                 (bag "aa")))
 
-(let ((empty-bag (subtract-bags (bag "a")
-                                (bag "a"))))
-  (check-not-false (bag-empty? empty-bag))
-  (check-not-false empty-bag))
-
-(fprintf (current-error-port) (format "bag tests passed.~%"))
+     (let ((empty-bag (subtract-bags (bag "a")
+                                     (bag "a"))))
+       (check-true (bag-empty? empty-bag))
+       (check-not-false empty-bag))))))
