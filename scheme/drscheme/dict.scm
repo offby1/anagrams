@@ -4,7 +4,6 @@
          "ports.scm"
          (lib "pretty.ss")
          (lib "process.ss")
-         (lib "mred.ss" "mred")
          srfi/13)
 (provide init *dictionary*)
 
