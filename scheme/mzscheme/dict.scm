@@ -7,7 +7,8 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 #lang scheme
 (require (except-in "bag.scm" main))
 (require (planet schematics/schemeunit:3)
-         (planet schematics/schemeunit:3/text-ui))
+         (planet schematics/schemeunit:3/text-ui)
+         srfi/26)
 
 (provide init)
 
@@ -37,12 +38,9 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
               dict)))]))
 
 (define (adjoin-word dict word)
-  (let ((bag (bag word)))
-
-    (hash-update dict bag
-                 (lambda (old)
-                            (cons word old))
-                 '())))
+  (hash-update dict (bag word)
+               (cut cons word <>)
+               '()))
 
 (define word-acceptable?
   (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
