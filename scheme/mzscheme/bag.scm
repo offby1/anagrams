@@ -18,7 +18,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
           (let ((index (- (char->integer (char-downcase c))
                           a-code)))
             (vector-ref primes index))
-        1))))
+          1))))
 
 (define (bag s)
   "Return an object that describes all the letters in S, without
@@ -27,13 +27,13 @@ regard to order."
              (product 1))
     (if (zero? chars-to-examine)
         product
-      (loop (- chars-to-examine 1)
-            (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
+        (loop (- chars-to-examine 1)
+              (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
 
 (define (subtract-bags b1 b2)
   (let ((quotient (/ b1 b2)))
     (and (integer? quotient)
-          quotient)))
+         quotient)))
 
 (define (bag-empty? b)
   (= 1  b))
@@ -87,4 +87,3 @@ regard to order."
 (provide main)
 (define (main . args)
   (exit (run-tests bag-tests)))
-

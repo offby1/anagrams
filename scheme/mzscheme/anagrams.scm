@@ -17,12 +17,9 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
     (all-anagrams-internal
      in-bag
      (init in-bag dict-file-name)
-     0
-     (lambda (x)
-       (display x)
-       (newline)))))
+     0)))
 
-(define (all-anagrams-internal bag dict level callback)
+(define (all-anagrams-internal bag dict level [callback #f])
 
   (let loop ((rv '())
              (dict dict))
@@ -70,15 +67,17 @@ list of anagrams, each of which begins with one of the WORDS."
                      words)))
 
 (provide main)
+(define (length-of-longest words)
+  (apply max (map string-length words)))
+
 (define (main . args)
-  (let ((in (car args)))
-    (fprintf (current-error-port)
-             "~a anagrams of ~s~%"
-             (length
-              (all-anagrams
-               in
-               (build-path (this-expression-source-directory) 'up 'up "words")
-               ))
-             in
-             )
-    (newline)))
+  (let* ((in (car args))
+         (results (all-anagrams
+                   in
+                   (build-path (this-expression-source-directory) 'up 'up "words")
+                   )))
+    (fprintf (current-error-port) "~a anagrams of ~s~%" (length results) in)
+    (for ([an (in-list (sort results > #:key length-of-longest))])
+      (display an)
+      (newline))))
+

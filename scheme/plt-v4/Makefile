@@ -10,3 +10,4 @@ check: $(COMPILED)
 .PHONY: clean
 clean:
 	-rm -rf compiled
+
