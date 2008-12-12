@@ -17,4 +17,5 @@ exec mzscheme -qr "$0" ${1+"$@"}
 (profiling-record-enabled #t)
 (profile-paths-enabled #t)
 (require "anagrams.scm")
+(apply main (vector->list (current-command-line-arguments)))
 (output-profile-results #t #t)

@@ -1,11 +1,14 @@
-#lang mzscheme
+#! /bin/sh
+#| Hey Emacs, this is -*-scheme-*- code!
+#$Id: v4-script-template.ss 5748 2008-11-17 01:57:34Z erich $
+exec  mzscheme --require "$0" --main -- ${1+"$@"}
+|#
 
-(require
- (planet "test.ss"     ("schematics" "schemeunit.plt" 2))
- (planet "text-ui.ss"  ("schematics" "schemeunit.plt" 2))
- (planet "util.ss"     ("schematics" "schemeunit.plt" 2)))
+#lang scheme
+(require (planet schematics/schemeunit:3)
+         (planet schematics/schemeunit:3/text-ui))
+
 (provide bag subtract-bags bag-empty? bags=?)
-
 (define primes #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101))
 
 (define char->factor
@@ -47,36 +50,40 @@ regard to order."
 ;; be *really* fast, since I suspect we do this O(n!) times where n is
 ;; the length of the string being anagrammed.
 
-(test/text-ui
- (test-suite
-  "The one and only suite"
-  (test-true  "sam" (bag-empty? (bag "")))
+(define bag-tests
 
-  (test-false "fred" (bag-empty? (bag "a")))
-  (test-true  "tim"  (bags=? (bag "abc")
-                             (bag "cba")))
+  (test-suite
+   "The one and only suite"
+   (test-true  "sam" (bag-empty? (bag "")))
 
-  (test-true  "harry" (bags=? (bag "X")
-                              (bag "x")))
-  (test-true  "mumble" (bags=? (bag "a!")
-                               (bag "a")))
-  (test-false  "frotz"  (bags=? (bag "abc")
-                                (bag "bc")))
+   (test-false "fred" (bag-empty? (bag "a")))
+   (test-true  "tim"  (bags=? (bag "abc")
+                              (bag "cba")))
 
-  (test-true  "zimbalist" (bags=? (bag "a")
-                                  (subtract-bags (bag "ab")
-                                                 (bag "b"))))
+   (test-true  "harry" (bags=? (bag "X")
+                               (bag "x")))
+   (test-true  "mumble" (bags=? (bag "a!")
+                                (bag "a")))
+   (test-false  "frotz"  (bags=? (bag "abc")
+                                 (bag "bc")))
 
-  (test-false  "ethel"  (subtract-bags (bag "a")
-                                       (bag "b")))
-  (test-false  "grunt"  (subtract-bags (bag "a")
-                                       (bag "aa")))
+   (test-true  "zimbalist" (bags=? (bag "a")
+                                   (subtract-bags (bag "ab")
+                                                  (bag "b"))))
 
-  (let ((empty-bag (subtract-bags (bag "a")
-                                  (bag "a"))))
-    0
-    (test-pred  "snork" bag-empty? empty-bag)
-    (test-false  "qquuzz" (not empty-bag))
-    )
+   (test-false  "ethel"  (subtract-bags (bag "a")
+                                        (bag "b")))
+   (test-false  "grunt"  (subtract-bags (bag "a")
+                                        (bag "aa")))
 
-  ))
+   (let ((empty-bag (subtract-bags (bag "a")
+                                   (bag "a"))))
+     0
+     (test-pred  "snork" bag-empty? empty-bag)
+     (test-false  "qquuzz" (not empty-bag))
+     )
+
+   ))
+(provide main)
+(define (main . args)
+  (exit (run-tests bag-tests)))

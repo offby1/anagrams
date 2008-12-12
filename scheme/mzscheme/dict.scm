@@ -1,40 +1,49 @@
+#! /bin/sh
+#| Hey Emacs, this is -*-scheme-*- code!
+#$Id: v4-script-template.ss 5748 2008-11-17 01:57:34Z erich $
+exec  mzscheme --require "$0" --main -- ${1+"$@"}
+|#
+
 #lang scheme
-(require "bag.scm")
+(require (except-in "bag.scm" main))
+(require (planet schematics/schemeunit:3)
+         (planet schematics/schemeunit:3/text-ui)
+         srfi/1
+         srfi/26)
 
 (provide init)
 
-(define (wordlist->hash fn)
-  (with-input-from-file fn
-    (lambda ()
-      (let ((dict (make-hash)))
-        (fprintf (current-error-port) "Reading dictionary ~s ... " fn)
-        (let loop ((words-read 0))
-          (let ((word (read-line)))
-            (when (not (eof-object? word))
-              (let ((word (string-downcase word)))
-                (when (word-acceptable? word)
-                  (adjoin-word! dict word))
-                (loop (+ 1 words-read))))))
-        (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
-                 (length (apply append (map cdr (hash-map dict cons))))
-                 (hash-count dict))
-        dict))))
+;; Takes either a file name, or an input port.  This makes testing easier.
+(define wordlist->hash
+  (match-lambda
 
-(define (adjoin-word! dict word)
-  (let ((bag (bag word)))
+   [(? string? inp)
+    (wordlist->hash (build-path inp))]
 
-    (define (! thing)
-      (hash-set! dict bag thing))
+   [(? path? inp)
+    (fprintf (current-error-port) "Reading dictionary ~s ... " inp)
 
-    (let ((probe (hash-ref
-                  dict
-                  bag
-                  (lambda ()
-                    (let ((new (list word)))
-                      (! new)
-                      new)))))
-      (when (not (member word probe))
-        (! (cons word probe))))))
+    (let ((dict (call-with-input-file inp wordlist->hash)))
+
+      (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
+               (length (apply append (map cdr (hash-map dict cons))))
+               (hash-count dict))
+      dict)]
+
+   [(? input-port? inp)
+    (for/fold ([dict (make-immutable-hash '())])
+        ([word (in-lines inp)])
+        (let ((word (string-downcase word)))
+          (if (word-acceptable? word)
+              (adjoin-word dict word)
+              dict)))]))
+
+(define (adjoin-word dict word)
+  (hash-update
+   dict
+   (bag word)
+   (cut lset-adjoin equal? <> word)
+   '()))
 
 (define word-acceptable?
   (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
@@ -67,3 +76,30 @@
     result)
 
   )
+
+(provide main)
+(define (main . args)
+  (exit
+   (run-tests
+    (test-suite
+     "yow"
+     (test-begin
+      (let ((d (adjoin-word (make-immutable-hash '()) "frotz")))
+        (let ((alist (hash-map d cons)))
+          (check-equal? alist (list (cons  (bag "frotz")
+                                           (list "frotz")))))
+        (let ((alist (hash-map (adjoin-word d "zortf") cons)))
+          (check-equal? (caar alist) (bag "frotz"))
+          (check-not-false (member "zortf" (cdar alist)))
+          (check-not-false (member "frotz" (cdar alist))))
+
+        (let* ((alist (hash-map (adjoin-word d "plonk") cons))
+               (probe (assoc (bag "plonk" )
+                             alist)))
+          (check-equal? 2 (length alist))
+          (check-equal? probe (cons (bag "plonk") (list "plonk"))))))
+     (test-begin
+      (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
+        (printf "~s~%" d)
+        (check-equal? 2 (hash-count d)))))
+    )))
