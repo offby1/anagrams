@@ -8,6 +8,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 (require (except-in "bag.scm" main))
 (require (planet schematics/schemeunit:3)
          (planet schematics/schemeunit:3/text-ui)
+         srfi/1
          srfi/26)
 
 (provide init)
@@ -39,7 +40,8 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
 (define (adjoin-word dict word)
   (hash-update dict (bag word)
-               (cut cons word <>)
+               (lambda (words)
+                 (lset-adjoin equal? words word))
                '()))
 
 (define word-acceptable?
