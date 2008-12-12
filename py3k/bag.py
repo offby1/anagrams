@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.0
 
 import string
 import sys
@@ -8,7 +8,7 @@ def bag_empty (b):
     return b == 1
 
 def bag (str):
-    str = string.lower (str)
+    str = str.lower ()
     primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
     rv = 1
 

@@ -1,17 +1,18 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3.0
 
 from bag import bag, bag_empty, bags_equal, subtract_bags
 from dict import snarf_dictionary
 from optparse import OptionParser
+import os
 from types import *
 import sys
 
 try:
     import psyco
     psyco.full()
-    print >> sys.stderr, "Psyco loaded OK"
-except ImportError, e:
-    print >> sys.stderr, "Psyco didn't load:", e
+    print( "Psyco loaded OK", file=sys.stderr)
+except ImportError as e:
+    print( "Psyco didn't load:", e, file=sys.stderr)
 
 try:
     import profile
@@ -63,7 +64,7 @@ if __name__ == "__main__":
                       action="store",
                       type="string",
                       dest="dict_fn",
-                      default="/usr/share/dict/words",
+                      default=os.path.join(os.path.dirname(__file__), "../words.utf8"),
                       metavar="FILE",
                       help="location of word list")
 
@@ -76,7 +77,7 @@ if __name__ == "__main__":
     dict_hash_table = snarf_dictionary (options.dict_fn)
 
     the_phrase = bag (args[0])
-    print >> sys.stderr, "Pruning dictionary.  Before:", len (dict_hash_table.keys ()), "bags ...",
+    print( "Pruning dictionary.  Before:", len (dict_hash_table.keys ()), "bags ...", file=sys.stderr)
 
     # Now convert the hash table to a list, longest entries first.  (This
     # isn't necessary, but it makes the more interesting anagrams appear
@@ -90,21 +91,9 @@ if __name__ == "__main__":
                      for k in dict_hash_table.keys ()
                      if (subtract_bags (the_phrase, k))]
 
-    # Note that sorting entries "alphabetically" only makes partial sense,
-    # since each entry is (at least potentially) more than one word (all
-    # the words in an entry are anagrams of each other).
-    def biggest_first_then_alphabetically (a, b):
-        a = a[1][0]
-        b = b[1][0]
-        result = cmp (len (b), len (a))
-        if (not result):
-            result = cmp (a, b)
-        return result
+    the_dict_list.sort (key=len)
 
-    the_dict_list.sort (biggest_first_then_alphabetically)
-
-
-    print >> sys.stderr, "Pruned dictionary.  After:", len (the_dict_list), "bags."
+    print ("Pruned dictionary.  After:", len (the_dict_list), "bags.", file=sys.stderr)
     if "profile" in globals():
         profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
     if "psyco" in globals():
@@ -112,7 +101,7 @@ if __name__ == "__main__":
     else:
         if "profile" in globals():
             profile.run("result = anagrams (the_phrase, the_dict_list)")
-        print >> sys.stderr, len(result), "anagrams of", sys.argv[1], ":"
+        print (len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
 
     for a in result:
         sys.stdout.write ("(")
@@ -121,4 +110,4 @@ if __name__ == "__main__":
                 sys.stdout.write (" ")
             sys.stdout.write  (w)
         sys.stdout.write (")")
-        print
+        sys.stdout.write("\n")

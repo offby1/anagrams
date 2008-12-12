@@ -1,8 +1,13 @@
-# Note that precompilation doesn't make a noticeable difference in
-# speed.  But hey, it's fun.
-compiled: $(wildcard *.ss)
-	mzc anagrams.ss
+COMPILED=$(patsubst %.ss,compiled/%_ss.zo,$(wildcard *.ss))
+
+compiled/%_ss.zo: %.ss
+	mzc $?
 
 .PHONY: check
-check: compiled
+check: $(COMPILED)
 	time mzscheme anagrams.ss "Ernest Hemingway" > /dev/null
+
+.PHONY: clean
+clean:
+	-rm -rf compiled
+
