@@ -39,10 +39,11 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
               dict)))]))
 
 (define (adjoin-word dict word)
-  (hash-update dict (bag word)
-               (lambda (words)
-                 (lset-adjoin equal? words word))
-               '()))
+  (hash-update
+   dict
+   (bag word)
+   (cut lset-adjoin equal? <> word)
+   '()))
 
 (define word-acceptable?
   (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
