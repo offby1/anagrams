@@ -31,19 +31,20 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
       dict)]
 
    [(? input-port? inp)
-    (for/fold ([dict (make-immutable-hash '())])
+    (for/fold ([dict (make-hash)])
         ([word (in-lines inp)])
         (let ((word (string-downcase word)))
           (if (word-acceptable? word)
-              (adjoin-word dict word)
+              (adjoin-word! dict word)
               dict)))]))
 
-(define (adjoin-word dict word)
-  (hash-update
+(define (adjoin-word! dict word)
+  (hash-update!
    dict
    (bag word)
    (cut lset-adjoin equal? <> word)
-   '()))
+   '())
+  dict)
 
 (define word-acceptable?
   (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
@@ -84,16 +85,16 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
     (test-suite
      "yow"
      (test-begin
-      (let ((d (adjoin-word (make-immutable-hash '()) "frotz")))
+      (let ((d (adjoin-word! (make-hash) "frotz")))
         (let ((alist (hash-map d cons)))
           (check-equal? alist (list (cons  (bag "frotz")
                                            (list "frotz")))))
-        (let ((alist (hash-map (adjoin-word d "zortf") cons)))
+        (let ((alist (hash-map (adjoin-word! d "zortf") cons)))
           (check-equal? (caar alist) (bag "frotz"))
           (check-not-false (member "zortf" (cdar alist)))
           (check-not-false (member "frotz" (cdar alist))))
 
-        (let* ((alist (hash-map (adjoin-word d "plonk") cons))
+        (let* ((alist (hash-map (adjoin-word! d "plonk") cons))
                (probe (assoc (bag "plonk" )
                              alist)))
           (check-equal? 2 (length alist))
