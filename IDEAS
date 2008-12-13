@@ -1,4 +1,4 @@
--*- outline -*-
+-*- org -*-
 
 A grab bag of ideas that are applicable to all the implementations,
 but probably appear only in some.
@@ -41,10 +41,15 @@ bad.
 ** tcl !
 
 * Apply the pruning optimization that I did in r2173 to other implementations.
-
+* Apply the sorting optimization that I did in 8f9c80574c55933440e972d7c6af21859aa7c06b to other implementations.
 * Factor out common Scheme code.
 
 This is probably much harder than it should be, because I really mean
 "write one program which will work in all the scheme implementations".
 Writing portable Scheme is hard (and, as I repeatedly proclaim on IRC,
 not worth the effort).  Let's go shopping.
+
+** Maybe just combine the DrScheme and MzScheme versions
+
+They're practically the same, except the former draws stuff in a
+window, whereas the latter just returns a list of stuff.
