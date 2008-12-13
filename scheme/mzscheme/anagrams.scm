@@ -77,7 +77,13 @@ list of anagrams, each of which begins with one of the WORDS."
                    (build-path (this-expression-source-directory) 'up 'up "words")
                    )))
     (fprintf (current-error-port) "~a anagrams of ~s~%" (length results) in)
-    (for ([an (in-list (sort results > #:key length-of-longest))])
-      (display an)
-      (newline))))
+
+    ;; disabled for the time being, since it takes a fair amount of
+    ;; time, but I'm only interested in measuring the time taken by
+    ;; the main computation above
+
+;;;     (for ([an (in-list (sort results > #:key length-of-longest))])
+;;;       (display an)
+;;;       (newline))
+    ))
 

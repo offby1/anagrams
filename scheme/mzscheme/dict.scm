@@ -73,9 +73,13 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
      (apply + (map (lambda (seq)
                      (length (cdr seq)))
                    result)))
-    result)
 
-  )
+    ;; I never knew this before December 2008, but sorting the result
+    ;; makes the algorithm go a _lot_ faster.  Matthew Flatt pointed
+    ;; that out --
+    ;; http://groups.google.com/group/plt-scheme/msg/69df9547af5dc679
+    (sort result > #:key car)))
+
 
 (provide main)
 (define (main . args)
