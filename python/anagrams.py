@@ -4,6 +4,7 @@ from bag import bag, bag_empty, bags_equal, subtract_bags
 from dict import snarf_dictionary
 from optparse import OptionParser
 from types import *
+import os
 import profile
 import sys
 
@@ -59,7 +60,8 @@ if __name__ == "__main__":
                       action="store",
                       type="string",
                       dest="dict_fn",
-                      default="/usr/share/dict/words",
+                      default=os.path.join(os.path.dirname(__file__),
+                                           "../words.utf8"),
                       metavar="FILE",
                       help="location of word list")
 
