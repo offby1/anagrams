@@ -46,7 +46,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
    '()))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
+  (let ((has-vowel-regexp (regexp "[aeiouyAEIOUY]"))
         (has-non-letter-regexp (regexp "[^a-zA-Z]")))
     (lambda (word)
       (let ((l (string-length word)))
@@ -105,5 +105,11 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
      (test-begin
       (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
         (printf "~s~%" d)
-        (check-equal? 2 (hash-count d)))))
+        (check-equal? 2 (hash-count d)))
+      (let ((d (wordlist->hash (open-input-string "see\nshy\nJo\n"))))
+        (printf "~s~%" d)
+        (test-not-false "see" (hash-ref d (bag "see")))
+        (test-not-false "shy" (hash-ref d (bag "shy")))
+        (test-not-false "jo"  (hash-ref d (bag "jo")))
+        )))
     )))
