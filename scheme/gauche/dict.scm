@@ -6,7 +6,7 @@
 (select-module dict)
 
 (define word-acceptable?
-  (let ((has-vowel-regexp #/[aeiou]/i)
+  (let ((has-vowel-regexp #/[aeiouy]/i)
         (has-non-letter-regexp #/[^a-z]/i))
     (lambda (word)
       (let ((l (string-length word)))

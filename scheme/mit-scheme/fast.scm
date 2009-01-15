@@ -39,7 +39,7 @@
 (define char-set:anagram
   (char-set-union (string->char-set "abcdefghijklmnopqrstuvwxyz")
                   (string->char-set "ABCDEFGHIJKLMNOPQRSTUVWXYZ")))
-(define char-set:vowels (string->char-set "aeiouAEIOU"))
+(define char-set:vowels (string->char-set "aeiouyAEIOUY"))
 (define char-set:others (char-set-invert char-set:anagram))
 
 ;;; Dictionary

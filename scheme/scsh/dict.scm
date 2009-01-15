@@ -1,7 +1,7 @@
 (define *the-dictionary* (make-integer-table))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (make-regexp "[aeiouAEIOU]"))
+  (let ((has-vowel-regexp (make-regexp "[aeiouyAEIOUY]"))
         (has-non-letter-regexp (make-regexp "[^a-zA-Z]")))
     (lambda (word)
       (and

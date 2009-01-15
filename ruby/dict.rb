@@ -17,7 +17,7 @@ def Read(fn)
       the_dict = {}
       printf "Snarfing #{fn} ..."
       $stdout.flush
-      has_a_vowel_re = /[aeiou]/
+      has_a_vowel_re = /[aeiouy]/
       long_enough_re = /^(..|i|a)/
       has_a_non_letter_re = /[^a-z]/
       aFile.each_line do |aLine|

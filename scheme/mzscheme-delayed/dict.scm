@@ -40,7 +40,7 @@ mzscheme
           (! (cons word probe))))))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
+  (let ((has-vowel-regexp (regexp "[aeiouyAEIOUY]"))
         (has-non-letter-regexp (regexp "[^a-zA-Z]")))
     (lambda (word)
       (let ((l (string-length word)))
