@@ -22,7 +22,7 @@ def bags_equal (s1, s2):
     return s1 == s2
 
 def subtract_bags (b1, b2):
-    quotient  = b1 / b2
+    quotient  = b1 // b2
     remainder = b1 % b2
     if (0 == remainder):
         return quotient
