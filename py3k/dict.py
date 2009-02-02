@@ -9,7 +9,7 @@ import os
 from stat import *
 from bag import bag, bag_empty, bags_equal, subtract_bags
 
-has_a_vowel_re = re.compile (r'[aeiou]')
+has_a_vowel_re = re.compile (r'[aeiouy]')
 long_enough_re = re.compile (r'^i$|^a$|^..')
 non_letter_re = re.compile (r'[^a-zA-Z]')
 

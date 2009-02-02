@@ -4,7 +4,7 @@
   )
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (pregexp "[aeiou]"))
+  (let ((has-vowel-regexp (pregexp "[aeiouy]"))
         (has-non-ASCII-regexp (pregexp "[^a-z]")))
     (lambda (word)
       (let ((l (string-length word)))

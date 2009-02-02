@@ -3,10 +3,6 @@
 A grab bag of ideas that are applicable to all the implementations,
 but probably appear only in some.
 
-* Treat 'y' as a vowel!!
-
-That way we don't omit "dry", "my", "cry" ...
-
 * Don't list all anagrams -- use "delay"
 
 Rather than listing all the anagrams, instead just list the words that

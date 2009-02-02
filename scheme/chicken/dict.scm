@@ -9,7 +9,7 @@
 (require-extension srfi-1)
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (regexp "[aeiou]" #t))
+  (let ((has-vowel-regexp (regexp "[aeiouy]" #t))
         (has-non-ASCII-regexp (regexp "[^a-zA-Z]" #t)))
     (lambda (word)
       (let ((l (string-length word)))

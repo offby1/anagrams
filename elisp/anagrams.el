@@ -136,7 +136,7 @@
 
 ;; dictionary stuff
 (defun anagrams-word-acceptable (w)
-  (and (string-match "[aeiou]" w)
+  (and (string-match "[aeiouy]" w)
        (not (string-match "[^a-z]" w))
        (or (equal w "i")
            (equal w "a")

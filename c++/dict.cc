@@ -49,7 +49,7 @@ typedef std::map<bag, wordlist> hash_t;
 void
 init (const bag &filter)
 {
-  assert (!regcomp (&has_a_vowel       , "[aeiou]"     , REG_EXTENDED | REG_NOSUB));
+  assert (!regcomp (&has_a_vowel       , "[aeiouy]"    , REG_EXTENDED | REG_NOSUB));
   assert (!regcomp (&is_long_enough    , "^(i|a)$|^.." , REG_EXTENDED | REG_NOSUB));
   assert (!regcomp (&contains_non_ascii, "[^[:alpha:]]", REG_EXTENDED | REG_NOSUB));
 

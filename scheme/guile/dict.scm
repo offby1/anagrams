@@ -44,7 +44,7 @@
      )))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp     (make-regexp "[aeiou]" regexp/icase))
+  (let ((has-vowel-regexp     (make-regexp "[aeiouy]" regexp/icase))
         (has-non-ASCII-regexp (make-regexp "[^a-z]"  regexp/icase )))
     (lambda (word)
       (let ((l (string-length word)))

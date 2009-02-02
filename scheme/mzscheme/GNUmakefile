@@ -14,6 +14,6 @@ TAGS: $(wildcard *.scm)
 	-etags.ss $^
 
 clean:
-	rm -f TAGS anagrams profile
+	rm -rf TAGS anagrams profile compiled
 
 .PHONY: check clean tags

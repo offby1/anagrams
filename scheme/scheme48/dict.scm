@@ -9,7 +9,7 @@
       (list->string (reverse chars)))))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (set "aeiouAEIOU"))
+  (let ((has-vowel-regexp (set "aeiouyAEIOU"))
         (has-non-ASCII-regexp (negate (ascii-ranges #\a #\z #\A #\Z))))
     (lambda (word)
       (let ((l (string-length word)))

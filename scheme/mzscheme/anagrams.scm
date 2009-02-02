@@ -82,8 +82,8 @@ list of anagrams, each of which begins with one of the WORDS."
     ;; time, but I'm only interested in measuring the time taken by
     ;; the main computation above
 
-;;;     (for ([an (in-list (sort results > #:key length-of-longest))])
-;;;       (display an)
-;;;       (newline))
+    (for ([an (in-list (sort results > #:key length-of-longest))])
+      (display an)
+      (newline))
     ))
 

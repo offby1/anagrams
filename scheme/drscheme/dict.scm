@@ -42,7 +42,7 @@
      )))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (regexp "[aeiouAEIOU]"))
+  (let ((has-vowel-regexp (regexp "[aeiouyAEIOUY]"))
         (has-non-ASCII-regexp (regexp "[^a-zA-Z]"   )))
     (lambda (word)
       (let ((l (string-length word)))

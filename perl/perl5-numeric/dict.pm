@@ -42,7 +42,7 @@ sub init {
                      (m(^a$))
                      ||
                      (m(^..)));
-        next unless (m([aeiou]));
+        next unless (m([aeiouy]));
 
         my $entry = $dict_hash->{"$b"};
 

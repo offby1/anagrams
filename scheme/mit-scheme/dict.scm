@@ -1,7 +1,7 @@
 (load-option 'regular-expression)
 (load-option 'rb-tree)
 (define word-acceptable?
-  (let ((has-vowel-regexp (rexp-compile (rexp-case-fold (string->char-set "aeiou"))))
+  (let ((has-vowel-regexp (rexp-compile (rexp-case-fold (string->char-set "aeiouy"))))
         (has-non-letter-regexp (rexp-compile (char-set-invert
                                               (char-set-union
                                                (ascii-range->char-set (char->ascii #\A) (+ 1 (char->ascii #\Z)))

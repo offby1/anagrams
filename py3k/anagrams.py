@@ -96,12 +96,13 @@ if __name__ == "__main__":
     print ("Pruned dictionary.  After:", len (the_dict_list), "bags.", file=sys.stderr)
     if "profile" in globals():
         profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
-    if "psyco" in globals():
-        result = anagrams (the_phrase, the_dict_list)
+
+    if "profile" in globals():
+        profile.run("result = anagrams (the_phrase, the_dict_list)")
     else:
-        if "profile" in globals():
-            profile.run("result = anagrams (the_phrase, the_dict_list)")
-        print (len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
+        result = anagrams (the_phrase, the_dict_list)
+
+    print (len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
 
     for a in result:
         sys.stdout.write ("(")

@@ -35,7 +35,7 @@ from_strings (line:lines) =
 
 isVowel :: Char -> Bool
 isVowel c = 
-        any (\v -> v == c) "aeiou" 
+        any (\v -> v == c) "aeiouy" 
 
 hasVowel :: String -> Bool
 hasVowel s =
