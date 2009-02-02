@@ -7,6 +7,8 @@ import unittest
 def bag_empty (b):
     return b == 1
 
+max_ulong_long = 2L**64 - 1
+
 def bag (str):
     str = string.lower (str)
     primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
@@ -16,6 +18,9 @@ def bag (str):
         if (c >= 'a') and (c <= 'z'):
             rv *= primes [ord (c) - ord ('a')]
 
+    if rv > max_ulong_long:
+        raise Exception("Uh oh -- %s turns into %d, which is bigger than %d" %
+                        (str, rv, max_ulong_long))
     return rv
 
 def bags_equal (s1, s2):
