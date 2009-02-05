@@ -1,3 +1,4 @@
+# Note: jython 2.5 works too, although it's quite slow.
 PYTHON := python
 
 .PHONY: check
