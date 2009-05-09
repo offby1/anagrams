@@ -5,7 +5,6 @@
 (declare (uses bag))
 
 (require-extension regex)
-(require-extension numbers)
 (require-extension srfi-1)
 
 (define word-acceptable?

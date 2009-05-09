@@ -1,9 +1,6 @@
 srcs := anagrams.scm dict.scm bag.scm
 objs := $(srcs:.scm=.o)
 
-CFLAGS := $(shell chicken-config -cflags)
-LDFLAGS:= $(shell chicken-config -libs)
-
 # The -profile option seems to slow it waaay down, at least with build
 # 315
 
