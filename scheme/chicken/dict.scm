@@ -15,10 +15,10 @@
         (and (not (zero? l))
 
              ;; it's gotta have a vowel.
-             (string-match has-vowel-regexp word)
+             (string-search has-vowel-regexp word)
 
              ;; it's gotta be all ASCII, all the time.
-             (not (string-match has-non-ASCII-regexp word))
+             (not (string-search has-non-ASCII-regexp word))
 
              ;; it's gotta be two letters long, unless it's `i' or `a'.
              (or (string=? "i" word)

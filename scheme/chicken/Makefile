@@ -8,17 +8,17 @@ objs := $(srcs:.scm=.o)
 anagrams: $(srcs)
 	csc -disable-interrupts -lambda-lift -O3 $^
 
-words: /usr/share/dict/words
+words: $(realpath $(CURDIR)/../../words)
 	ln -sv $^ $@
 #head -10 $^  > $@
 
 check: anagrams words
-	time ./$< "Ernest Hemingway" > /dev/null && if [ -f PROFILE ]; then chicken-profile; fi
+	time ./$< "Ernest Hemingway" > "Ernest Hemingway" && if [ -f PROFILE ]; then chicken-profile; fi
 
 clean:
 	rm -f $(objs) $(srcs:.scm=.c) anagrams PROFILE words
 
 realclean: clean
-	rm -f cached-dictionary.scm
+	rm -f cached-dictionary
 
 .PHONY: clean check realclean

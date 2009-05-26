@@ -51,5 +51,8 @@ list of anagrams, each of which begins with one of the WORDS."
       (newline (current-error-port))
       result)))
 
-(display (anagrams (car (command-line-arguments))))
-(newline)
+(for-each 
+ (lambda (an)
+   (display an)
+   (newline))
+ (anagrams (car (command-line-arguments))))
