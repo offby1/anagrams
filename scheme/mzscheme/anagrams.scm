@@ -67,8 +67,6 @@ list of anagrams, each of which begins with one of the WORDS."
                      words)))
 
 (provide main)
-(define (length-of-longest words)
-  (apply max (map string-length words)))
 
 (define (main . args)
   (let* ((in (car args))
@@ -82,8 +80,7 @@ list of anagrams, each of which begins with one of the WORDS."
     ;; time, but I'm only interested in measuring the time taken by
     ;; the main computation above
 
-    (for ([an (in-list (sort results > #:key length-of-longest))])
+    (for ([an (in-list (sort results > #:key length))])
       (display an)
       (newline))
     ))
-
