@@ -13,23 +13,22 @@
 
 (define (wordlist->hash)
   (with-input-from-file
-      "/usr/share/dict/words"
+      "../../words"
     (lambda ()
       (let ((dict (make-hash-table 10000)))
         (format (current-error-port) "Reading dictionary ... ") (force-output)
         (let loop ((word  (read-delimited "\n")))
           (if (eof-object? word)
-              (let ((sum 0))
-                (hash-fold (lambda (key value prior-result)
-                             (set! sum (+ sum (length value)))
-                             ) 0 dict)
-                (format (current-error-port) "done; ~a words~%"
-                        sum))
-            (begin
-              (if (word-acceptable? word)
-                  (adjoin-word dict (string-downcase word)))
-              (loop (read-delimited "\n")))
-            ))
+              (format (current-error-port) "done; ~a words~%"
+                      (hash-fold (lambda (key value prior-result)
+                                   (+ prior-result (length value)))
+                                 0
+                                 dict))
+              (begin
+                (if (word-acceptable? word)
+                    (adjoin-word dict (string-downcase word)))
+                (loop (read-delimited "\n")))
+              ))
         dict)
       )))
 
