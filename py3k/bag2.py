@@ -1,33 +1,57 @@
 #!/usr/bin/env python3.0
 
+import collections
 import string
 import sys
 import unittest
 
-def bag_empty (b):
-    return b == 1
+class bag(object):
+    """
+    Just like collections.defaultdict(int), except hashable.
+    """
+    def __init__(self, str):
+        str = str.lower ()
 
-def bag (str):
-    str = str.lower ()
-    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
-    rv = 1
+        self.dict = collections.defaultdict(int)
 
-    for c in str:
-        if (c >= 'a') and (c <= 'z'):
-            rv *= primes [ord (c) - ord ('a')]
+        for c in str:
+            if (c >= 'a') and (c <= 'z'):
+                self.dict[c] += 1
 
-    return rv
+    def __str__(self):
+        return str(self.dict)
 
-def bags_equal (s1, s2):
-    return s1 == s2
+    def empty (self):
+        return len(self.dict) == 0
 
-def subtract_bags (b1, b2):
-    quotient  = b1 // b2
-    remainder = b1 % b2
-    if (0 == remainder):
-        return quotient
-    else:
-        return 0
+    def __hash__(self):
+        # Probably grossly inefficient
+        return self.__str__().__hash__()
+    def __eq__ (self, other):
+        rv = (self.dict == other.dict)
+        return rv
+
+    def subtract (self, subtrahend):
+        new = self.dict.copy()
+        for letter in subtrahend.dict.keys():
+            if letter not in self.dict:
+                return False
+            new[letter] -= subtrahend.dict[letter]
+            if new[letter] < 0:
+                return False
+            # garbage collection! :)
+            elif new[letter] == 0:
+                del new[letter]
+        rv = bag('')
+        rv.dict = new
+        return rv
+
+def bag_empty(b):
+    return b.empty()
+def bags_equal(b1, b2):
+    return b1.equal(b2)
+def subtract_bags(b1, b2):
+    return b1.subtract(b2)
 
 class WhatchaMaDingy (unittest.TestCase):
     def __init__ (self, methodName='runTest'):
