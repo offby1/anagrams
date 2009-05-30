@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.0
+#!/usr/bin/env python3.1
 
 import collections
 import itertools
@@ -12,14 +12,8 @@ class bag(object):
     """
     def __init__(self, input):
         if isinstance(input, str):
-            input = input.lower ()
-
-            self.dict = collections.defaultdict(int)
-
-            for c in input:
-                if (c >= 'a') and (c <= 'z'):
-                    self.dict[c] += 1
-        elif isinstance(input, collections.defaultdict):
+            self.dict = collections.Counter([c for c in input.lower() if c.isalpha()])
+        elif isinstance(input, collections.Counter):
             self.dict = input
 
     def __str__(self):
@@ -39,7 +33,7 @@ class bag(object):
         return self.__eq__(other)
 
     def subtract (self, subtrahend):
-        new = collections.defaultdict(int)
+        new = collections.Counter()
         #print("{0} minus {1} ... ".format(self, subtrahend), end='')
         for letter in set(itertools.chain(self.dict.keys(),subtrahend.dict.keys())):
             diff = self.dict[letter] - subtrahend.dict[letter]
@@ -74,19 +68,19 @@ class WhatchaMaDingy (unittest.TestCase):
         self.assert_ (not (bag_empty (bag ("a"))))
 
         self.assert_ (bags_equal (bag ("abc"),
-                            bag ("cba")))
+                                  bag ("cba")))
 
         self.assert_ (not (bags_equal (bag ("abc"),
-                                 bag ("bc"))))
+                                       bag ("bc"))))
 
         self.assert_ (bags_equal (bag ("a"),
-                              subtract_bags (bag("ab"),
-                                             bag ("b"))))
+                                  subtract_bags (bag("ab"),
+                                                 bag ("b"))))
         self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("b"))))
+                                          bag ("b"))))
 
         self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("aa"))))
+                                          bag ("aa"))))
 
         silly_long_string = "When first I was a wee, wee lad\n\
         Eating on my horse\n\
@@ -99,11 +93,11 @@ class WhatchaMaDingy (unittest.TestCase):
 
         ever_so_slightly_longer_string = silly_long_string + "x"
         self.assert_ (bags_equal (bag ("x"),
-                            subtract_bags (bag (ever_so_slightly_longer_string),
-                                           bag (silly_long_string))))
+                                  subtract_bags (bag (ever_so_slightly_longer_string),
+                                                 bag (silly_long_string))))
 
         self.assert_ (bags_equal (bag ("abc"),
-                            bag ("ABC")))
+                                  bag ("ABC")))
 
         self.done = True;
 
