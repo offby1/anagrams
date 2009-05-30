@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.0
 
 import collections
+import itertools
 import string
 import sys
 import unittest
@@ -9,14 +10,17 @@ class bag(object):
     """
     Just like collections.defaultdict(int), except hashable.
     """
-    def __init__(self, str):
-        str = str.lower ()
+    def __init__(self, input):
+        if isinstance(input, str):
+            input = input.lower ()
 
-        self.dict = collections.defaultdict(int)
+            self.dict = collections.defaultdict(int)
 
-        for c in str:
-            if (c >= 'a') and (c <= 'z'):
-                self.dict[c] += 1
+            for c in input:
+                if (c >= 'a') and (c <= 'z'):
+                    self.dict[c] += 1
+        elif isinstance(input, collections.defaultdict):
+            self.dict = input
 
     def __str__(self):
         return str(self.dict)
@@ -31,25 +35,31 @@ class bag(object):
         rv = (self.dict == other.dict)
         return rv
 
+    def equal(self, other):
+        return self.__eq__(other)
+
     def subtract (self, subtrahend):
-        new = self.dict.copy()
-        for letter in subtrahend.dict.keys():
-            if letter not in self.dict:
+        new = collections.defaultdict(int)
+        #print("{0} minus {1} ... ".format(self, subtrahend), end='')
+        for letter in set(itertools.chain(self.dict.keys(),subtrahend.dict.keys())):
+            diff = self.dict[letter] - subtrahend.dict[letter]
+            if diff < 0:
+                #print("bzzt")
                 return False
-            new[letter] -= subtrahend.dict[letter]
-            if new[letter] < 0:
-                return False
-            # garbage collection! :)
-            elif new[letter] == 0:
-                del new[letter]
-        rv = bag('')
-        rv.dict = new
+            elif diff > 0:
+                new[letter] = diff
+
+        rv = bag(new)
+        #print(rv)
         return rv
 
 def bag_empty(b):
     return b.empty()
 def bags_equal(b1, b2):
-    return b1.equal(b2)
+    #print("{0} == {1} => ".format(b1, b2), end='')
+    rv = b1.equal(b2)
+    #print(rv)
+    return rv
 def subtract_bags(b1, b2):
     return b1.subtract(b2)
 
