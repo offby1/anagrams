@@ -23,12 +23,9 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 (define (bag s)
   "Return an object that describes all the letters in S, without
 regard to order."
-  (let loop ((chars-to-examine (string-length s))
-             (product 1))
-    (if (zero? chars-to-examine)
-        product
-        (loop (- chars-to-examine 1)
-              (* product (char->factor (string-ref s (- chars-to-examine 1))))))))
+  (for/fold ([product 1])
+      ([ch (in-string s)])
+      (* product (char->factor ch))))
 
 (define (subtract-bags b1 b2)
   (let ((quotient (/ b1 b2)))
@@ -50,40 +47,36 @@ regard to order."
 ;; be *really* fast, since I suspect we do this O(n!) times where n is
 ;; the length of the string being anagrammed.
 
-(define bag-tests
+(define-test-suite bag-tests
 
-  (test-suite
-   "The one and only suite"
-   (test-true  "sam" (bag-empty? (bag "")))
 
-   (test-false "fred" (bag-empty? (bag "a")))
-   (test-true  "tim"  (bags=? (bag "abc")
-                              (bag "cba")))
+  (check-true (bag-empty? (bag "")))
 
-   (test-true  "harry" (bags=? (bag "X")
-                               (bag "x")))
-   (test-true  "mumble" (bags=? (bag "a!")
-                                (bag "a")))
-   (test-false  "frotz"  (bags=? (bag "abc")
-                                 (bag "bc")))
+  (check-false (bag-empty? (bag "a")))
+  (check-true  (bags=? (bag "abc")
+                       (bag "cba")))
 
-   (test-true  "zimbalist" (bags=? (bag "a")
-                                   (subtract-bags (bag "ab")
-                                                  (bag "b"))))
+  (check-true (bags=? (bag "X")
+                      (bag "x")))
+  (check-true (bags=? (bag "a!")
+                      (bag "a")))
+  (check-false  (bags=? (bag "abc")
+                        (bag "bc")))
 
-   (test-false  "ethel"  (subtract-bags (bag "a")
-                                        (bag "b")))
-   (test-false  "grunt"  (subtract-bags (bag "a")
-                                        (bag "aa")))
+  (check-true (bags=? (bag "a")
+                      (subtract-bags (bag "ab")
+                                     (bag "b"))))
 
-   (let ((empty-bag (subtract-bags (bag "a")
-                                   (bag "a"))))
-     0
-     (test-pred  "snork" bag-empty? empty-bag)
-     (test-false  "qquuzz" (not empty-bag))
-     )
+  (check-false  (subtract-bags (bag "a")
+                               (bag "b")))
+  (check-false  (subtract-bags (bag "a")
+                               (bag "aa")))
 
-   ))
+  (let ((empty-bag (subtract-bags (bag "a")
+                                  (bag "a"))))
+    (check-pred bag-empty? empty-bag)
+    (check-false (not empty-bag))))
+
 (provide main)
 (define (main . args)
   (exit (run-tests bag-tests)))
