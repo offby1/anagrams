@@ -1,0 +1,10 @@
+(define (filter proc seq)
+  (let loop ((result '())
+             (seq seq))
+    (if (null? seq)
+        (reverse result)
+        (loop (if (proc (car seq))
+                  (cons (car seq) result)
+
+                  result)
+              (cdr seq)))))
