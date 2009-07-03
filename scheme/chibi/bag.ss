@@ -47,7 +47,6 @@ regard to order."
                 (string-append result (make-string 1 t))))
          (else
           #f)))))))
-
 
 ;;; unit tests
 
