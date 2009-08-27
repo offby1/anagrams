@@ -24,7 +24,7 @@ class dictionary
   {
     return map.length;
   }
-  
+
   char[][] lookup (bag b)
   {
     return map[b].keys;
@@ -32,6 +32,17 @@ class dictionary
   bag[] keys ()
   {
     return map.keys;
+  }
+
+  int opApply(int delegate(ref char [][]) dg)
+  {
+    foreach (char [][] strings; map)
+      {
+        result = dg (strings);
+        if (result)
+          break;
+      }
+    return result;
   }
 
   unittest
