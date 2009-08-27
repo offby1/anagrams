@@ -1,1 +1,1 @@
-link gmp-d/mpz.d
+gmp-d/mpz.d

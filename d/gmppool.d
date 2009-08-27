@@ -1,1 +1,1 @@
-link gmp-d/gmppool.d
+gmp-d/gmppool.d

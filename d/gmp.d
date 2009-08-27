@@ -1,1 +1,1 @@
-link gmp-d/gmp.d
+gmp-d/gmp.d
