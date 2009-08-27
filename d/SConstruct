@@ -6,7 +6,7 @@ Program ('anagrams',
           'dictionary.d',
           'mpz.d',
           'gmppool.d'],
-         DFLAGS = ['-unittest', '-g', '-pg', 
+         DFLAGS = ['-unittest', '-g',
                    '-release'
                    #'-fno-bounds-check'
                    ],
