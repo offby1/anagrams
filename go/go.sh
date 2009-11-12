@@ -2,9 +2,10 @@
 
 set -e
 
-for i in *.go
+# Oddly, order matters here
+for i in bag main
 do
-    8g $i
+    8g ${i}.go
 done
 
 8l *.8
