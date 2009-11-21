@@ -29,49 +29,30 @@ def subtract_bags (b1, b2):
     else:
         return 0
 
-class WhatchaMaDingy (unittest.TestCase):
-    def __init__ (self, methodName='runTest'):
-        self.done = False
-        unittest.TestCase.__init__ (self, methodName)
+class WhatchaMaDingy(unittest.TestCase):
+    def testAlWholeLottaStuff(self):
+        self.assert_(bag("").empty())
+        self.assertFalse(bag("a").empty())
+        self.assertEqual(bag("abc"),bag("cba"))
+        self.assertNotEqual(bag("abc"), bag("bc"))
+        self.assertEqual(bag("a"), bag("ab") - bag("b"))
+        self.assertFalse(bag("a") - bag("b"))
+        self.assertFalse(bag("a") - bag("aa"))
 
-    def testAlWholeLottaStuff (self):
-        self.assert_ (bag_empty (bag ("")))
-
-        self.assert_ (not (bag_empty (bag ("a"))))
-
-        self.assert_ (bags_equal (bag ("abc"),
-                            bag ("cba")))
-
-        self.assert_ (not (bags_equal (bag ("abc"),
-                                 bag ("bc"))))
-
-        self.assert_ (bags_equal (bag ("a"),
-                              subtract_bags (bag("ab"),
-                                             bag ("b"))))
-        self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("b"))))
-
-        self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("aa"))))
-
-        silly_long_string = "When first I was a wee, wee lad\n\
-        Eating on my horse\n\
-        I had to take a farting duck\n\
-        Much to my remorse.\n\
-        Oh Sally can't you hear my plea\n\
-        When Roe V Wade is nigh\n\
-        And candles slide the misty morn\n\
-        With dimples on your tie."
+        silly_long_string = """When first I was a wee, wee lad
+        Eating on my horse
+        I had to take a farting duck
+        Much to my remorse.
+        Oh Sally can't you hear my plea
+        When Roe V Wade is nigh
+        And candles slide the misty morn
+        With dimples on your tie."""
 
         ever_so_slightly_longer_string = silly_long_string + "x"
-        self.assert_ (bags_equal (bag ("x"),
-                            subtract_bags (bag (ever_so_slightly_longer_string),
-                                           bag (silly_long_string))))
+        self.assertEqual(bag("x"),
+                         bag(ever_so_slightly_longer_string) - bag(silly_long_string))
 
-        self.assert_ (bags_equal (bag ("abc"),
-                            bag ("ABC")))
-
-        self.done = True;
+        self.assertEqual(bag("abc"), bag("ABC"))
 
 if __name__ == "__main__":
-    exit(unittest.main ())
+    exit(unittest.main())

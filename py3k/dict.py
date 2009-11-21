@@ -7,7 +7,7 @@ import re
 import sys
 import os
 from stat import *
-from bag import bag, bag_empty, bags_equal, subtract_bags
+import bag
 
 has_a_vowel_re = re.compile (r'[aeiouy]')
 long_enough_re = re.compile (r'^i$|^a$|^..')
@@ -25,7 +25,7 @@ def snarf_dictionary_from_IO (I):
         if (not has_a_vowel_re.search (w)):
             continue
 
-        key = bag(w)
+        key = bag.bag(w)
         if key in hash_table:
             if (0 == hash_table[key].count (w)): # avoid duplicates
                 hash_table[key].append (w)
@@ -57,11 +57,11 @@ fake_input = "cat\ntac\nfred\n"
 fake_dict = snarf_dictionary_from_IO (StringIO (fake_input))
 
 assert (2 == len (fake_dict.keys ()))
-cat_hits = fake_dict[bag ("cat")]
+cat_hits = fake_dict[bag.bag ("cat")]
 assert (2 == len (cat_hits))
 assert (cat_hits[0] == "cat")
 assert (cat_hits[1] == "tac")
-assert (1 == len (fake_dict[bag ("fred")]))
-assert (fake_dict[bag ("fred")][0] == "fred")
+assert (1 == len (fake_dict[bag.bag ("fred")]))
+assert (fake_dict[bag.bag ("fred")][0] == "fred")
 
 print (__name__, "tests passed.", file=sys.stderr)

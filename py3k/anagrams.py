@@ -1,6 +1,6 @@
-#!/usr/bin/env python3.0
+#!/usr/bin/env python3
 
-from bag import bag, bag_empty, bags_equal, subtract_bags
+import bag
 from dict import snarf_dictionary
 from optparse import OptionParser
 import os
@@ -19,40 +19,40 @@ try:
 except:
     pass
 
-def combine (words, anagrams):
+def combine(words, anagrams):
 
     rv = []
     for w in words:
         for a in anagrams:
-            rv.append ([w] + a)
+            rv.append([w] + a)
 
     return rv
 
 
-def anagrams (bag, dict):
+def anagrams(b, dict):
 
     rv = []
 
-    for words_processed in range (0, len (dict)):
+    for words_processed in range(0, len(dict)):
         entry = dict[words_processed]
         key   = entry[0]
         words = entry[1]
 
-        smaller_bag = subtract_bags (bag, key)
-        if (not smaller_bag):
+        smaller_bag = b - key
+        if not smaller_bag:
             continue
 
-        if (bag_empty (smaller_bag)):
+        if smaller_bag.empty():
             for w in words:
-                rv.append ([w])
+                rv.append([w])
             continue
 
-        from_smaller_bag = anagrams (smaller_bag,
+        from_smaller_bag = anagrams(smaller_bag,
                                      dict[words_processed:])
-        if (not len (from_smaller_bag)):
+        if not len(from_smaller_bag):
             continue
 
-        rv.extend (combine (words, from_smaller_bag))
+        rv.extend(combine(words, from_smaller_bag))
 
     return rv
 
@@ -70,14 +70,14 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
-    if (0 == len(args)):
-        parser.print_help ()
-        sys.exit (0)
+    if not len(args):
+        parser.print_help()
+        sys.exit(0)
 
-    dict_hash_table = snarf_dictionary (options.dict_fn)
+    dict_hash_table = snarf_dictionary(options.dict_fn)
 
-    the_phrase = bag (args[0])
-    print( "Pruning dictionary.  Before:", len (dict_hash_table.keys ()), "bags ...", file=sys.stderr)
+    the_phrase = bag.bag(args[0])
+    print( "Pruning dictionary.  Before:", len(dict_hash_table.keys()), "bags ...", file=sys.stderr)
 
     # Now convert the hash table to a list, longest entries first.  (This
     # isn't necessary, but it makes the more interesting anagrams appear
@@ -88,27 +88,27 @@ if __name__ == "__main__":
 
 
     the_dict_list = [[k, dict_hash_table[k]]
-                     for k in dict_hash_table.keys ()
-                     if (subtract_bags (the_phrase, k))]
+                     for k in dict_hash_table.keys()
+                     if the_phrase - k]
 
-    the_dict_list.sort (key=len)
+    the_dict_list.sort(key=len)
 
-    print ("Pruned dictionary.  After:", len (the_dict_list), "bags.", file=sys.stderr)
+    print("Pruned dictionary.  After:", len(the_dict_list), "bags.", file=sys.stderr)
     if "profile" in globals():
         profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
 
     if "profile" in globals():
-        profile.run("result = anagrams (the_phrase, the_dict_list)")
+        profile.run("result = anagrams(the_phrase, the_dict_list)", filename="profile-info")
     else:
-        result = anagrams (the_phrase, the_dict_list)
+        result = anagrams(the_phrase, the_dict_list)
 
-    print (len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
+    print(len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
 
     for a in result:
-        sys.stdout.write ("(")
-        for i, w in  enumerate (a):
-            if (i):
-                sys.stdout.write (" ")
-            sys.stdout.write  (w)
-        sys.stdout.write (")")
+        sys.stdout.write("(")
+        for i, w in  enumerate(a):
+            if i:
+                sys.stdout.write(" ")
+            sys.stdout.write(w)
+        sys.stdout.write(")")
         sys.stdout.write("\n")
