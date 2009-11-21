@@ -76,7 +76,7 @@ if __name__ == "__main__":
 
     dict_hash_table = snarf_dictionary(options.dict_fn)
 
-    the_phrase = bag.bag(args[0])
+    the_phrase = bag.Bag.fromstring(args[0])
     print( "Pruning dictionary.  Before:", len(dict_hash_table.keys()), "bags ...", file=sys.stderr)
 
     # Now convert the hash table to a list, longest entries first.  (This
