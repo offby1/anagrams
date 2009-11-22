@@ -4,7 +4,7 @@ import string
 import sys
 import unittest
 
-class Bag(object):
+class Bag(int):
     @classmethod
     def fromstring(cls, str):
         str = str.lower ()
@@ -17,27 +17,15 @@ class Bag(object):
 
         return Bag(num)
 
-    def __init__(self, num):
-        if not isinstance(num, int):
-            raise Exception("{0} {1} is not an int".format(type(num), num))
-
-        self.num = num
-
     def empty(self):
-        return self.num == 1
-
-    def __eq__(self, other):
-        return self.num == other.num
+        return self == 1
 
     def __sub__(self, other):
-        quotient  = self.num // other.num
-        remainder = self.num % other.num
+        remainder = self % other
         if (0 == remainder):
-            return Bag(quotient)
+            return Bag(self // other)
         else:
             return 0
-    def __hash__(self):
-        return self.num.__hash__()
 
 class WhatchaMaDingy(unittest.TestCase):
     def testAlWholeLottaStuff(self):

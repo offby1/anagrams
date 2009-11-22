@@ -14,10 +14,10 @@ try:
 except ImportError as e:
     print( "Psyco didn't load:", e, file=sys.stderr)
 
-try:
-    import profile
-except:
-    pass
+# try:
+#     import profile
+# except:
+#     pass
 
 def combine(words, anagrams):
 
@@ -96,8 +96,6 @@ if __name__ == "__main__":
     print("Pruned dictionary.  After:", len(the_dict_list), "bags.", file=sys.stderr)
     if "profile" in globals():
         profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
-
-    if "profile" in globals():
         profile.run("result = anagrams(the_phrase, the_dict_list)", filename="profile-info")
     else:
         result = anagrams(the_phrase, the_dict_list)
