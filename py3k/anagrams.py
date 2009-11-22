@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import bag
+import functools
 from dict import snarf_dictionary
 from optparse import OptionParser
 import os
@@ -77,7 +78,13 @@ if __name__ == "__main__":
     dict_hash_table = snarf_dictionary(options.dict_fn)
 
     the_phrase = bag.Bag.fromstring(args[0])
-    print( "Pruning dictionary.  Before:", len(dict_hash_table.keys()), "bags ...", file=sys.stderr)
+
+    print("Pruning dictionary.  Before:",
+          functools.reduce(lambda acc, elt: acc + len(dict_hash_table[elt]),
+                           dict_hash_table,
+                           0),
+          "words ...",
+          file=sys.stderr)
 
     # Now convert the hash table to a list, longest entries first.  (This
     # isn't necessary, but it makes the more interesting anagrams appear
@@ -93,7 +100,12 @@ if __name__ == "__main__":
 
     the_dict_list.sort(key=len)
 
-    print("Pruned dictionary.  After:", len(the_dict_list), "bags.", file=sys.stderr)
+    print("Pruned dictionary.  After:",
+          functools.reduce(lambda acc, elt: acc + len(elt[1]),
+                           the_dict_list,
+                           0),
+          "words.",
+          file=sys.stderr)
     if "profile" in globals():
         profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
         profile.run("result = anagrams(the_phrase, the_dict_list)", filename="profile-info")
