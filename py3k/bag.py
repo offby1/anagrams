@@ -4,74 +4,53 @@ import string
 import sys
 import unittest
 
-def bag_empty (b):
-    return b == 1
+class Bag(int):
+    @classmethod
+    def fromstring(cls, str):
+        str = str.lower ()
+        primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
+        num = 1
 
-def bag (str):
-    str = str.lower ()
-    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
-    rv = 1
+        for c in str:
+            if (c >= 'a') and (c <= 'z'):
+                num *= primes [ord (c) - ord ('a')]
 
-    for c in str:
-        if (c >= 'a') and (c <= 'z'):
-            rv *= primes [ord (c) - ord ('a')]
+        return Bag(num)
 
-    return rv
+    def empty(self):
+        return self == 1
 
-def bags_equal (s1, s2):
-    return s1 == s2
-
-def subtract_bags (b1, b2):
-    quotient  = b1 // b2
-    remainder = b1 % b2
-    if (0 == remainder):
-        return quotient
-    else:
-        return 0
+    def __sub__(self, other):
+        remainder = self % other
+        if (0 == remainder):
+            return Bag(self // other)
+        else:
+            return 0
 
-class WhatchaMaDingy (unittest.TestCase):
-    def __init__ (self, methodName='runTest'):
-        self.done = False
-        unittest.TestCase.__init__ (self, methodName)
+class WhatchaMaDingy(unittest.TestCase):
+    def testAlWholeLottaStuff(self):
+        self.assert_(Bag.fromstring("").empty())
+        self.assertFalse(Bag.fromstring("a").empty())
+        self.assertEqual(Bag.fromstring("abc"),Bag.fromstring("cba"))
+        self.assertNotEqual(Bag.fromstring("abc"), Bag.fromstring("bc"))
+        self.assertEqual(Bag.fromstring("a"), Bag.fromstring("ab") - Bag.fromstring("b"))
+        self.assertFalse(Bag.fromstring("a") - Bag.fromstring("b"))
+        self.assertFalse(Bag.fromstring("a") - Bag.fromstring("aa"))
 
-    def testAlWholeLottaStuff (self):
-        self.assert_ (bag_empty (bag ("")))
-
-        self.assert_ (not (bag_empty (bag ("a"))))
-
-        self.assert_ (bags_equal (bag ("abc"),
-                            bag ("cba")))
-
-        self.assert_ (not (bags_equal (bag ("abc"),
-                                 bag ("bc"))))
-
-        self.assert_ (bags_equal (bag ("a"),
-                              subtract_bags (bag("ab"),
-                                             bag ("b"))))
-        self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("b"))))
-
-        self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("aa"))))
-
-        silly_long_string = "When first I was a wee, wee lad\n\
-        Eating on my horse\n\
-        I had to take a farting duck\n\
-        Much to my remorse.\n\
-        Oh Sally can't you hear my plea\n\
-        When Roe V Wade is nigh\n\
-        And candles slide the misty morn\n\
-        With dimples on your tie."
+        silly_long_string = """When first I was a wee, wee lad
+        Eating on my horse
+        I had to take a farting duck
+        Much to my remorse.
+        Oh Sally can't you hear my plea
+        When Roe V Wade is nigh
+        And candles slide the misty morn
+        With dimples on your tie."""
 
         ever_so_slightly_longer_string = silly_long_string + "x"
-        self.assert_ (bags_equal (bag ("x"),
-                            subtract_bags (bag (ever_so_slightly_longer_string),
-                                           bag (silly_long_string))))
+        self.assertEqual(Bag.fromstring("x"),
+                         Bag.fromstring(ever_so_slightly_longer_string) - Bag.fromstring(silly_long_string))
 
-        self.assert_ (bags_equal (bag ("abc"),
-                            bag ("ABC")))
-
-        self.done = True;
+        self.assertEqual(Bag.fromstring("abc"), Bag.fromstring("ABC"))
 
 if __name__ == "__main__":
-    exit(unittest.main ())
+    exit(unittest.main())
