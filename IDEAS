@@ -24,11 +24,11 @@ And yet I tried this first when writing the C++ version.  It worked
 OK, but I then tried using bignums ... and they were twice as fast.
 Hmm.
 
-* Look in more than one place for the dictionary.
+* Ensure each implementation uses the same dictionary
 
-I've only tried the programs on a few computers, and yet each has the
-dictionary in a different place.  Windows is of course particularly
-bad.
+Many (especially those I've touched recently) use the dictionary in
+this directory, but a bunch probably still look for
+/usr/share/dict/words, which of course won't work on Windows.
 
 * Languages to do
 
