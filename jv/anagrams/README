@@ -1,0 +1,11 @@
+
+Since I use Java so rarely, I doubt I'll remember how to build and run
+this ...
+
+* Install Netbeans.  I sanity-checked these instructions using
+  Netbeans 6.7.1
+
+* "File" / "Open Project" ... navigate to this directory, which will
+  appear with a different icon than other directories.
+
+* Hit F6 to build and run it.

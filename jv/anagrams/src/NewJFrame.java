@@ -57,7 +57,7 @@ public class NewJFrame extends javax.swing.JFrame
             ex.printStackTrace();
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -160,7 +160,7 @@ public class NewJFrame extends javax.swing.JFrame
                     long displayed_seconds = total_seconds % 60;
                     long displayed_minutes = ((total_seconds - displayed_seconds) / 60) % 60;
                     long displayed_hours = (total_seconds - displayed_minutes * 60) / 3600;
-                    
+
                     elapsed_time.setText(String.format("%02d:%02d:%02d", displayed_hours, displayed_minutes, displayed_seconds));
                 }
             });
@@ -168,20 +168,20 @@ public class NewJFrame extends javax.swing.JFrame
             arw.execute();
         }
     }//GEN-LAST:event_jTextField1KeyTyped
-    
+
     public static Hashtable<Bag, ArrayList<String>> ht;
     private DictionaryReaderWorker drw;
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         jProgressBar1.setMinimum(0);
         ht = new Hashtable<Bag, ArrayList<String>>();
-        drw = new DictionaryReaderWorker();
+        drw = new DictionaryReaderWorker(this);
         drw.addPropertyChangeListener(this);
-        jLabel1.setText("Munging dictionary ...");
+        jLabel1.setText("Munging dictionary " + drw.dict_full_name + " ...");
         drw.execute();
     }//GEN-LAST:event_formWindowOpened
     @Override
     public void propertyChange(PropertyChangeEvent evt){
-        
+
         if ("progress" == evt.getPropertyName()) {
             jProgressBar1.setValue((Integer) evt.getNewValue());
         } else if ("state" == evt.getPropertyName()){
@@ -189,7 +189,7 @@ public class NewJFrame extends javax.swing.JFrame
             if (s == SwingWorker.StateValue.DONE) {
                 jLabel1.setText("");
                 jTextField1.setEnabled(true);
-                
+
                 jTextField1.requestFocusInWindow();
             }
         }
@@ -204,7 +204,7 @@ public class NewJFrame extends javax.swing.JFrame
             }
         });
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel elapsed_time;
     private javax.swing.JLabel jLabel1;
@@ -214,5 +214,5 @@ public class NewJFrame extends javax.swing.JFrame
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel number_found;
     // End of variables declaration//GEN-END:variables
-    
+
 }
