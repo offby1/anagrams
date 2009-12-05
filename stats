@@ -30,13 +30,14 @@ time ./anagrams  > /dev/null
 All times are on the dell optiplex, unless otherwise noted.
 
 For testing a new implementation, note that the words file should wind
-up with 72717 words (66890 distinct bags), and after pruning for
-"Ernest Hemingway", it should have 1716 entries.  Unfortunately that
-file seems to exist in different versions on different *nix distros,
-which is why I've checked in my own copy.  I suspect that many of the
-implementations here that got the wrong answer did so not because
-they're buggy, but only because I unknowingly tested them against a
-different version of the dictionary than the Common Lisp version.
+up with 72794 words (66965 distinct bags); these two numbers are baked
+in to the unit tests in a couple of the implementations, but really
+should be in all of them.  That words file seems to exist in different
+versions on different *nix distros, so I've checked in my own copy.  I
+suspect that many of the implementations here that got the wrong
+answer did so not because they're buggy, but only because I
+unknowingly tested them against a different version of the dictionary
+than the Common Lisp version.
 
 Also note that the times are meaningless if the answer isn't correct.
 For example, if the answer contains too few items, then the time will
