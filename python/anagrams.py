@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from bag import bag, bag_empty, bags_equal, subtract_bags
-from dict import snarf_dictionary
+import dict
 from optparse import OptionParser
 from types import *
 import os
@@ -60,8 +60,7 @@ if __name__ == "__main__":
                       action="store",
                       type="string",
                       dest="dict_fn",
-                      default=os.path.join(os.path.dirname(__file__),
-                                           "../words.utf8"),
+                      default=dict.default_dict_name,
                       metavar="FILE",
                       help="location of word list")
 
@@ -71,7 +70,7 @@ if __name__ == "__main__":
         parser.print_help ()
         sys.exit (0)
 
-    dict_hash_table = snarf_dictionary (options.dict_fn)
+    dict_hash_table = dict.snarf_dictionary (options.dict_fn)
 
     the_phrase = bag (args[0])
     print >> sys.stderr, "Pruning dictionary.  Before:", len (dict_hash_table.keys ()), "bags ...",
@@ -110,6 +109,7 @@ if __name__ == "__main__":
         profile.run("result = anagrams (the_phrase, the_dict_list)")
         print >> sys.stderr, len(result), "anagrams of", sys.argv[1], ":"
 
+    print >> sys.stderr, "%d anagrams of %s" % (len(result), args[0])
     for a in result:
         sys.stdout.write ("(")
         for i, w in  enumerate (a):

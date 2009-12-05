@@ -6,23 +6,33 @@ import re
 import sys
 import cPickle
 import os
+import unittest
 from stat import *
 from bag import bag, bag_empty, bags_equal, subtract_bags
 
 has_a_vowel_re = re.compile (r'[aeiouy]')
 long_enough_re = re.compile (r'^i$|^a$|^..')
-non_letter_re = re.compile (r'[^a-zA-Z]')
+non_letter_re = re.compile (r'[^a-z]')
+
+def word_acceptable(w):
+    if non_letter_re.search (w):
+        return False
+    if (not long_enough_re.match (w)):
+        return False
+    if (not has_a_vowel_re.search (w)):
+        return False
+
+    return True
+
+default_dict_name =os.path.join(os.path.dirname(__file__), "../words.utf8")
 
 def snarf_dictionary_from_IO (I):
     print >> sys.stderr, "Snarfing", I
     hash_table = {}
     for w in re.findall (r'.+', I.read ()):
         w = string.lower (w)
-        if non_letter_re.search (w):
-            continue
-        if (not long_enough_re.match (w)):
-            continue
-        if (not has_a_vowel_re.search (w)):
+
+        if not word_acceptable(w):
             continue
 
         key = bag(w)
@@ -53,15 +63,26 @@ def snarf_dictionary (fn):
     return rv
 
 
-fake_input = "cat\ntac\nfred\n"
-fake_dict = snarf_dictionary_from_IO (StringIO.StringIO (fake_input))
+if __name__ == "__main__":
+    class TestStuff(unittest.TestCase):
+        def setUp(self):
+            self.fake_input = "cat\ntac\nfred\n"
+            self.fake_dict = snarf_dictionary_from_IO (StringIO.StringIO (self.fake_input))
 
-assert (2 == len (fake_dict.keys ()))
-cat_hits = fake_dict[bag ("cat")]
-assert (2 == len (cat_hits))
-assert (cat_hits[0] == "cat")
-assert (cat_hits[1] == "tac")
-assert (1 == len (fake_dict[bag ("fred")]))
-assert (fake_dict[bag ("fred")][0] == "fred")
+        def test_word_acceptable(self):
+            self.assert_(word_acceptable("dog"))
+            self.assertFalse (word_acceptable("C3PO"))
+            d = snarf_dictionary(os.path.join(default_dict_name))
+            self.assertEqual(66965, len(d))
+            self.assertEqual(72794, sum(len(words) for words in d.values()))
 
-print >> sys.stderr, __name__, "tests passed."
+        def test_this_and_that(self):
+            self.assert_ (2 == len (self.fake_dict.keys ()))
+            cat_hits = self.fake_dict[bag ("cat")]
+            self.assert_ (2 == len (cat_hits))
+            self.assert_ (cat_hits[0] == "cat")
+            self.assert_ (cat_hits[1] == "tac")
+            self.assert_ (1 == len (self.fake_dict[bag ("fred")]))
+            self.assert_ (self.fake_dict[bag ("fred")][0] == "fred")
+
+    unittest.main()
