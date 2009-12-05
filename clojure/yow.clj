@@ -28,14 +28,12 @@
 
 (with-test
   (defn dict-from-strings [words]
-    (loop [h (hash-map)
-           words words]
-      (if (seq words)
-        (recur
-         (update-in h (list (bag (first words))) #(clojure.set/union #{(first words)} %))
-         (rest words))
-        h)
-      ))
+    (reduce
+     (fn [acc elt]
+       (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %)))
+     (hash-map)
+     words))
+
   (is (= {710 #{"tac" "cat"}, 5593 #{"dog"}} (dict-from-strings (list "dog" "dog" "cat" "tac")))))
 
 (run-tests)
