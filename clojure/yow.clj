@@ -30,14 +30,14 @@
   (defn dict-from-strings [words]
     (loop [h (hash-map)
            words words]
-      (if (zero? (count words))
-        h
+      (if (seq words)
         (recur
          (update-in h (list (bag (first words))) #(clojure.set/union #{(first words)} %))
-         (rest words)))
+         (rest words))
+        h)
       ))
   (is (= {710 #{"tac" "cat"}, 5593 #{"dog"}} (dict-from-strings (list "dog" "dog" "cat" "tac")))))
 
 (run-tests)
-;; (def dict (dict-from-strings all-english-words))
-;; (printf "Big dict has %d bags" (count dict))
+(def dict (dict-from-strings all-english-words))
+(printf "Big dict has %d bags" (count dict))
