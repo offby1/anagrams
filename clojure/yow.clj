@@ -94,6 +94,7 @@
 (if (not (seq *command-line-args*))
   (run-tests)
   (let [result (aai (bag (apply str *command-line-args*)) dict)]
-    (printf "%d anagrams of %s\n" (count result) *command-line-args*)
+    (binding [*out* *err*]
+      (printf "%d anagrams of %s\n" (count result) *command-line-args*))
     (doseq [an result]
       [(printf "%s\n" an)])))
