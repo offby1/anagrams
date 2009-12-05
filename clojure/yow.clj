@@ -1,14 +1,16 @@
 ;; -*-lisp-*-
 
-(use 'clojure.contrib.str-utils2)
-(use 'clojure.set)
+(ns anagrams
+  (:use [clojure.contrib.str-utils])
+  (:require [clojure.contrib.str-utils2 :as su])
+  (:require [clojure.set]))
 
 (defn contains-vowel? [w]
-  (some #(clojure.contrib.str-utils2/contains? w %)
+  (some #(su/contains? w %)
          (list "a" "e" "i" "o" "u" "y")))
 
 (defn word-acceptable? [w]
-  (let [w  (clojure.contrib.str-utils2/lower-case w)]
+  (let [w  (su/lower-case w)]
        (and
         (contains-vowel? w)
         (or (= w "i")
@@ -29,3 +31,4 @@
           (map (fn [word]
                    (update-in h (list word) #(clojure.set/union #{(bag word)} %)))
                all-english-words)))
+(printf "Dict hath %d bags\n" (count dict))
