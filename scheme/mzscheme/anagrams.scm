@@ -16,10 +16,9 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
   (let ((in-bag   (bag string)))
     (all-anagrams-internal
      in-bag
-     (init in-bag dict-file-name)
-     0)))
+     (init in-bag dict-file-name))))
 
-(define (all-anagrams-internal bag dict level [callback #f])
+(define (all-anagrams-internal bag dict)
 
   (let loop ((rv '())
              (dict dict))
@@ -44,15 +43,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
                                   (subtract-bags
                                    smaller-bag
                                    (car entry)))
-                                dict)
-                        (add1 level)
-                        callback)))))
-               (when (and (zero? level)
-                          (procedure? callback)
-                          (not (null? new-stuff)))
-                 (for-each (lambda (w)
-                             (callback w))
-                           new-stuff))
+                                dict))))))
                (append new-stuff rv))
            rv)
          (cdr dict))))))
