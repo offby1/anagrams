@@ -3,7 +3,7 @@
 (ns anagrams
   (:use [clojure.contrib.str-utils])
   (:require [clojure.contrib.str-utils2 :as su])
-  (:require [clojure.set]))
+  (:use [clojure.test]))
 
 (defn contains-vowel? [w]
   (some #(su/contains? w %)
@@ -26,13 +26,16 @@
 (defn bag [w]
   (apply * (map #(get primes (- (int %) (int \a)) 1) w)))
 
-(def dict
-     (loop [h (hash-map)
-           words (list "dog" "dog" "cat" "tac")]
+(with-test
+ (defn dict-from-strings [words]
+   (loop [h (hash-map)
+           words words]
            (if (zero? (count words))
                h
              (recur
               (update-in h (list (bag (first words))) #(clojure.set/union #{(first words)} %))
               (rest words)))
            ))
-(print dict)
+ (is (= {710 #{"tac" "cat"}, 5593 #{"dog"}} (dict-from-strings (list "dog" "dog" "cat" "tac")))))
+
+(run-tests)
