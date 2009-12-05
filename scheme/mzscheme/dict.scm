@@ -47,8 +47,8 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
    '()))
 
 (define word-acceptable?
-  (let ((has-vowel-regexp (regexp "[aeiouyAEIOUY]"))
-        (has-non-letter-regexp (regexp "[^a-zA-Z]")))
+  (let ((has-vowel-regexp (regexp "[aeiouy]"))
+        (has-non-letter-regexp (regexp "[^a-z]")))
     (lambda (word)
       (let ((l (string-length word)))
         (and (not (zero? l))
