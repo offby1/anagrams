@@ -3,8 +3,6 @@
   (:require [clojure.contrib.str-utils2 :as su])
   (:use [clojure.test]))
 
-(set! *warn-on-reflection* true)
-
 (defn contains-vowel? [w]
   (re-find #"[aeiouy]" w))
 
