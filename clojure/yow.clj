@@ -27,8 +27,12 @@
   (apply * (map #(get primes (- (int %) (int \a)) 1) w)))
 
 (def dict
-     (let [h (hash-map)]
-          (map (fn [word]
-                   (update-in h (list word) #(clojure.set/union #{(bag word)} %)))
-               all-english-words)))
-(printf "Dict hath %d bags\n" (count dict))
+     (loop [h (hash-map)
+           words (list "dog" "dog" "cat" "tac")]
+           (if (zero? (count words))
+               h
+             (recur
+              (update-in h (list (bag (first words))) #(clojure.set/union #{(first words)} %))
+              (rest words)))
+           ))
+(print dict)
