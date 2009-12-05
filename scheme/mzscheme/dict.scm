@@ -8,6 +8,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 (require (except-in "bag.scm" main))
 (require (planet schematics/schemeunit:3)
          (planet schematics/schemeunit:3/text-ui)
+         (lib "etc.ss")
          srfi/1
          srfi/26)
 
@@ -86,7 +87,15 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
   (exit
    (run-tests
     (test-suite
-     "yow"
+     "dict"
+
+     (test-begin
+      (check-not-false (word-acceptable? "dog"))
+      (check-false (word-acceptable? "C3PO"))
+      (let ([d (wordlist->hash (build-path (this-expression-source-directory) 'up 'up "words"))])
+        (check-equal? (length (apply append (map cdr (hash-map d cons)))) 72794)
+        (check-equal? (hash-count d) 66965)))
+
      (test-begin
       (let ((d (adjoin-word (make-immutable-hash '()) "frotz")))
         (let ((alist (hash-map d cons)))
@@ -102,6 +111,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
                              alist)))
           (check-equal? 2 (length alist))
           (check-equal? probe (cons (bag "plonk") (list "plonk"))))))
+
      (test-begin
       (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
         (printf "~s~%" d)
