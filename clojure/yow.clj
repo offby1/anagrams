@@ -3,6 +3,8 @@
   (:require [clojure.contrib.str-utils2 :as su])
   (:use [clojure.test]))
 
+(set! *warn-on-reflection* true)
+
 (defn contains-vowel? [w]
   (some #(su/contains? w %)
         (list "a" "e" "i" "o" "u" "y")))
@@ -37,5 +39,5 @@
   (is (= {710 #{"tac" "cat"}, 5593 #{"dog"}} (dict-from-strings (list "dog" "dog" "cat" "tac")))))
 
 (run-tests)
-(def dict (dict-from-strings all-english-words))
-(printf "Big dict has %d bags" (count dict))
+;; (def dict (dict-from-strings all-english-words))
+;; (printf "Big dict has %d bags" (count dict))
