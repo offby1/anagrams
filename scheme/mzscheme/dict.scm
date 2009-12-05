@@ -51,18 +51,17 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
         (has-non-letter-regexp (regexp "[^a-z]")))
     (lambda (word)
       (let ((l (string-length word)))
-        (and (not (zero? l))
+        (and
+         ;; it's gotta have a vowel.
+         (regexp-match has-vowel-regexp word)
 
-             ;; it's gotta have a vowel.
-             (regexp-match has-vowel-regexp word)
+         ;; it's gotta be all letters
+         (not (regexp-match has-non-letter-regexp word))
 
-             ;; it's gotta be all letters
-             (not (regexp-match has-non-letter-regexp word))
-
-             ;; it's gotta be two letters long, unless it's `i' or `a'.
-             (or (string=? "i" word)
-                 (string=? "a" word)
-                 (< 1 l)))))))
+         ;; it's gotta be two letters long, unless it's `i' or `a'.
+         (or (string=? "i" word)
+             (string=? "a" word)
+             (< 1 l)))))))
 
 (define (init bag-to-meet dict-file-name)
   (let ((result (filter (lambda (entry)
@@ -114,10 +113,8 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
      (test-begin
       (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
-        (printf "~s~%" d)
         (check-equal? 2 (hash-count d)))
       (let ((d (wordlist->hash (open-input-string "see\nshy\nJo\n"))))
-        (printf "~s~%" d)
         (test-not-false "see" (hash-ref d (bag "see")))
         (test-not-false "shy" (hash-ref d (bag "shy")))
         (test-not-false "jo"  (hash-ref d (bag "jo")))
