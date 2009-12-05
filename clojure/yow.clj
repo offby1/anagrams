@@ -38,4 +38,5 @@
 
 (run-tests)
 (def dict (dict-from-strings all-english-words))
-(printf "Big dict has %d bags" (count dict))
+(printf "Big dict has %d distinct words" (apply + (map count (vals dict))))
+(printf "... and %d bags" (count dict))
