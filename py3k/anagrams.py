@@ -2,7 +2,7 @@
 
 import bag
 import functools
-from dict import snarf_dictionary
+import dict
 from optparse import OptionParser
 import os
 from types import *
@@ -65,7 +65,7 @@ if __name__ == "__main__":
                       action="store",
                       type="string",
                       dest="dict_fn",
-                      default=os.path.join(os.path.dirname(__file__), "../words.utf8"),
+                      default=dict.default_dict_name,
                       metavar="FILE",
                       help="location of word list")
 
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(0)
 
-    dict_hash_table = snarf_dictionary(options.dict_fn)
+    dict_hash_table = dict.snarf_dictionary(options.dict_fn)
 
     the_phrase = bag.Bag.fromstring(args[0])
 
