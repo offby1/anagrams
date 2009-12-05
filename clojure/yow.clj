@@ -28,6 +28,13 @@
 (defn bag [w]
   (apply * (map #(get primes (- (int %) (int \a)) 1) w)))
 
+(defn subtract-bags [top bot]
+  (and (zero? (rem top bot))
+       (quot top bot)))
+
+(defn bag-empty? [b]
+  (= b 1))
+
 (with-test
   (defn dict-from-strings [words]
     (reduce
@@ -40,8 +47,47 @@
   )
 
 (def dict (dict-from-strings all-english-words))
+
+(defn combine [words anagrams]
+  (apply concat (map (fn [word]
+                       (map (fn [an]
+                              (cons word an))
+                            anagrams))
+                     words)))
+
+(with-test
+  (defn aai [bag dict]
+    (loop [rv '()
+           dict dict]
+      (if (not (seq dict))
+        rv
+        (let [key (first (first dict))
+              words (second (first dict))
+              smaller-bag (subtract-bags bag key)]
+          (recur
+           (if smaller-bag
+             (let [new-stuff
+                   (if (bag-empty? smaller-bag)
+                     (map list words)
+                     (combine
+                      words
+                      (aai
+                       smaller-bag
+                       (filter
+                        (fn [entry]
+                          (subtract-bags
+                           smaller-bag
+                           (first entry)))
+                        dict))))]
+               (concat new-stuff rv))
+             rv)
+
+           (rest dict))))))
+  (is (= '(("GOD") ("dog")) (aai (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
+
 (deftest accurate
   (is (= 72794 (apply + (map count (vals dict)))))
   (is (= 66965 (count dict))))
 (run-tests)
 
+(print (aai (bag "ernest") dict))
