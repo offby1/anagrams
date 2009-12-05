@@ -87,7 +87,12 @@
 
 (deftest accurate
   (is (= 72794 (apply + (map count (vals dict)))))
-  (is (= 66965 (count dict))))
-(run-tests)
+  (is (= 66965 (count dict)))
+  (is (= 19 (count (aai (bag "ernest") dict)))))
 
-(print (aai (bag "ernest") dict))
+(if (not (seq *command-line-args*))
+  (run-tests)
+  (let [result (aai (bag (apply str *command-line-args*)) dict)]
+    (printf "%d anagrams of %s\n" (count result) *command-line-args*)
+    (doseq [an result]
+      [(printf "%s\n" an)])))
