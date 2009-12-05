@@ -35,13 +35,16 @@
 
 (with-test
   (defn dict-from-strings [words]
-    (reduce
-     (fn [acc elt]
-       (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %)))
-     (hash-map)
-     words))
+    (reverse
+     (sort-by
+      first
+      (reduce
+       (fn [acc elt]
+         (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %)))
+       (hash-map)
+       words))))
 
-  (is (= {710 #{"tac" "cat"}, 5593 #{"dog"}} (dict-from-strings (list "dog" "dog" "cat" "tac"))))
+  (is (= '([5593 #{"dog"}] [710 #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
   )
 
 (def dict (dict-from-strings all-english-words))
