@@ -3,7 +3,7 @@
 ;; frequent letters (i.e., `e') have the smallest primes (like Morse
 ;; code).  Turned out it didn't make the program any faster.
 (defparameter *primes* #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101))
-(declaim (type (simple-array  fixnum (26))  *primes*))
+;; (declaim (type (simple-array  fixnum (26))  *primes*))
 (defun char_to_index (c)
   (declare  (type character c))
   (- (char-code c)
@@ -23,17 +23,17 @@
                (<= (char-code #\a)
                    (char-code this-char)
                    (char-code #\z)))
-          (setf return-value 
+          (setf return-value
                 (* (the integer return-value)
                    (the (unsigned-byte 32) (aref   *primes* (char_to_index this-char)))))
           )))
-    
+
     return-value))
 
 (defun subtract-bags (minuend subtrahend)
   (declare (type integer minuend))
   (declare (type integer subtrahend))
-  
+
   (multiple-value-bind (q r)
       (floor  minuend subtrahend)
     (if (zerop r)
