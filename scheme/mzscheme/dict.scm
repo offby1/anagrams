@@ -50,18 +50,17 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
   (let ((has-vowel-regexp (regexp "[aeiouy]"))
         (has-non-letter-regexp (regexp "[^a-z]")))
     (lambda (word)
-      (let ((l (string-length word)))
-        (and
-         ;; it's gotta have a vowel.
-         (regexp-match has-vowel-regexp word)
+      (and
+       ;; it's gotta have a vowel.
+       (regexp-match has-vowel-regexp word)
 
-         ;; it's gotta be all letters
-         (not (regexp-match has-non-letter-regexp word))
+       ;; it's gotta be all letters
+       (not (regexp-match has-non-letter-regexp word))
 
-         ;; it's gotta be two letters long, unless it's `i' or `a'.
-         (or (string=? "i" word)
-             (string=? "a" word)
-             (< 1 l)))))))
+       ;; it's gotta be two letters long, unless it's `i' or `a'.
+       (or (string=? "i" word)
+           (string=? "a" word)
+           (< 1 (string-length word)))))))
 
 (define (init bag-to-meet dict-file-name)
   (let ((result (filter (lambda (entry)
