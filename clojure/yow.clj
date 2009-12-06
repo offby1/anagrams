@@ -19,7 +19,6 @@
        )))
 
 (def dict-fn (str (System/getProperty "user.home") "/stray-doodles/anagrams/words.utf8"))
-(def in (-> dict-fn java.io.FileReader. java.io.BufferedReader. ))
 (def all-english-words  (filter word-acceptable? (map su/lower-case (re-split #"\n" (slurp dict-fn)))))
 
 (def primes [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101])
