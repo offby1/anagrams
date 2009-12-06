@@ -8,6 +8,7 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
 (require (except-in "dict.scm" main)
          (except-in "bag.scm" main)
+         (except-in "sequences.ss" main)
          (lib "etc.ss"))
 
 (provide all-anagrams)
@@ -20,32 +21,28 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
 (define (all-anagrams-internal bag dict)
 
-  (let loop ((rv '())
-             (dict dict))
+  (for/fold ([rv '()])
+      ([(elt dict) (in-cdrs dict)])
+      (let ((words (cdr elt))
+            (smaller-bag (subtract-bags bag (car elt))))
 
-    (if (null? dict)
-        rv
-      (let* ((key   (caar dict))
-             (words (cdar dict))
-             (smaller-bag (subtract-bags bag key)))
-
-        (loop
-         (if smaller-bag
-             (append
-              (if (bag-empty? smaller-bag)
-                  (map list words)
-                  (combine
-                   words
-                   (all-anagrams-internal
-                    smaller-bag
-                    (filter (lambda (entry)
-                              (subtract-bags
-                               smaller-bag
-                               (car entry)))
-                            dict))))
-              rv)
-             rv)
-         (cdr dict))))))
+        (append
+         (cond
+          ((not smaller-bag)
+           '())
+          ((bag-empty? smaller-bag)
+           (map list words))
+          (else
+           (combine
+            words
+            (all-anagrams-internal
+             smaller-bag
+             (filter (lambda (entry)
+                       (subtract-bags
+                        smaller-bag
+                        (car entry)))
+                     dict)))))
+         rv))))
 
 (define (combine words anagrams)
   "Given a list of WORDS, and a list of ANAGRAMS, creates a new
