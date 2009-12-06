@@ -48,7 +48,7 @@ be notably lower than if the answer were correct.
 
 | language                     | optimized? | machine  | correct                  | time                 | time "st              | time "est        | time "Ernes       | time "Ernest        | bag            | dictionary     |
 |                              |            |          | answer?                  | "hemingway"          | hemingway"            | hemingway"       | Hemingway"        | Hemingway"          | implementation | cached?        |
-|                              |            |          |                          |                      |                       |                  | (113466 anagrams) | (457602 anagrams)   |                |                |
+|                              |            |          |                          |                      |                       |                  |                   | (894521 anagrams)   |                |                |
 |------------------------------+------------+----------+--------------------------+----------------------+-----------------------+------------------+-------------------+---------------------+----------------+----------------|
 | ----------------common lisps |            | optiplex | yes                      |                      |                       |                  |                   |                     | bignums        | yes            |
 | sbcl                         |            | optiplex |                          |                      |                       |                  |                   | 7 user seconds      |                |                |
@@ -69,7 +69,7 @@ be notably lower than if the answer were correct.
 | chicken 4.0.0                | dunno      | lenovo   | yes                      |                      |                       |                  |                   | 70 user seconds     | strings        | yes            |
 | chicken (315)                | yes: -O3   | optiplex | no                       | 3 user seconds       | 3 user seconds        | 5 user seconds   | 21 user seconds   | 79 user seconds     | strings        | yes            |
 | gambit 4.0b22                | yes        | lenovo   | not quite                | 1 user seconds       | 1 user seconds        | 1 user seconds   |                   | 84 user seconds     | bignums        | no             |
-| clojure 1.1.0                | no         | lenovo   | yes                      |                      |                       |                  | 36 user seconds   |                     | bignums        | no             |
+| clojure 1.1.0                | no         | lenovo   | yes                      |                      |                       |                  | 16 user seconds   | 140 user seconds    | bignums        | no             |
 | gambit 4b17                  | no! fixme  | optiplex | not quite                | 5 user seconds       | 6 user seconds        | 9 user seconds   | 41 user seconds   | 200 user seconds    | bignums        | no             |
 | scheme48 1.3                 |            | optiplex | no                       |                      |                       | 16 user seconds  | 55 user seconds   | 272 user seconds    | bignums        | no(!)          |
 | arc0 / mzscheme 352          | noe        | optiplex | yes                      |                      |                       |                  |                   | 1800 seconds        | bignums        | yes            |
