@@ -25,27 +25,26 @@ exec  mzscheme --require "$0" --main -- ${1+"$@"}
 
     (if (null? dict)
         rv
-
       (let* ((key   (caar dict))
              (words (cdar dict))
              (smaller-bag (subtract-bags bag key)))
 
         (loop
          (if smaller-bag
-             (let ((new-stuff
-                    (if (bag-empty? smaller-bag)
-                        (map list words)
-                      (combine
-                       words
-                       (all-anagrams-internal
-                        smaller-bag
-                        (filter (lambda (entry)
-                                  (subtract-bags
-                                   smaller-bag
-                                   (car entry)))
-                                dict))))))
-               (append new-stuff rv))
-           rv)
+             (append
+              (if (bag-empty? smaller-bag)
+                  (map list words)
+                  (combine
+                   words
+                   (all-anagrams-internal
+                    smaller-bag
+                    (filter (lambda (entry)
+                              (subtract-bags
+                               smaller-bag
+                               (car entry)))
+                            dict))))
+              rv)
+             rv)
          (cdr dict))))))
 
 (define (combine words anagrams)
