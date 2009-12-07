@@ -65,22 +65,22 @@
               words (second (first dict))
               smaller-bag (subtract-bags bag key)]
           (recur
-           (if smaller-bag
-             (let [new-stuff
-                   (if (bag-empty? smaller-bag)
-                     (map list words)
-                     (combine
-                      words
-                      (aai
-                       smaller-bag
-                       (filter
-                        (fn [entry]
-                          (subtract-bags
-                           smaller-bag
-                           (first entry)))
-                        dict))))]
-               (concat new-stuff rv))
-             rv)
+           (if (not smaller-bag)
+             rv
+             (concat
+              (if (bag-empty? smaller-bag)
+                (map list words)
+                (combine
+                 words
+                 (aai
+                  smaller-bag
+                  (filter
+                   (fn [entry]
+                     (subtract-bags
+                      smaller-bag
+                      (first entry)))
+                   dict))))
+              rv))
 
            (rest dict))))))
   (is (= '(("GOD") ("dog")) (aai (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
