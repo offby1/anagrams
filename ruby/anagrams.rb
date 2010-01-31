@@ -2,7 +2,7 @@ require 'dict'
 require 'bag'
 require 'getoptlong'
 
-dict_filename = "/usr/share/dict/words"
+dict_filename = "../words.utf8"
 
 opts = GetoptLong.new(
                         [ "--dictionary-fn",    "-d",            GetoptLong::OPTIONAL_ARGUMENT ]
@@ -14,7 +14,6 @@ end
 
 The_Bag = Bag.new(ARGV[0])
 the_dict = Read(dict_filename)
-the_dict = Prune(the_dict, The_Bag)
 
 def combine(words, anagrams)
   rv = []
@@ -44,7 +43,7 @@ def anagrams(bag, dict)
       }
     else
       from_smaller_bag = anagrams(smaller_bag,
-                                  Prune(dict[words_processed..dict.size() - 1], smaller_bag))
+                                  dict[words_processed..dict.size() - 1].select {|entry| smaller_bag - entry[0]})
       next if (0 == from_smaller_bag.size)
       combine(words, from_smaller_bag).each {
         |new|
