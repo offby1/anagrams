@@ -1,0 +1,16 @@
+# anagrams
+
+Display anagrams of a given phrase.
+
+## Usage
+
+$ clj anagrams "Your Mother Wears Army Boots"
+
+## Installation
+
+Not applicable.
+
+## License
+
+Wot eva.
+

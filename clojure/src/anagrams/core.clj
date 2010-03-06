@@ -1,5 +1,5 @@
-(ns anagrams
-  (:use [clojure.contrib.str-utils])
+(ns anagrams.core
+(:use [clojure.contrib.str-utils])
   (:require [clojure.contrib.str-utils2 :as su])
   (:use [clojure.test]))
 
@@ -84,11 +84,6 @@
 
            (rest dict))))))
   (is (= '(("GOD") ("dog")) (aai (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
-
-(deftest accurate
-  (is (= 72794 (apply + (map count (vals dict)))))
-  (is (= 66965 (count dict)))
-  (is (= 19 (count (aai (bag "ernest") dict)))))
 
 (if (not (seq *command-line-args*))
   (run-tests)
