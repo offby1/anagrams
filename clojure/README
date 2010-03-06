@@ -4,7 +4,13 @@ Display anagrams of a given phrase.
 
 ## Usage
 
-$ clj anagrams "Your Mother Wears Army Boots"
+$ clj -Xmx1g ./src/anagrams/core.clj "yo ho ho"
+
+Note that
+
+$ clj anagrams.jar "Your Mother Wears Army Boots"
+
+yields an ugly exception.  Quoth technomancy: "command-line launching is definitely a weak point of clojure"
 
 ## Installation
 
