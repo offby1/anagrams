@@ -2,7 +2,6 @@
 ;; although I can't figure out how to get it to work in Guile
 
 (define-module (assert)
-  #:use-module (ice-9 syncase)
   #:export (assert))
 
 (define-syntax assert

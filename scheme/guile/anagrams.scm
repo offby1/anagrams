@@ -1,6 +1,5 @@
 (define-module (anagrams))
-(use-modules (ice-9 debug)
-             (ice-9 pretty-print)
+(use-modules (ice-9 pretty-print)
              (srfi srfi-1))
 
 (use-modules (bag)
