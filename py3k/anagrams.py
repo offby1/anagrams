@@ -34,8 +34,7 @@ def anagrams(b, dict):
 
     rv = []
 
-    for words_processed in range(0, len(dict)):
-        entry = dict[words_processed]
+    for entries_processed, entry in enumerate(dict):
         key   = entry[0]
         words = entry[1]
 
@@ -49,7 +48,7 @@ def anagrams(b, dict):
             continue
 
         from_smaller_bag = anagrams(smaller_bag,
-                                     dict[words_processed:])
+                                    dict[entries_processed:])
         if not len(from_smaller_bag):
             continue
 

@@ -1,17 +1,18 @@
 #!/usr/bin/env python3.0
 
+import bag
+import collections
 from io import StringIO
-import string
+import os
 import pickle
 import re
-import sys
-import os
 from stat import *
-import bag
+import string
+import sys
 
 has_a_vowel_re = re.compile(r'[aeiouy]')
 long_enough_re = re.compile(r'^i$|^a$|^..')
-non_letter_re = re.compile(r'[^a-zA-Z]')
+non_letter_re  = re.compile(r'[^a-zA-Z]')
 
 def word_acceptable(w):
     if non_letter_re.search (w):
@@ -27,18 +28,14 @@ default_dict_name =os.path.join(os.path.dirname(__file__), "../words.utf8")
 
 def snarf_dictionary_from_IO(I):
     print("Snarfing", I, file=sys.stderr)
-    hash_table = {}
+    hash_table = collections.defaultdict(set)
     for w in re.findall(r'.+', I.read()):
         w = w.lower()
         if not word_acceptable(w):
             continue
 
         key = bag.Bag.fromstring(w)
-        if key in hash_table:
-            if(0 == hash_table[key].count(w)): # avoid duplicates
-                hash_table[key].append(w)
-        else:
-            hash_table[key] = [w]
+        hash_table[key].add(w)
 
     print("done", file=sys.stderr)
     return hash_table
@@ -77,11 +74,11 @@ if __name__ == "__main__":
 
         def test_this_and_that(self):
             self.assert_(2 == len(self.fake_dict.keys()))
-            cat_hits = self.fake_dict[bag.Bag.fromstring("cat")]
+            cat_hits = sorted(self.fake_dict[bag.Bag.fromstring("cat")])
             self.assert_(2 == len(cat_hits))
             self.assert_(cat_hits[0] == "cat")
             self.assert_(cat_hits[1] == "tac")
             self.assert_(1 == len(self.fake_dict[bag.Bag.fromstring("fred")]))
-            self.assert_(self.fake_dict[bag.Bag.fromstring("fred")][0] == "fred")
+            self.assert_(list(self.fake_dict[bag.Bag.fromstring("fred")])[0] == "fred")
 
     unittest.main()
