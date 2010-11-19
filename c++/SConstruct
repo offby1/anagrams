@@ -2,6 +2,7 @@
 
 Program ('anagrams', 
          ['numeric-bag.cc', 'dict.cc', 'anagrams.cc'], 
+         #CXX="clang++",
          CXXFLAGS='-O2',
          #CXXFLAGS='-O2 -pg',
          #LINKFLAGS='-pg',
