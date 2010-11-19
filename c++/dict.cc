@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <stdexcept>
 #include <iostream>
 #include <fstream>
