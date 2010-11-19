@@ -34,7 +34,7 @@ def snarf_dictionary_from_IO(I):
         if not word_acceptable(w):
             continue
 
-        key = bag.Bag.fromstring(w)
+        key = bag.Bag(w)
         hash_table[key].add(w)
 
     print("done", file=sys.stderr)
@@ -74,11 +74,11 @@ if __name__ == "__main__":
 
         def test_this_and_that(self):
             self.assert_(2 == len(self.fake_dict.keys()))
-            cat_hits = sorted(self.fake_dict[bag.Bag.fromstring("cat")])
+            cat_hits = sorted(self.fake_dict[bag.Bag("cat")])
             self.assert_(2 == len(cat_hits))
             self.assert_(cat_hits[0] == "cat")
             self.assert_(cat_hits[1] == "tac")
-            self.assert_(1 == len(self.fake_dict[bag.Bag.fromstring("fred")]))
-            self.assert_(list(self.fake_dict[bag.Bag.fromstring("fred")])[0] == "fred")
+            self.assert_(1 == len(self.fake_dict[bag.Bag("fred")]))
+            self.assert_(list(self.fake_dict[bag.Bag("fred")])[0] == "fred")
 
     unittest.main()
