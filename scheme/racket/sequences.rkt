@@ -1,12 +1,10 @@
 #! /bin/sh
 #| Hey Emacs, this is -*-scheme-*- code!
-#$Id$
-exec  mzscheme -l errortrace --require "$0" --main -- ${1+"$@"}
+exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
 |#
 
-#lang scheme
-(require (planet schematics/schemeunit:3)
-         (planet schematics/schemeunit:3/text-ui))
+#lang racket
+(require rackunit rackunit/text-ui)
 
 (define (in-cdrs seq)
   (make-do-sequence

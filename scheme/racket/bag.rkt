@@ -1,12 +1,10 @@
 #! /bin/sh
 #| Hey Emacs, this is -*-scheme-*- code!
-#$Id: v4-script-template.ss 5748 2008-11-17 01:57:34Z erich $
-exec  mzscheme --require "$0" --main -- ${1+"$@"}
+exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
 |#
 
-#lang scheme
-(require (planet schematics/schemeunit:3)
-         (planet schematics/schemeunit:3/text-ui))
+#lang racket
+(require rackunit rackunit/text-ui)
 
 (provide bag subtract-bags bag-empty? bags=?)
 (define primes #(2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101))
