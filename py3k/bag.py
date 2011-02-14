@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.0
+#!/usr/bin/env python3
 
 import string
 import sys
@@ -39,7 +39,7 @@ class Bag(object):
 
 class WhatchaMaDingy(unittest.TestCase):
     def testAlWholeLottaStuff(self):
-        self.assert_(Bag("").empty())
+        self.assertTrue(Bag("").empty())
         self.assertFalse(Bag("a").empty())
         self.assertEqual(Bag("abc"),Bag("cba"))
         self.assertNotEqual(Bag("abc"), Bag("bc"))
