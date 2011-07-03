@@ -29,8 +29,8 @@ sub subtract($minuend, $subtrahend) {
     %diff;
 }
 
-is_deeply(bag_from_letters('abcdeaa'), {a=>3, b=>1, c=>1, d=>1, e=>1});
-is_deeply(bag_from_letters('AB!!!c') , {a=>1, b=>1, c=>1});
+is_deeply(bag_from_letters('abcdeaa'), bag_from_letters('aaabcde'));
+is_deeply(bag_from_letters('AB!!!c'), bag_from_letters('abc'));
 ok(bag_empty(bag_from_letters('')));
 nok(bag_empty(bag_from_letters('whoa nellie')));
 is_deeply(bag_from_letters('a '), bag_from_letters('a'));
