@@ -6,11 +6,11 @@ our @dict;
 
 # TODO -- figure out how to use FindBin, so as to make this work
 # regardless of the current directory.
-my $dict_file_name = "../../words.utf8";
+my $dict_file_name = '../../words.utf8';
 #my $dict_file_name = "words";
 
 sub acceptable (Str $word) returns Bool {
-  if ($word ~~ rx:perl5{[^[:alpha:]]}) {
+  if $word ~~ rx:perl5{[^[:alpha:]]} {
     return Bool::False ;
   }
 
