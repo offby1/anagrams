@@ -1,7 +1,7 @@
 use v6;
-use Test;
+module bag;
 
-sub bag_from_letters($letters) {
+sub bag_from_letters($letters) is export {
     my %bag;
     for $letters.split('') -> $l {
         my $lc = $l.lc;
@@ -10,11 +10,11 @@ sub bag_from_letters($letters) {
     %bag;
 }
 
-sub bag_empty($b) {
+sub bag_empty($b)  is export {
     return $b == {};
 }
 
-sub subtract($minuend, $subtrahend) {
+sub subtract($minuend, $subtrahend)  is export {
     my %diff = $minuend;
     for $subtrahend.keys -> $k {
         unless %diff{$k} { return; }
@@ -28,15 +28,3 @@ sub subtract($minuend, $subtrahend) {
     }
     %diff;
 }
-
-is_deeply(bag_from_letters('abcdeaa'), bag_from_letters('aaabcde'));
-is_deeply(bag_from_letters('AB!!!c'), bag_from_letters('abc'));
-ok(bag_empty(bag_from_letters('')));
-nok(bag_empty(bag_from_letters('whoa nellie')));
-is_deeply(bag_from_letters('a '), bag_from_letters('a'));
-is_deeply(bag_from_letters('abc'), bag_from_letters('cba'));
-
-is_deeply(subtract(bag_from_letters('abcd'), bag_from_letters('ab')), bag_from_letters('cd'));
-nok(subtract(bag_from_letters('ab'), bag_from_letters('abcd')));
-
-done;
