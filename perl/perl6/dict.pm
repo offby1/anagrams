@@ -37,24 +37,24 @@ sub snarf_wordlist {
   my $dict = open($dict_file_name, :r)
     or die "Can't open $dict_file_name for reading 'cuz $!; stopped";
 
-  print $*ERR: "Reading $dict_file_name ...";
+  warn "Reading $dict_file_name ...";
 
   my %dict_hash;
 
-  for ($dict.readline) -> $word {
+  for ($dict.lines) -> $word {
                                  my $chopped = lc (chomp($word));
                                  next unless (acceptable($chopped));
                                  my $bag = Bag::bag($chopped);
                                  %dict_hash{$bag}.push($chopped)
                                  unless $chopped eq any @(%dict_hash{$bag});
                                 };
-  print $*ERR: " done; dict_hash has %dict_hash.elems() elements\n";
+  warn " done; dict_hash has %dict_hash.elems() elements\n";
   close ($dict) or die "Closing $dict: $!";
   %dict_hash;
 }
 
 my $cache_file_name = "dict.cache";
-if ($cache_file_name ~~ :f) {
+if ($cache_file_name.IO ~~ :f) {
   @dict = open("dict.cache").slurp.eval(:lang<yaml>);
   say "Slurped $cache_file_name";
 } else {
