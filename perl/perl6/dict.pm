@@ -10,7 +10,7 @@ my $dict_file_name = '../../words.utf8';
 #my $dict_file_name = "words";
 
 sub acceptable (Str $word) returns Bool {
-  if $word ~~ rx:perl5{[^[:alpha:]]} {
+  if $word ~~ m{<-alpha>} {
     return Bool::False ;
   }
 
@@ -26,7 +26,7 @@ sub acceptable (Str $word) returns Bool {
     return Bool::False ;
   }
 
-  if ($word ~~ rx:perl5{[aeiouy]}) {
+  if ($word ~~ m{<[aeiouy]>}) {
     return Bool::True ;
   }
 
