@@ -22,4 +22,4 @@ sub bag_from_letters($letters) {
 }
 
 ok(bag_from_letters('abcdeaa') eqv bag_from_letters('aaabcde'));
-is_deeply(bag_from_letters('abcdeaa'), bag_from_letters('aaabcde'));
+is_deeply(bag_from_letters('abcdeaa').letters, bag_from_letters('aaabcde').letters);
