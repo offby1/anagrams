@@ -6,8 +6,8 @@ our @dict;
 
 # TODO -- figure out how to use FindBin, so as to make this work
 # regardless of the current directory.
-my $dict_file_name = '../../words.utf8';
-#my $dict_file_name = "words";
+#my $dict_file_name = '../../words.utf8';
+my $dict_file_name = "words";
 
 sub acceptable (Str $word) returns Bool {
   if $word ~~ m{<-alpha>} {
@@ -44,7 +44,7 @@ sub snarf_wordlist {
   for ($dict.lines) -> $word {
                                  my $chopped = lc (chomp($word));
                                  next unless (acceptable($chopped));
-                                 my $bag = Bag::bag($chopped);
+                                 my $bag = bag::bag_from_letters($chopped);
                                  %dict_hash{$bag}.push($chopped)
                                  unless $chopped eq any @(%dict_hash{$bag});
                                 };
