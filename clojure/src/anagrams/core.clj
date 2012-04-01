@@ -18,8 +18,9 @@
        (< 1 (count w))
        )))
 
-;; TODO -- don't hard-code this
-(def dict-fn "/usr/local/src/anagrams/words.utf8")
+;; FIXME -- make this a resource bundled into the uberjar
+(def dict-fn (str "/usr/share/dict/words"))
+
 (def all-english-words  (filter word-acceptable? (map su/lower-case (re-split #"\n" (slurp dict-fn)))))
 
 (def primes [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101])
@@ -86,9 +87,10 @@
            (rest dict))))))
   (is (= '(("GOD") ("dog")) (aai (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
 
-(if (not (seq *command-line-args*))
-  (run-tests)
-  (let [result (aai (bag (apply str *command-line-args*)) dict)]
-    (printf "%d anagrams of %s\n" (count result) *command-line-args*)
-    (doseq [an result]
-      [(printf "%s\n" an)])))
+(defn -main [& args]
+  (if (not (seq args))
+    (run-tests)
+    (let [result (aai (bag (apply str args)) dict)]
+      (printf "%d anagrams of %s\n" (count result) args)
+      (doseq [an result]
+        [(printf "%s\n" an)]))))

@@ -2,21 +2,16 @@
 
 Display anagrams of a given phrase.
 
-## Usage
+## Building
 
-$ clj -Xmx1g ./src/anagrams/core.clj "yo ho ho"
+$ lein uberjar
+
+## Running
+
+$ lein run "yo ho ho"
 
 Note that
 
-$ clj anagrams.jar "Your Mother Wears Army Boots"
+$ lein run "Your Mother Wears Army Boots"
 
 yields an ugly exception.  Quoth technomancy: "command-line launching is definitely a weak point of clojure"
-
-## Installation
-
-Not applicable.
-
-## License
-
-Wot eva.
-
