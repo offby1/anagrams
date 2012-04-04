@@ -21,8 +21,6 @@
 ;; FIXME -- make this a resource bundled into the uberjar
 (def dict-fn (str "/usr/share/dict/words"))
 
-(def all-english-words  (filter word-acceptable? (map su/lower-case (re-split #"\n" (slurp dict-fn)))))
-
 (def primes [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101])
 (defn bag [w]
   (apply * (map #(get primes (- (int %) (int \a)) 1) (su/lower-case w))))
@@ -48,7 +46,8 @@
   (is (= '([5593 #{"dog"}] [710 #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
   )
 
-(def dict (dict-from-strings all-english-words))
+(defn dict []
+  (dict-from-strings (filter word-acceptable? (map su/lower-case (re-split #"\n" (slurp dict-fn))))))
 
 (defn combine [words anagrams]
   (apply concat (map (fn [word]
@@ -90,7 +89,7 @@
 (defn -main [& args]
   (if (not (seq args))
     (run-tests)
-    (let [result (aai (bag (apply str args)) dict)]
+    (let [result (aai (bag (apply str args)) (dict))]
       (printf "%d anagrams of %s\n" (count result) args)
       (doseq [an result]
         [(printf "%s\n" an)]))))
