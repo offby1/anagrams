@@ -1,5 +1,5 @@
-(ns anagrams.core-test
-  (:use [anagrams.core] :reload-all)
+(ns anagrams.test.core
+  (:use [anagrams.core])
   (:use [clojure.test]))
 
 (deftest accurate
