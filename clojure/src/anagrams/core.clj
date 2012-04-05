@@ -1,7 +1,7 @@
 (ns anagrams.core
-(:use [clojure.contrib.str-utils])
-  (:require [clojure.contrib.str-utils2 :as su])
-  (:use [clojure.test]))
+(:use [clojure.set :only (union)])
+(:use [clojure.string :only (lower-case split)])
+(:use [clojure.test]))
 
 (defn contains-vowel? [w]
   (re-find #"[aeiouy]" w))
@@ -23,14 +23,14 @@
 
 (def primes [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101])
 (defn bag [w]
-  (apply * (map #(get primes (- (int %) (int \a)) 1) (su/lower-case w))))
+  (apply * 1M (map #(get primes (- (int %) (int \a)) 1) (clojure.string/lower-case w))))
 
 (defn subtract-bags [top bot]
   (and (zero? (rem top bot))
        (quot top bot)))
 
 (defn bag-empty? [b]
-  (= b 1))
+  (== b 1))
 
 (with-test
   (defn dict-from-strings [words]
@@ -43,11 +43,17 @@
        (hash-map)
        words))))
 
-  (is (= '([5593 #{"dog"}] [710 #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
+  (is (= '([5593M #{"dog"}] [710M #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
   )
+(test #'dict-from-strings)
 
 (defn dict []
-  (dict-from-strings (filter word-acceptable? (map su/lower-case (re-split #"\n" (slurp dict-fn))))))
+  (dict-from-strings
+   (filter
+    word-acceptable?
+    (map clojure.string/lower-case
+         (clojure.string/split (slurp dict-fn)
+                               #"\n")))))
 
 (defn combine [words anagrams]
   (apply concat (map (fn [word]
@@ -85,6 +91,7 @@
 
            (rest dict))))))
   (is (= '(("GOD") ("dog")) (aai (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
+(test #'aai)
 
 (defn -main [& args]
   (if (not (seq args))
