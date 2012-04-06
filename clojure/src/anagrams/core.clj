@@ -38,12 +38,14 @@
 (test #'dict-from-strings)
 
 (defn dict []
-  (dict-from-strings
-   (filter
-    word-acceptable?
-    (map clojure.string/lower-case
-         (clojure.string/split (slurp dict-fn)
-                               #"\n")))))
+  (time
+   (dict-from-strings
+    (time
+     (filter
+      word-acceptable?
+      (map clojure.string/lower-case
+           (clojure.string/split (time (slurp dict-fn))
+                                 #"\n")))))))
 
 (defn combine [words anagrams]
   (apply concat (map (fn [word]
@@ -84,7 +86,7 @@
 (test #'anagrams-internal)
 
 (defn -main [& args]
-  (let [result (anagrams-internal (bag (apply str args)) (dict))]
+  (let [result (anagrams-internal (bag (apply str args))  (dict))]
     (printf "%d anagrams of %s\n" (count result) args)
     (doseq [an result]
       [(printf "%s\n" an)])))
