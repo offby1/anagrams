@@ -94,9 +94,7 @@
 (test #'aai)
 
 (defn -main [& args]
-  (if (not (seq args))
-    (run-tests)
-    (let [result (aai (bag (apply str args)) (dict))]
-      (printf "%d anagrams of %s\n" (count result) args)
-      (doseq [an result]
-        [(printf "%s\n" an)]))))
+  (let [result (aai (bag (apply str args)) (dict))]
+    (printf "%d anagrams of %s\n" (count result) args)
+    (doseq [an result]
+      [(printf "%s\n" an)])))
