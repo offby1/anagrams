@@ -1,5 +1,6 @@
 (ns anagrams.test.core
   (:use [anagrams.core])
+  (:use [anagrams.bag])
   (:use [clojure.test]))
 
 (deftest accurate

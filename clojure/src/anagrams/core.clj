@@ -1,7 +1,8 @@
 (ns anagrams.core
 (:use [clojure.set :only (union)])
 (:use [clojure.string :only (lower-case split)])
-(:use [clojure.test]))
+(:use [clojure.test])
+(:use [anagrams.bag :only (bag subtract-bags bag-empty?)]))
 
 (defn contains-vowel? [w]
   (re-find #"[aeiouy]" w))
@@ -20,17 +21,6 @@
 
 ;; FIXME -- make this a resource bundled into the uberjar
 (def dict-fn (str "/usr/share/dict/words"))
-
-(def primes [2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97 101])
-(defn bag [w]
-  (apply * 1M (map #(get primes (- (int %) (int \a)) 1) (clojure.string/lower-case w))))
-
-(defn subtract-bags [top bot]
-  (and (zero? (rem top bot))
-       (quot top bot)))
-
-(defn bag-empty? [b]
-  (== b 1))
 
 (with-test
   (defn dict-from-strings [words]
