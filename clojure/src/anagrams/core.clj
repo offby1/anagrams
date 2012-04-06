@@ -53,7 +53,7 @@
                      words)))
 
 (with-test
-  (defn aai [bag dict]
+  (defn anagrams-internal [bag dict]
     (loop [rv '()
            dict dict]
       (if (not (seq dict))
@@ -69,7 +69,7 @@
                 (map list words)
                 (combine
                  words
-                 (aai
+                 (anagrams-internal
                   smaller-bag
                   (filter
                    (fn [entry]
@@ -80,11 +80,11 @@
               rv))
 
            (rest dict))))))
-  (is (= '(("GOD") ("dog")) (aai (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
-(test #'aai)
+  (is (= '(("GOD") ("dog")) (anagrams-internal (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
+(test #'anagrams-internal)
 
 (defn -main [& args]
-  (let [result (aai (bag (apply str args)) (dict))]
+  (let [result (anagrams-internal (bag (apply str args)) (dict))]
     (printf "%d anagrams of %s\n" (count result) args)
     (doseq [an result]
       [(printf "%s\n" an)])))
