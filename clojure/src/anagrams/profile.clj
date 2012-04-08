@@ -97,7 +97,7 @@ profiling code."}  *enable-profiling* true)
   "Prints a table of the results returned by summarize."
   [profile-summary]
   (let [name-width (apply max 1 (map (comp count name) (keys profile-summary)))
-        fmt-string (str "%" name-width "s  %8d  %8d  %8d  %8d  %8d%n")]
+        fmt-string (str "%" name-width "s  %16d  %16d  %16d  %16d  %16d%n")]
     (printf (.replace fmt-string \d \s)
             "Name" "mean" "min" "max" "count" "sum")
     (doseq [k (sort (keys profile-summary))]
