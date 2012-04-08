@@ -2,7 +2,8 @@
 (:use [clojure.set :only (union)])
 (:use [clojure.string :only (lower-case split)])
 (:use [clojure.test])
-(:use [anagrams.bag :only (bag subtract-bags bag-empty?)]))
+(:use [anagrams.bag :only (bag subtract-bags bag-empty?)])
+(:use [anagrams.profile :only (profile prof)]))
 
 (defn contains-vowel? [w]
   (re-find #"[aeiouy]" w))
@@ -11,13 +12,14 @@
   (re-find #"[^a-z]" w))
 
 (defn word-acceptable? [w]
-  (and
-   (contains-vowel? w)
-   (not (contains-non-letter? w))
-   (or (= w "i")
-       (= w "a")
-       (< 1 (count w))
-       )))
+  (prof :word-acceptable?
+        (and
+         (contains-vowel? w)
+         (not (contains-non-letter? w))
+         (or (= w "i")
+             (= w "a")
+             (< 1 (count w))
+             ))))
 
 ;; FIXME -- make this a resource bundled into the uberjar
 (def dict-fn (str "/usr/share/dict/words"))
@@ -38,13 +40,13 @@
 (test #'dict-from-strings)
 
 (defn dict []
-  (time
+  (prof :dict-from-strings
    (dict-from-strings
-    (time
+    (prof :filter
      (filter
       word-acceptable?
       (map clojure.string/lower-case
-           (clojure.string/split (time (slurp dict-fn))
+           (clojure.string/split (prof :slurp (slurp dict-fn))
                                  #"\n")))))))
 
 (defn combine [words anagrams]
@@ -86,7 +88,8 @@
 (test #'anagrams-internal)
 
 (defn -main [& args]
-  (let [result (anagrams-internal (bag (apply str args))  (dict))]
-    (printf "%d anagrams of %s\n" (count result) args)
-    (doseq [an result]
-      [(printf "%s\n" an)])))
+  (profile
+   (let [result (anagrams-internal (bag (apply str args))  (dict))]
+     (printf "%d anagrams of %s\n" (count result) args)
+     (doseq [an result]
+       [(printf "%s\n" an)]))))
