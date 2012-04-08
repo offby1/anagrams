@@ -52,9 +52,9 @@ profiling code."}  *enable-profiling* true)
   (assert (keyword? name))
   (if *enable-profiling*
     `(if *profile-data*
-       (let [start-time# (System/nanoTime)
+       (let [start-time# (* 1M (System/nanoTime))
              value# (do ~@body)
-             elapsed# (- (System/nanoTime) start-time#)]
+             elapsed# (- (* 1M (System/nanoTime)) start-time#)]
          (swap! *profile-data* assoc ~name
                 (conj (get @*profile-data* ~name) elapsed#))
          value#)
@@ -86,7 +86,7 @@ profiling code."}  *enable-profiling* true)
   (reduce (fn [m [k v]]
             (let [cnt (count v)
                   sum (reduce + v)]
-              (assoc m k {:mean (int (/ sum cnt))
+              (assoc m k {:mean (bigint (/ sum cnt))
                           :min (apply min v)
                           :max (apply max v)
                           :count cnt
@@ -102,7 +102,12 @@ profiling code."}  *enable-profiling* true)
             "Name" "mean" "min" "max" "count" "sum")
     (doseq [k (sort (keys profile-summary))]
       (let [v (get profile-summary k)]
-        (printf fmt-string (name k) (:mean v) (:min v) (:max v) (:count v) (:sum v))))))
+        (printf fmt-string (name k)
+                (biginteger (:mean v))
+                (biginteger (:min v))
+                (biginteger (:max v))
+                (biginteger (:count v))
+                (biginteger (:sum v)))))))
 
 (defmacro profile
   "Runs body with profiling enabled, then prints a summary of
