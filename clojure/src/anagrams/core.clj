@@ -31,7 +31,7 @@
       first
       (reduce
        (fn [acc elt]
-         (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %)))
+         (prof :update-in (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %))))
        (hash-map)
        words))))
 
@@ -40,14 +40,12 @@
 (test #'dict-from-strings)
 
 (defn dict []
-  (prof :dict-from-strings
-   (dict-from-strings
-    (prof :filter
-     (filter
-      word-acceptable?
-      (map clojure.string/lower-case
-           (clojure.string/split (prof :slurp (slurp dict-fn))
-                                 #"\n")))))))
+  (dict-from-strings
+   (filter
+    word-acceptable?
+    (map clojure.string/lower-case
+         (clojure.string/split (slurp dict-fn)
+                               #"\n")))))
 
 (defn combine [words anagrams]
   (apply concat (map (fn [word]
@@ -89,7 +87,9 @@
 
 (defn -main [& args]
   (profile
-   (let [result (anagrams-internal (bag (apply str args))  (dict))]
-     (printf "%d anagrams of %s\n" (count result) args)
-     (doseq [an result]
-       [(printf "%s\n" an)]))))
+   (let [d (dict)]
+        ;; [result (anagrams-internal (bag (apply str args))  )]
+     ;; (printf "%d anagrams of %s\n" (count result) args)
+     ;; (doseq [an result]
+     ;;   [(printf "%s\n" an)])
+     (printf "Just reading in the dictionary is slow!\n"))))
