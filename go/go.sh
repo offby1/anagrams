@@ -5,9 +5,9 @@ set -e
 # Oddly, order matters here
 for i in bag main
 do
-    8g ${i}.go
+    6g ${i}.go
 done
 
-8l *.8
+6l main.6
 
-./8.out
+./6.out

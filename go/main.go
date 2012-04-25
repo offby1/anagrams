@@ -5,5 +5,5 @@ import ("fmt";
 
 func main () {
      fmt.Printf ("Yay\n");
-     bag.Snot ()
+     bag.LetterToPrime ('x')
      }
