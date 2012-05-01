@@ -12,30 +12,30 @@ exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
 
 (provide init)
 
+;; Creates a function named FUNCTION-NAME that applies
+;; INPUT-PORT-CONSUMER to an input port derived from its lone
+;; argument.  If that argument is already an input port, it just uses
+;; it unchanged; if it's a string or a path, then it opens the port in
+;; the obvious way (and closes it when it's done).
+(define-syntax-rule (define-flexible-reader function-name input-port-consumer)
+  (define function-name
+    (match-lambda
+     [(? string? input-file-name)
+      (function-name (build-path input-file-name))]
+     [(? path? input-path)
+      (call-with-input-file input-path function-name)]
+     [(? input-port? inp)
+      (input-port-consumer inp)])))
+
 ;; Takes either a file name, or an input port.  This makes testing easier.
-(define wordlist->hash
-  (match-lambda
-
-   [(? string? inp)
-    (wordlist->hash (build-path inp))]
-
-   [(? path? inp)
-    (fprintf (current-error-port) "Reading dictionary ~s ... " inp)
-
-    (let ((dict (call-with-input-file inp wordlist->hash)))
-
-      (fprintf (current-error-port) "done; ~s words, ~a distinct bags~%"
-               (length (apply append (map cdr (hash-map dict cons))))
-               (hash-count dict))
-      dict)]
-
-   [(? input-port? inp)
+(define-flexible-reader wordlist->hash
+  (lambda (inp)
     (for/fold ([dict (make-immutable-hash '())])
         ([word (in-lines inp)])
         (let ((word (string-downcase word)))
           (if (word-acceptable? word)
               (adjoin-word dict word)
-              dict)))]))
+              dict)))))
 
 (define (adjoin-word dict word)
   (hash-update
