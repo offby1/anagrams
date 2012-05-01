@@ -7,7 +7,7 @@ exec racket --require "$0" --main -- ${1+"$@"}
 
 (require (except-in "dict.rkt" main)
          (except-in "bag.rkt" main)
-         (except-in "sequences.ss" main)
+         (except-in "sequences.rkt" main)
          (lib "etc.ss"))
 
 (provide all-anagrams)
@@ -55,18 +55,19 @@ list of anagrams, each of which begins with one of the WORDS."
 (provide main)
 
 (define (main . args)
-  (let* ((in (car args))
+  (let* ((in (apply string-append args))
          (results (all-anagrams
                    in
                    (build-path (this-expression-source-directory) 'up 'up "words")
                    )))
     (fprintf (current-error-port) "~a anagrams of ~s~%" (length results) in)
 
-    ;; disabled for the time being, since it takes a fair amount of
-    ;; time, but I'm only interested in measuring the time taken by
-    ;; the main computation above
+    (when #f
+      ;; disabled for the time being, since it takes a fair amount of
+      ;; time, but I'm only interested in measuring the time taken by
+      ;; the main computation above
 
-    (for ([an (in-list (sort results > #:key length))])
-      (display an)
-      (newline))
+      (for ([an (in-list (sort results > #:key length))])
+        (display an)
+        (newline)))
     ))
