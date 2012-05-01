@@ -1,0 +1,19 @@
+The only way I've found to profile this code is to use "profile.clj"
+that I grabbed from somewhere or other.  Here are some problems with
+that:
+
+* I had to hack up the code to get it to work at all.  (I suspect it
+  worked OK on earlier versions of Clojure.)
+
+* It only reports its data once the program has finished; it'd be nice
+  if I could interrupt the program (since it is, after all, really
+  slow) to get a report of what it'd learned so far.
+
+* It provides just very basic info: I need to insert "probes" into my
+  code, and it will tell me how many times those probes were called,
+  and how long the calls took (min, max, and mean).  That's something;
+  but I haven't yet figured out where to put probes to actually
+  understand what's going on.  Other languages have tools that
+  periodically sample the stack, and their reports display stack
+  traces, so you can see not just how many times a particular bit of
+  code was called, but also who called it (and who it called).
