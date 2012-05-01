@@ -21,9 +21,8 @@ exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
 (define (bag s)
   "Return an object that describes all the letters in S, without
 regard to order."
-  (for/fold ([product 1])
-      ([ch (in-string s)])
-      (* product (char->factor ch))))
+  (for/product ([ch (in-string s)])
+               (char->factor ch)))
 
 (define (subtract-bags b1 b2)
   (let ((quotient (/ b1 b2)))
