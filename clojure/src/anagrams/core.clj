@@ -66,6 +66,10 @@
           (recur
            (if (not smaller-bag)
              rv
+
+             ;; TODO -- Kevin from Seajure suggests that this is
+             ;; inefficient, and it'd be better to produce a lazy
+             ;; sequence.
              (concat
               (if (bag-empty? smaller-bag)
                 (map list words)
