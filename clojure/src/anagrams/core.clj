@@ -54,44 +54,36 @@
                             anagrams))
                      words)))
 
+(defn filter-dict [bag dict]
+  (filter
+   (fn [entry]
+     (subtract-bags
+      bag
+      (first entry)))
+   dict))
+
 (with-test
-  (defn anagrams-internal [bag dict]
-    (loop [rv '()
-           dict dict]
-      (if (not (seq dict))
-        rv
-        (let [key (first (first dict))
-              words (second (first dict))
-              smaller-bag (subtract-bags bag key)]
-          (recur
-           (if (not smaller-bag)
-             rv
+  (defn anagrams [bag dict]
+    (if (bag-empty? bag) [[]]
+        (let [filtered-dict (filter-dict bag dict)]
+          (if (empty? filtered-dict) :no-result
+              (for [[key words] filtered-dict
+                    :let [smaller-bag (subtract-bags bag key),
+                          anagrams-remainder (anagrams smaller-bag filtered-dict)]
+                    :when (not= anagrams-remainder :no-result)
+                    word words,
+                    an anagrams-remainder]
+                (cons word an))))))
+  (is (= '(("GOD") ("dog")) (anagrams (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
 
-             ;; TODO -- Kevin from Seajure suggests that this is
-             ;; inefficient, and it'd be better to produce a lazy
-             ;; sequence.
-             (concat
-              (if (bag-empty? smaller-bag)
-                (map list words)
-                (combine
-                 words
-                 (anagrams-internal
-                  smaller-bag
-                  (filter
-                   (fn [entry]
-                     (subtract-bags
-                      smaller-bag
-                      (first entry)))
-                   dict))))
-              rv))
-
-           (rest dict))))))
-  (is (= '(("GOD") ("dog")) (anagrams-internal (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
-(test #'anagrams-internal)
+(test #'anagrams)
 
 (defn -main [& args]
   (profile
    (let [d (dict)
-         result (anagrams-internal (bag (apply str args)) d)]
-     (printf "%d anagrams of %s\n" (count result) args)
+         result (anagrams (bag (apply str args)) d)]
+
+     (doseq [an (take 15 result)]
+       [(printf "%s\n" an)])
+
      (printf "Just reading in the dictionary is slow!\n"))))
