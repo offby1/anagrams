@@ -49,3 +49,5 @@ not worth the effort).  Let's go shopping.
 
 They're practically the same, except the former draws stuff in a
 window, whereas the latter just returns a list of stuff.
+** "CoreLogic".  Some kinda weird varient of Clojure.
+Suggested by Kevin-from-Seajure.
