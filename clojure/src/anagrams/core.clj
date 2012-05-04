@@ -87,9 +87,7 @@
 
 (defn -main [& args]
   (profile
-   (let [d (dict)]
-        ;; [result (anagrams-internal (bag (apply str args))  )]
-     ;; (printf "%d anagrams of %s\n" (count result) args)
-     ;; (doseq [an result]
-     ;;   [(printf "%s\n" an)])
+   (let [d (dict)
+         result (anagrams-internal (bag (apply str args)) d)]
+     (printf "%d anagrams of %s\n" (count result) args)
      (printf "Just reading in the dictionary is slow!\n"))))
