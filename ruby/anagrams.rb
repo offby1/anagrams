@@ -12,7 +12,7 @@ opts.each do |opt, arg|
   dict_filename = arg
 end
 
-The_Bag = Bag.new(ARGV[0])
+The_Bag = Bag.new(ARGV[0] || "")
 the_dict = Read(dict_filename)
 
 def combine(words, anagrams)
