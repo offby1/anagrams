@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'dict'
 require 'bag'
 require 'getoptlong'
@@ -31,9 +33,8 @@ def anagrams(bag, dict)
   rv = []
   (0..(dict.size - 1)).each {
     |words_processed|
-    entry = dict[words_processed]
-    key = entry[0]
-    words = entry[1]
+    key, words = dict[words_processed]
+
     smaller_bag = bag - key
     next if (not smaller_bag)
     if (smaller_bag.empty)
