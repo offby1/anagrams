@@ -13,7 +13,7 @@ def Read(fn)
     end
 
   rescue Errno::ENOENT
-    the_hash = {}
+    the_hash = Hash.new { |hash, k| hash[k] = [] }
     File.open(fn, "r") do |aFile|
       printf "Snarfing #{fn} ..."
       $stdout.flush
@@ -28,11 +28,7 @@ def Read(fn)
         next if !long_enough_re.match(aLine)
 
         b = Bag.new(aLine)
-        if (the_hash.has_key?(b))
-          the_hash[b] = the_hash[b] | [aLine]     # avoid duplicates
-        else
-          the_hash[b] = [aLine]
-        end
+        the_hash[b] = the_hash[b] | [aLine]     # avoid duplicates
       end
     end
     File.open("dict.cache", "w") do |aCache|
