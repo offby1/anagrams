@@ -19,39 +19,37 @@ the_dict = Read(dict_filename)
 
 def combine(words, anagrams)
   rv = []
-  words.each {
-    |w|
-    anagrams.each {
+  words.each do |w|
+    anagrams.each do
       |a|
       rv.push([w] + a)
-    }
-  }
+    end
+  end
   rv
 end
 
 def anagrams(bag, dict)
   rv = []
-  (0..(dict.size - 1)).each {
-    |words_processed|
+  (0..(dict.size - 1)).each do |words_processed|
     key, words = dict[words_processed]
 
     smaller_bag = bag - key
     next if (not smaller_bag)
     if (smaller_bag.empty)
-      words.each {
-        |w|
+      words.each do |w|
         rv.push([w])
-      }
+      end
     else
       from_smaller_bag = anagrams(smaller_bag,
-                                  dict[words_processed..dict.size() - 1].select {|entry| smaller_bag - entry[0]})
+                                  dict[words_processed..dict.size() - 1].select do |entry|
+                                    smaller_bag - entry[0]
+                                  end)
       next if (0 == from_smaller_bag.size)
-      combine(words, from_smaller_bag).each {
-        |new|
+      combine(words, from_smaller_bag).each do |new|
         rv.push(new)
-      }
+      end
     end
-  }
+  end
   rv
 end
 
@@ -61,15 +59,11 @@ puts "#{result.size} anagrams of #{ARGV[0]}"
 
 puts "("
 
-result.each {
-  |a|
+result.each do |a|
 
-  a.each {
-    |words|
-
+  a.each do |words|
     printf words.inspect
-
-  }
+  end
   puts ""
-}
+end
 puts ")"

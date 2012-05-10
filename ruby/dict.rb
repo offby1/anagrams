@@ -36,10 +36,9 @@ def Read(fn)
       end
     end
     File.open("dict.cache", "w") do |aCache|
-      the_hash.each {
-        | bag, words |
+      the_hash.each do | bag, words |
         the_list.push([bag, words])
-      }
+      end
       # Sort biggest first; that makes things faster for some reason
       puts the_list[0]
       the_list.sort! {|a, b| b[0] <=> a[0]}

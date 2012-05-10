@@ -6,14 +6,15 @@ class Bag
     product  <=> anOther.product
   end
 
+  attr_reader :product
+
   def initialize (str)
     @product = 1
-    str.downcase().each_byte {
-      |b|
+    str.downcase().each_byte do |b|
       if (b >= ?a and b <= ?z)
         @product *= Primes[b - ?a]
       end
-    }
+    end
   end
 
   def hash
@@ -40,10 +41,6 @@ class Bag
       p.product = @product / other.product
       p
     end
-  end
-
-  def product
-    @product
   end
 
   protected
