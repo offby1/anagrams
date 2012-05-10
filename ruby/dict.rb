@@ -24,8 +24,8 @@ def Read(fn)
         aLine.chomp!()
         aLine.downcase!()
         next if has_a_non_letter_re.match(aLine)
-        next if !has_a_vowel_re.match(aLine)
-        next if !long_enough_re.match(aLine)
+        next unless has_a_vowel_re.match(aLine)
+        next unless long_enough_re.match(aLine)
 
         b = Bag.new(aLine)
         the_hash[b] = the_hash[b] | [aLine]     # avoid duplicates
