@@ -1,4 +1,4 @@
-require 'bag'
+require './bag'
 
 # First snarf the dictionary and do as much pre-processing as we can
 

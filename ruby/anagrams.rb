@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
-require 'dict'
-require 'bag'
+require './dict'
+require './bag'
 require 'getoptlong'
 
 dict_filename = "../words.utf8"

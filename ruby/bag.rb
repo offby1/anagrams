@@ -11,8 +11,8 @@ class Bag
   def initialize (str)
     @product = 1
     str.downcase().each_byte do |b|
-      if (b >= ?a and b <= ?z)
-        @product *= Primes[b - ?a]
+      if (b >= ?a.ord and b <= ?z.ord)
+        @product *= Primes[b - ?a.ord]
       end
     end
   end
