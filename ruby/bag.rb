@@ -8,7 +8,7 @@ class Bag
 
   attr_reader :product
 
-  def initialize (str)
+  def initialize(str)
     @product = 1
     str.downcase().each_byte do |b|
       if (b >= ?a.ord and b <= ?z.ord)
@@ -34,13 +34,13 @@ class Bag
   end
 
   def -(other)
-    if(@product % other.product != 0)
-      nil
-    else
-      p = Bag.new("")
-      p.product = @product / other.product
-      p
-    end
+    q, r = @product.divmod(other.product)
+    return nil if r > 0
+
+    p = Bag.new("")
+    p.product = q
+
+    p
   end
 
   protected
