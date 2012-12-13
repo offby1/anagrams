@@ -9,3 +9,5 @@ authoritative -- are at http://perlcabal.org/syn/
 I've heard that the official definition of Perl 6 will be: any program
 that passes the "spec tests".  And those tests live at
 https://github.com/perl6/roast.
+
+A blog post about Bags and Sets in Perl6: http://perl6advent.wordpress.com/2012/12/13/day-13-bags-and-sets/
