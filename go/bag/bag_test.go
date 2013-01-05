@@ -28,7 +28,7 @@ func TestWordsToBags(t *testing.T) {
 		TestCase{"acat", 1420},
 	}
 	for _, c := range cases {
-		var actual Bag = WordToBag(c.Input)
+		actual := WordToBag(c.Input)
 		if actual != c.ExpectedOutput {
 			t.Errorf("For word '%s', got %d but expected %d",
 				c.Input,
