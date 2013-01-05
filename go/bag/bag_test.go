@@ -24,6 +24,7 @@ func TestWordsToBags(t *testing.T) {
 	var cases = []TestCase{
 		TestCase{"", 1},
 		TestCase{"cat", 710},
+		TestCase{"CAT", 710},
 		TestCase{"tac", 710},
 		TestCase{"acat", 1420},
 	}
