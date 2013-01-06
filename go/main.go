@@ -6,6 +6,11 @@ import (
 )
 
 func main() {
-	fmt.Printf("Yay\n")
-	bag.LetterToPrime('x')
+	strings := []string{"Hooray", "cat", "My dog has fleas"}
+
+	for _, w := range strings {
+		fmt.Printf("%s:\t%d\n",
+			w,
+			bag.WordToBag(w))
+	}
 }

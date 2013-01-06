@@ -53,6 +53,8 @@ func TestSubtraction(t *testing.T) {
 		TestCase{"", "", 1, false},
 		TestCase{"a", "", WordToBag("a"), false},
 		TestCase{"", "a", Bag(1), true},
+		TestCase{"cat", "a", WordToBag("ct"), false},
+		TestCase{"caat", "a", WordToBag("cat"), false},
 	}
 
 	for _, c := range cases {
