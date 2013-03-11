@@ -1,0 +1,11 @@
+How to build an executable:
+
+$ go build
+
+$ go clean # works too
+
+How to run tests:
+
+$ (cd bag; go test)
+
+That's probably not the Right Way™ but it's the only way I've found.
