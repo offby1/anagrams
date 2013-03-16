@@ -1,4 +1,4 @@
-package bag
+package anagrams
 
 import "testing"
 import "math/big"

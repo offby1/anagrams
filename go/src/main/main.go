@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./bag"
+	"anagrams"
 	"fmt"
 )
 
@@ -11,6 +11,6 @@ func main() {
 	for _, w := range strings {
 		fmt.Printf("%s:\t%d\n",
 			w,
-			bag.WordToBag(w))
+			anagrams.WordToBag(w))
 	}
 }
