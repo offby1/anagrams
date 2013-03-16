@@ -47,12 +47,10 @@
          (clojure.string/split (slurp dict-fn)
                                #"\n")))))
 
+;; Suggested by "amalloy", April 2012
 (defn combine [words anagrams]
-  (apply concat (map (fn [word]
-                       (map (fn [an]
-                              (cons word an))
-                            anagrams))
-                     words)))
+  (for [word words, anagram anagrams]
+    (cons word anagram)))
 
 (defn filter-dict [bag dict]
   (filter

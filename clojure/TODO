@@ -1,2 +1,0 @@
-<amalloy> btw, just browsing through this code, combine could be a lot simpler: (defn combine [words anagrams]   
-(for [word words, anagram anagrams] (cons wod anagram)))
