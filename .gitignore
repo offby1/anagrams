@@ -6,3 +6,4 @@ scheme/plt-v4/Ernest Hemingway
 scheme/plt-v4/compiled
 /go/bin/main
 /go/pkg/linux_386/anagrams.a
+/clojure/target/stale/extract-native.dependencies

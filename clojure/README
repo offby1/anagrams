@@ -10,8 +10,10 @@ $ lein uberjar
 
 $ lein run "yo ho ho"
 
-Note that
+Note that, back in March 2012,
 
 $ lein run "Your Mother Wears Army Boots"
 
-yields an ugly exception.  Quoth technomancy: "command-line launching is definitely a weak point of clojure"
+yielded an ugly exception.  Quoth technomancy: "command-line launching is definitely a weak point of clojure".
+
+However, as of March 2013, it seems to work just fine!
