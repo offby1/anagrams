@@ -83,6 +83,8 @@ func word_acceptable(s string) bool {
 }
 
 func snarfdict(reader *bufio.Reader) (DictMap, error) {
+	log.Printf("Reading dictionary ... ")
+
 	accum := make(DictMap, 50000)
 
 	for {
@@ -112,6 +114,7 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 		words[word] = 1
 	}
 
+	log.Printf("Reading dictionary ... done")
 	return accum, nil
 }
 
