@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -41,6 +42,46 @@ func SnarfDict(input_file_name string) (DictSlice, error) {
 	return dictmap_to_slice(dm), nil
 }
 
+func word_acceptable(s string) bool {
+	// return true if and only if:
+
+	// the word contains a vowel;
+	matched, error := regexp.MatchString("[aeiouy]", s)
+	if error != nil {
+		log.Fatal(error)
+	}
+	if !matched {
+		//log.Printf("%s isn't acceptable because it has no vowel", s)
+		return false
+	}
+
+	// the word does not contain a non-letter;
+	matched, error = regexp.MatchString("[^a-z]", s)
+	if error != nil {
+		log.Fatal(error)
+	}
+	if matched {
+		//log.Printf("%s isn't acceptable because it has a non-letter", s)
+		return false
+	}
+
+	// the word is either "i", "a", or has two or more letters.
+	if s == "i" {
+		return true
+	}
+
+	if s == "a" {
+		return true
+	}
+
+	if len(s) > 1 {
+		return true
+	}
+
+	//log.Printf("%s isn't acceptable because it is too short", s)
+	return false
+}
+
 func snarfdict(reader *bufio.Reader) (DictMap, error) {
 	accum := make(DictMap, 50000)
 
@@ -52,6 +93,10 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 		}
 
 		word = strings.ToLower(strings.TrimSpace(word))
+
+		if !word_acceptable(word) {
+			continue
+		}
 
 		// Unfortunatley, we cannot use bigInts as map keys, so we use
 		// the next best thing: the bigInt's string representation.
@@ -73,7 +118,7 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 // Convert the map into a flat list of entries, where each entry is
 // the key (a string of digits) followed by one or more words.
 func dictmap_to_slice(dm DictMap) DictSlice {
-	return_value := make(DictSlice, 1)
+	return_value := make(DictSlice, 0)
 
 	for key, val := range dm {
 		e := new(Entry)
