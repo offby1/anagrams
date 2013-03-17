@@ -20,21 +20,24 @@ type DictMap map[string]WordSet
 
 type DictSlice []WordSet
 
-func SnarfDict() (DictMap, error) {
+func SnarfDict(input_file_name string) (DictMap, error) {
 	fmt.Printf("Ahoy?\n")
-	file, err := os.Open("/usr/share/dict/words")
+	file, err := os.Open(input_file_name)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	reader := bufio.NewReader(file)
+	return snarfdict(bufio.NewReader(file))
+}
+
+func snarfdict(reader *bufio.Reader) (DictMap, error) {
 	accum := make(DictMap, 50000)
 
 	for {
 		word, err := reader.ReadString('\n')
 		if err != nil {
 			// EOF, presumably
-			return accum, nil
+			break
 		}
 
 		word = strings.ToLower(strings.TrimSpace(word))
@@ -50,6 +53,6 @@ func SnarfDict() (DictMap, error) {
 
 		words[word] = 1
 	}
-	// Never reached
-	return nil, nil
+
+	return accum, nil
 }

@@ -15,7 +15,7 @@ func main() {
 			anagrams.WordToBag(w))
 	}
 
-	data, error := anagrams.SnarfDict()
+	data, error := anagrams.SnarfDict("/usr/share/dict/words")
 
 	if error != nil {
 		log.Fatal(error)
