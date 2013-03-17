@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math/big"
 	"os"
 	"strings"
 )
@@ -16,7 +15,8 @@ import (
 // just use a map and ignore the values instead
 type WordSet map[string]int
 
-type Dict map[*big.Int]WordSet
+// The key is the string representation of a big int
+type Dict map[string]WordSet
 
 func SnarfDict() (Dict, error) {
 	fmt.Printf("Ahoy?\n")
@@ -35,18 +35,15 @@ func SnarfDict() (Dict, error) {
 			return accum, nil
 		}
 
-		word = strings.ToLower(strings.TrimSpace (word))
-		
-		words, ok := accum[WordToBag(word)]
+		word = strings.ToLower(strings.TrimSpace(word))
+
+		key := WordToBag(word).String()
+
+		words, ok := accum[key]
 
 		if !ok {
 			words = make(WordSet)
-			accum[WordToBag(word)] = words
-		} else {
-			words[word] = 1
-
-			fmt.Printf ("First bag with 2 entries: %v\n", words[word])
-			return accum, nil
+			accum[key] = words
 		}
 
 		words[word] = 1

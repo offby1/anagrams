@@ -21,6 +21,10 @@ func main() {
 		log.Fatal(error)
 	} else {
 		fmt.Printf("Number of somethings in the dictionary: %v\n", len (data))
-		fmt.Printf("Entries for 'dog': %v\n", data[anagrams.WordToBag(string("dog"))])
+		for _, w:= range []string{"dog", "cat", "stake"} {
+			fmt.Printf("Entries for '%s': %v\n",
+				w,
+				data[anagrams.WordToBag(string(w)).String()])
+		}
 	}
 }

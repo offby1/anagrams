@@ -9,3 +9,8 @@ $ go clean # works too
 How to run tests:
 
 $ go test anagrams
+
+Reformat frequently:
+
+$ go fmt anagrams
+
