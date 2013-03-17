@@ -62,11 +62,7 @@ list of anagrams, each of which begins with one of the WORDS."
                    )))
     (fprintf (current-error-port) "~a anagrams of ~s~%" (length results) in)
 
-    (when #f
-      ;; disabled for the time being, since it takes a fair amount of
-      ;; time, but I'm only interested in measuring the time taken by
-      ;; the main computation above
-
+    (when #t
       (for ([an (in-list (sort results > #:key length))])
         (display an)
         (newline)))
