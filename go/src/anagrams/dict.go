@@ -3,6 +3,7 @@ package anagrams
 import (
 	"bufio"
 	"log"
+	"math/big"
 	"os"
 	"regexp"
 	"strings"
@@ -19,8 +20,8 @@ type WordSet map[string]int
 type DictMap map[string]WordSet
 
 type Entry struct {
-	bag_gob string
-	words   []string
+	bag   Bag
+	words []string
 }
 
 type DictSlice []Entry
@@ -124,7 +125,9 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 
 	for key, val := range dm {
 		e := new(Entry)
-		e.bag_gob = key
+		z := new(big.Int)
+		z.GobDecode([]byte(key))
+		e.bag = Bag{z}
 		e.words = make([]string, 1)
 
 		for word, _ := range val {

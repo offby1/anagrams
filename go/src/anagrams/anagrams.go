@@ -1,9 +1,5 @@
 package anagrams
 
-import (
-	"math/big"
-)
-
 func filter(d DictSlice, bag Bag) DictSlice {
 	result := make(DictSlice, 0)
 
@@ -30,13 +26,9 @@ func Anagrams(d DictSlice, bag Bag) [][]string {
 	result := make([][]string, 0)
 
 	for index, entry := range d {
-		entry_bigint := big.NewInt(0)
-		entry_bigint.GobDecode([]byte(entry.bag_gob))
-		entry_bag := Bag{entry_bigint}
-
 		// try to subtract our bag from this entry's bag; save result in "smaller bag".
 
-		smaller_bag, error := entry_bag.Subtract(bag)
+		smaller_bag, error := entry.bag.Subtract(bag)
 		switch {
 		// if we cannot, just skip this entry.
 		case error != nil:
