@@ -16,12 +16,12 @@ import (
 // just use a map and ignore the values instead
 type WordSet map[string]int
 
-// The key is the string representation of a big int
+// The key is the gob representation of a big int
 type DictMap map[string]WordSet
 
 type Entry struct {
-	bag   string
-	words []string
+	bag_gob string
+	words   []string
 }
 
 type DictSlice []Entry
@@ -101,14 +101,14 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 		}
 
 		// Unfortunatley, we cannot use bigInts as map keys, so we use
-		// the next best thing: the bigInt's string representation.
-		key := WordToBag(word).String()
+		// the next best thing: the bigInt's gob representation.
+		key, _ := WordToBag(word).GobEncode()
 
-		words, ok := accum[key]
+		words, ok := accum[string(key)]
 
 		if !ok {
 			words = make(WordSet)
-			accum[key] = words
+			accum[string(key)] = words
 		}
 
 		words[word] = 1
@@ -125,7 +125,7 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 
 	for key, val := range dm {
 		e := new(Entry)
-		e.bag = key
+		e.bag_gob = key
 		e.words = make([]string, 1)
 
 		for word, _ := range val {
