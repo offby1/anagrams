@@ -18,7 +18,12 @@ type WordSet map[string]int
 // The key is the string representation of a big int
 type DictMap map[string]WordSet
 
-type DictSlice []WordSet
+type Entry struct {
+	bag   string
+	words []string
+}
+
+type DictSlice []Entry
 
 func SnarfDict(input_file_name string) (DictMap, error) {
 	fmt.Printf("Ahoy?\n")
@@ -42,6 +47,8 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 
 		word = strings.ToLower(strings.TrimSpace(word))
 
+		// Unfortunatley, we cannot use bigInts as map keys, so we use
+		// the next best thing: the bigInt's string representation.
 		key := WordToBag(word).String()
 
 		words, ok := accum[key]
@@ -55,4 +62,24 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 	}
 
 	return accum, nil
+}
+
+// Convert the map into a flat list of entries, where each entry is
+// the key (a string of digits) followed by one or more words.
+func dictmap_to_slice(dm DictMap) DictSlice {
+	return_value := make(DictSlice, 1)
+
+	for key, val := range dm {
+		e := new(Entry)
+		e.bag = key
+		e.words = make([]string, 1)
+
+		for word, _ := range val {
+			e.words = append(e.words, word)
+		}
+
+		return_value = append(return_value, *e)
+	}
+
+	return return_value
 }
