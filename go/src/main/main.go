@@ -32,5 +32,5 @@ func main() {
 		}
 	}
 
-	anagrams.Anagrams (dictslice, anagrams.WordToBag ("dog"))
+	fmt.Printf("Anagrams of 'dog': %v", anagrams.Anagrams (dictslice, anagrams.WordToBag ("dog")))
 }
