@@ -20,6 +20,7 @@ func main() {
 	if error != nil {
 		log.Fatal(error)
 	} else {
-		fmt.Printf("I dare to hope it worked.  %s\n", data)
+		fmt.Printf("Number of somethings in the dictionary: %v\n", len (data))
+		fmt.Printf("Entries for 'dog': %v\n", data[anagrams.WordToBag(string("dog"))])
 	}
 }

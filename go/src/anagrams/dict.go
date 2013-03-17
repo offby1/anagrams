@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/big"
 	"os"
+	"strings"
 )
 
 // Open /usr/share/dict/words
@@ -28,20 +29,28 @@ func SnarfDict() (Dict, error) {
 	accum := make(Dict, 50000)
 
 	for {
-		word, err := reader.ReadBytes('\n')
+		word, err := reader.ReadString('\n')
 		if err != nil {
 			// EOF, presumably
 			return accum, nil
 		}
 
-		words, ok := accum[WordToBag(string(word))]
+		word = strings.ToLower(strings.TrimSpace (word))
+		
+		words, ok := accum[WordToBag(word)]
 
 		if !ok {
 			words = make(WordSet)
-			accum[WordToBag(string(word))] = words
+			accum[WordToBag(word)] = words
+		} else {
+			words[word] = 1
+
+			fmt.Printf ("First bag with 2 entries: %v\n", words[word])
+			return accum, nil
 		}
 
-		words[string(word)] = 1
+		words[word] = 1
 	}
+	// Never reached
 	return nil, nil
 }
