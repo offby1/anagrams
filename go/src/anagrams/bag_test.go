@@ -4,13 +4,13 @@ import "testing"
 import "math/big"
 
 func TestLetterToPrime(t *testing.T) {
-	b := LetterToPrime('b')
+	b := lettertoprime('b')
 
 	if b != 3 {
 		t.Errorf("got %d; wanted 3", b)
 	}
 
-	bang := LetterToPrime('!')
+	bang := lettertoprime('!')
 	if bang != 1 {
 		t.Errorf("got %d; wanted 1", bang)
 	}
@@ -33,10 +33,10 @@ func TestWordsToBags(t *testing.T) {
 
 	for _, c := range cases {
 		actual := WordToBag(c.Input)
-		if actual.Cmp(big.NewInt(c.ExpectedOutput)) != 0 {
-			t.Errorf("For word '%s', got %d but expected %d",
+		if !actual.SameAsInt(c.ExpectedOutput) {
+			t.Errorf("For word '%s', got %v but expected %v",
 				c.Input,
-				actual,
+				actual.b,
 				c.ExpectedOutput)
 		}
 	}
@@ -52,20 +52,36 @@ func TestSubtraction(t *testing.T) {
 
 	var cases = []TestCase{
 		TestCase{"", "", big.NewInt(1), false},
-		TestCase{"a", "", WordToBag("a"), false},
+		TestCase{"a", "", WordToBag("a").b, false},
 		TestCase{"", "a", big.NewInt(1), true},
-		TestCase{"cat", "a", WordToBag("ct"), false},
-		TestCase{"caat", "a", WordToBag("cat"), false},
+		TestCase{"cat", "a", WordToBag("ct").b, false},
+		TestCase{"caat", "a", WordToBag("cat").b, false},
 	}
 
 	for _, c := range cases {
-		diff, err := Subtract(WordToBag(c.Minuend), WordToBag(c.Subtrahend))
-		if (err == nil) == c.ExpectedError || diff.Cmp(c.ExpectedDifference) != 0 {
+		minuend := WordToBag(c.Minuend)
+		subtrahend := WordToBag(c.Subtrahend)
+		diff, err := minuend.Subtract(subtrahend)
+
+		if (err == nil) == c.ExpectedError || diff.b.Cmp(c.ExpectedDifference) != 0 {
 			t.Errorf("For '%s' - '%s', got %d, %s but expected %d, %s",
 				c.Minuend,
 				c.Subtrahend,
 				diff, err,
 				c.ExpectedDifference, c.ExpectedError)
 		}
+	}
+}
+
+func TestEmpty(t *testing.T) {
+	empty := WordToBag("")
+	not_empty := WordToBag("frotz!!")
+
+	if not_empty.Empty() {
+		t.Errorf("%v otta be non-empty but isn't", not_empty)
+	}
+
+	if !empty.Empty() {
+		t.Errorf("%v otta be empty but isn't", empty.b)
 	}
 }

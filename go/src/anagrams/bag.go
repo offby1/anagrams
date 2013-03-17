@@ -1,6 +1,7 @@
 package anagrams
 
 import (
+	"fmt"
 	"math/big"
 	"strings"
 )
@@ -9,7 +10,15 @@ var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,
 
 type ErrCannotSubtract string
 
-func LetterToPrime(ch int) int64 {
+func (e ErrCannotSubtract) Error() string { return "sorry, dude" }
+
+type Bag struct{ b *big.Int }
+
+func (b Bag) GobEncode() ([]byte, error) { return b.b.GobEncode() }
+
+func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.b) }
+
+func lettertoprime(ch int) int64 {
 	index := ch - 'a'
 
 	if index >= len(primes) || index < 0 {
@@ -18,30 +27,44 @@ func LetterToPrime(ch int) int64 {
 	return primes[index]
 }
 
-func WordToBag(w string) *big.Int {
+func WordToBag(w string) Bag {
 	product := big.NewInt(1)
 
 	for _, c := range strings.ToLower(w) {
-		product.Mul(product, big.NewInt(LetterToPrime(int(c))))
+		product.Mul(product, big.NewInt(lettertoprime(int(c))))
 	}
 
-	return product
+	return Bag{product}
 }
 
-func (e ErrCannotSubtract) Error() string {
-	return "sorry, dude"
+func (this Bag) SameAsInt(i int64) bool {
+	return this.Same(Bag{big.NewInt(i)})
 }
 
-var TheOnlyError ErrCannotSubtract
+func (this Bag) Same(other Bag) bool {
+	return this.b.Cmp(other.b) == 0
+}
 
 var zero = new(big.Int)
+var one = big.NewInt(1)
 
-func Subtract(minuend, subtrahend *big.Int) (*big.Int, error) {
+func (this Bag) Empty() bool {
+	return this.b.Cmp(one) == 0
+}
+
+var error_cannot_subtract ErrCannotSubtract
+
+func (minuend Bag) Subtract(subtrahend Bag) (Bag, error) {
+	diff, error := subtract(minuend.b, subtrahend.b)
+	return Bag{diff}, error
+}
+
+func subtract(minuend, subtrahend *big.Int) (*big.Int, error) {
 	q := new(big.Int)
 	r := new(big.Int)
 	q.QuoRem(minuend, subtrahend, r)
 	if r.Cmp(zero) == 0 {
 		return q, nil
 	}
-	return big.NewInt(1), &TheOnlyError
+	return big.NewInt(1), &error_cannot_subtract
 }

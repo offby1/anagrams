@@ -5,7 +5,7 @@ import (
 	"math/big"
 )
 
-func Anagrams(d DictSlice, bag *big.Int) []string {
+func Anagrams(d DictSlice, bag Bag) []string {
 	result := []string{}
 
 	for _, entry := range d {
