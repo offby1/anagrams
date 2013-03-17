@@ -1,16 +1,5 @@
-How to build an executable:
+How to build and run:
 
-$ export GOPATH=$GOPATH:/home/erich/anagrams/go/
+$ (cd $(git rev-parse --show-toplevel)/go ; export GOPATH=$(pwd); go fmt anagrams ; go install main && ./bin/main)
 
-$ go install main && ./bin/main
-
-$ go clean # works too
-
-How to run tests:
-
-$ go test anagrams
-
-Reformat frequently:
-
-$ go fmt anagrams
-
+"go clean" "go test anagrams" work too.

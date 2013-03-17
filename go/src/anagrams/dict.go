@@ -16,9 +16,11 @@ import (
 type WordSet map[string]int
 
 // The key is the string representation of a big int
-type Dict map[string]WordSet
+type DictMap map[string]WordSet
 
-func SnarfDict() (Dict, error) {
+type DictSlice []WordSet
+
+func SnarfDict() (DictMap, error) {
 	fmt.Printf("Ahoy?\n")
 	file, err := os.Open("/usr/share/dict/words")
 	if err != nil {
@@ -26,7 +28,7 @@ func SnarfDict() (Dict, error) {
 	}
 
 	reader := bufio.NewReader(file)
-	accum := make(Dict, 50000)
+	accum := make(DictMap, 50000)
 
 	for {
 		word, err := reader.ReadString('\n')
