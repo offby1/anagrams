@@ -1,27 +1,47 @@
 package anagrams
 
 import (
-	"fmt"
-	"math/big"
 	"bufio"
+	"fmt"
 	"log"
+	"math/big"
 	"os"
 )
 
 // Open /usr/share/dict/words
 // read each word; return a map from bags to a set of words
 
-func SnarfDict() ([]byte, error) {
+// Ideally I'd use a proper "set" type, but I haven't found one; I'll
+// just use a map and ignore the values instead
+type WordSet map[string]int
+
+type Dict map[*big.Int]WordSet
+
+func SnarfDict() (Dict, error) {
 	fmt.Printf("Ahoy?\n")
-	file, err := os.Open ("/usr/share/dict/words")
+	file, err := os.Open("/usr/share/dict/words")
 	if err != nil {
-		log.Fatal (err)
+		log.Fatal(err)
 	}
 
-	reader := bufio.NewReader (file)
-	_, _ = reader.ReadBytes ('\n');
-	_, _ = reader.ReadBytes ('\n');
-	_, _ = reader.ReadBytes ('\n');
-	_, _ = reader.ReadBytes ('\n');
-	return reader.ReadBytes ('\n');
+	reader := bufio.NewReader(file)
+	accum := make(Dict, 50000)
+
+	for {
+		word, err := reader.ReadBytes('\n')
+		if err != nil {
+			// EOF, presumably
+			return accum, nil
+		}
+
+		words, ok := accum[WordToBag(string(word))]
+
+		if !ok {
+			words = make(WordSet)
+			accum[WordToBag(string(word))] = words
+		}
+
+		words[string(word)] = 1
+	}
+	return nil, nil
 }
