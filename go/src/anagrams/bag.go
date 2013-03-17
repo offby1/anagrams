@@ -38,11 +38,11 @@ var TheOnlyError ErrCannotSubtract
 var zero = new(big.Int)
 
 func Subtract(minuend, subtrahend *big.Int) (*big.Int, error) {
-	z := new(big.Int)
+	q := new(big.Int)
 	r := new(big.Int)
-	z.QuoRem(minuend, subtrahend, r)
+	q.QuoRem(minuend, subtrahend, r)
 	if r.Cmp(zero) == 0 {
-		return z, nil
+		return q, nil
 	}
 	return big.NewInt(1), &TheOnlyError
 }
