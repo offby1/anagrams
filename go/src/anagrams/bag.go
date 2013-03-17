@@ -1,7 +1,10 @@
 package anagrams
 
-import "strings"
-import "math/big"
+import (
+	"log"
+	"math/big"
+	"strings"
+)
 
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
 
@@ -17,12 +20,13 @@ func LetterToPrime(ch int) int64 {
 }
 
 func WordToBag(w string) *big.Int {
-	product := int64(1)
+	product := big.NewInt(1)
 
 	for _, c := range strings.ToLower(w) {
-		product *= LetterToPrime(int(c))
+		product.Mul(product, big.NewInt(LetterToPrime(int(c))))
 	}
-	return big.NewInt(product)
+
+	return product
 }
 
 func (e ErrCannotSubtract) Error() string {
