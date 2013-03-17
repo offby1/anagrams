@@ -1,7 +1,6 @@
 package anagrams
 
 import (
-	"log"
 	"math/big"
 	"strings"
 )
