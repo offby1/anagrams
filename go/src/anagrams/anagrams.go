@@ -5,10 +5,20 @@ import (
 	"math/big"
 )
 
-func Anagrams(d DictSlice, bag Bag) []string {
-	result := []string{}
+func filter(d DictSlice, bag Bag) DictSlice {
+	result := make(DictSlice, 0)
 
-	for _, entry := range d {
+	return result
+}
+
+func combine(words []string, list_of_lists [][]string) [][]string {
+	return make([][]string, 0)
+}
+
+func Anagrams(d DictSlice, bag Bag) [][]string {
+	result := make([][]string, 0)
+
+	for index, entry := range d {
 		entry_bigint := big.NewInt(0)
 		entry_bigint.GobDecode([]byte(entry.bag_gob))
 		entry_bag := Bag{entry_bigint}
@@ -28,9 +38,18 @@ func Anagrams(d DictSlice, bag Bag) []string {
 
 		// otherwise
 		default:
-			// make a smaller dict by filtering out entries, then recursively call ourselves with that smaller dict and the smaller bag; make a "cross-product" of this entry's words with the results of that recursive call.
-			log.Printf("Smaller dict, filter, etc etc")
+			// make a smaller dict by filtering out entries
+			smaller_dict := filter(d[index:], smaller_bag)
 
+			// then recursively call ourselves with that smaller dict
+			// and the smaller bag;
+
+			from_recursive_call := Anagrams(smaller_dict, smaller_bag)
+
+			// make a "cross-product" of this entry's words with the
+			// results of that recursive call.
+
+			return combine(entry.words, from_recursive_call)
 		}
 
 	}
