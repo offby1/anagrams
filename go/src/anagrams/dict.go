@@ -25,14 +25,20 @@ type Entry struct {
 
 type DictSlice []Entry
 
-func SnarfDict(input_file_name string) (DictMap, error) {
+func SnarfDict(input_file_name string) (DictSlice, error) {
 	fmt.Printf("Ahoy?\n")
 	file, err := os.Open(input_file_name)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return snarfdict(bufio.NewReader(file))
+	var dm DictMap
+	dm, err = snarfdict(bufio.NewReader(file))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return dictmap_to_slice(dm), nil
 }
 
 func snarfdict(reader *bufio.Reader) (DictMap, error) {

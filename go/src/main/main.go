@@ -21,10 +21,14 @@ func main() {
 		log.Fatal(error)
 	} else {
 		fmt.Printf("Number of somethings in the dictionary: %v\n", len (data))
-		for _, w:= range []string{"dog", "cat", "stake"} {
-			fmt.Printf("Entries for '%s': %v\n",
-				w,
-				data[anagrams.WordToBag(string(w)).String()])
+		for index, entry := range data {
+			fmt.Printf("Entries for '%d': %v\n",
+				index,
+				entry)
+
+			if index > 10 {
+				break
+			}
 		}
 	}
 }
