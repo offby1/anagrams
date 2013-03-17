@@ -2,7 +2,6 @@ package anagrams
 
 import (
 	"bufio"
-	"fmt"
 	"log"
 	"os"
 	"regexp"
@@ -27,7 +26,7 @@ type Entry struct {
 type DictSlice []Entry
 
 func SnarfDict(input_file_name string) (DictSlice, error) {
-	fmt.Printf("Ahoy?\n")
+
 	file, err := os.Open(input_file_name)
 	if err != nil {
 		log.Fatal(err)
