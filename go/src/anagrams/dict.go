@@ -2,6 +2,7 @@ package anagrams
 
 import (
 	"fmt"
+	"math/big"
 	"bufio"
 	"log"
 	"os"
