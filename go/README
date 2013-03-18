@@ -1,5 +1,5 @@
 How to build and run:
 
-$ (cd $(git rev-parse --show-toplevel)/go ; export GOPATH=$(pwd); go fmt anagrams ; go install main && ./bin/main)
+$ (cd $(git rev-parse --show-toplevel)/go ; export GOPATH=$(pwd); go fmt anagrams ; go test anagrams && go install main && ./bin/main Ernest Hemingway > wow)
 
 "go clean" "go test anagrams" work too.

@@ -24,5 +24,7 @@ func main() {
 	bag := anagrams.WordToBag (input_string)
 
 	result := anagrams.Anagrams (dictslice, bag)
-	fmt.Printf("Anagrams of '%s': %v\n", input_string, result)
+	fmt.Fprintf(os.Stderr,
+				"%d anagrams of '%s'\n", len (result), input_string) 
+	fmt.Println(result)
 }
