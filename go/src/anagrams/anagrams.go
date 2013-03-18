@@ -1,9 +1,5 @@
 package anagrams
 
-import (
-	"log"
-)
-
 func Filter(d DictSlice, bag Bag) DictSlice {
 	result := make(DictSlice, 0)
 
@@ -15,7 +11,6 @@ func Filter(d DictSlice, bag Bag) DictSlice {
 		}
 	}
 
-	log.Printf("Filtering %v-long dict by %v leaves %v: %v", len(d), bag, len(result), result)
 	return result
 }
 

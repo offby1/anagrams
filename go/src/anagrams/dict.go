@@ -25,7 +25,7 @@ type Entry struct {
 	words []string
 }
 
-func (e Entry) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v: %s", e.bag, e.words) }
+func (e Entry) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v: %v", e.bag, e.words) }
 
 type DictSlice []Entry
 

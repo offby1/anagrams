@@ -15,7 +15,7 @@ func main() {
 
 	fmt.Printf("Number of somethings in the dictionary: %v\n", len (dictslice))
 
-	const word = "goon"
+	const word = "money"
 	bag := anagrams.WordToBag (word)
 
 	fmt.Printf("Anagrams of '%s': %v",
