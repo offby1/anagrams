@@ -4,6 +4,7 @@ import (
 	"anagrams"
 	"fmt"
 	"log"
+	"os"
 )
 
 func main() {
@@ -15,10 +16,14 @@ func main() {
 
 	fmt.Printf("Number of somethings in the dictionary: %v\n", len (dictslice))
 
-	const word = "money"
-	bag := anagrams.WordToBag (word)
+	input_string := ""
+	for _, arg := range os.Args[1:] {
+		input_string += arg
+	}
+
+	bag := anagrams.WordToBag (input_string)
 
 	fmt.Printf("Anagrams of '%s': %v",
-		word,
+		input_string,
 		anagrams.Anagrams (dictslice, bag))
 }
