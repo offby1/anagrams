@@ -16,7 +16,7 @@ type Bag struct{ b *big.Int }
 
 func (b Bag) GobEncode() ([]byte, error) { return b.b.GobEncode() }
 
-func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.b) }
+func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.b.String()) }
 
 func lettertoprime(ch int) int64 {
 	index := ch - 'a'

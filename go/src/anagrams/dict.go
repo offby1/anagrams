@@ -2,6 +2,7 @@ package anagrams
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"math/big"
 	"os"
@@ -23,6 +24,8 @@ type Entry struct {
 	bag   Bag
 	words []string
 }
+
+func (e Entry) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v: %s", e.bag, e.words) }
 
 type DictSlice []Entry
 

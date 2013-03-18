@@ -16,8 +16,6 @@ func Filter(d DictSlice, bag Bag) DictSlice {
 	}
 
 	log.Printf("Filtering %v-long dict by %v leaves %v: %v", len(d), bag, len(result), result)
-	// first := result[0]
-	// log.Printf("What is this? %#v", first)
 	return result
 }
 
@@ -38,12 +36,14 @@ func combine(ws []string, ans [][]string) [][]string {
 }
 
 func Anagrams(d DictSlice, bag Bag) [][]string {
+	d = Filter(d, bag)
+
 	result := make([][]string, 0)
 
 	for index, entry := range d {
 		// try to subtract our bag from this entry's bag; save result in "smaller bag".
 
-		smaller_bag, error := entry.bag.Subtract(bag)
+		smaller_bag, error := bag.Subtract(entry.bag)
 		switch {
 		// if we cannot, just skip this entry.
 		case error != nil:
@@ -60,13 +60,10 @@ func Anagrams(d DictSlice, bag Bag) [][]string {
 
 			// otherwise
 		default:
-			// make a smaller dict by filtering out entries
-			smaller_dict := Filter(d[index:], smaller_bag)
+			// recursively call ourselves with the smaller dict and
+			// the smaller bag
 
-			// then recursively call ourselves with that smaller dict
-			// and the smaller bag;
-
-			from_recursive_call := Anagrams(smaller_dict, smaller_bag)
+			from_recursive_call := Anagrams(d[index:], smaller_bag)
 
 			// make a "cross-product" of this entry's words with the
 			// results of that recursive call.
