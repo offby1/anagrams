@@ -128,7 +128,8 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 		z := new(big.Int)
 		z.GobDecode([]byte(key))
 		e.bag = Bag{z}
-		e.words = make([]string, 1)
+
+		e.words = make([]string, 0)
 
 		for word, _ := range val {
 			e.words = append(e.words, word)
