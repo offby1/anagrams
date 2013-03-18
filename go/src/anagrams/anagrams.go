@@ -20,7 +20,7 @@ func combine(ws []string, ans [][]string) [][]string {
 
 	for _, a := range ans {
 		for _, w := range ws {
-			bigger_anagram := make([]string, len(ws))
+			bigger_anagram := make([]string, len(a))
 			copy(bigger_anagram, a)
 			bigger_anagram = append(bigger_anagram, w)
 			rv = append(rv, bigger_anagram)
