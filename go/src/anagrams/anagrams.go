@@ -1,8 +1,23 @@
 package anagrams
 
-func filter(d DictSlice, bag Bag) DictSlice {
+import (
+	"log"
+)
+
+func Filter(d DictSlice, bag Bag) DictSlice {
 	result := make(DictSlice, 0)
 
+	for _, entry := range d {
+		_, error := bag.Subtract(entry.bag)
+		// seems a shame to throw away the difference.
+		if error == nil {
+			result = append(result, entry)
+		}
+	}
+
+	log.Printf("Filtering %v-long dict by %v leaves %v: %v", len(d), bag, len(result), result)
+	// first := result[0]
+	// log.Printf("What is this? %#v", first)
 	return result
 }
 
@@ -32,7 +47,7 @@ func Anagrams(d DictSlice, bag Bag) [][]string {
 		switch {
 		// if we cannot, just skip this entry.
 		case error != nil:
-			continue
+			break
 
 			// if smaller bag is empty, "listify" this entry's words,
 			// and append that list to the result.
@@ -43,10 +58,10 @@ func Anagrams(d DictSlice, bag Bag) [][]string {
 				result = append(result, new_list)
 			}
 
-		// otherwise
+			// otherwise
 		default:
 			// make a smaller dict by filtering out entries
-			smaller_dict := filter(d[index:], smaller_bag)
+			smaller_dict := Filter(d[index:], smaller_bag)
 
 			// then recursively call ourselves with that smaller dict
 			// and the smaller bag;

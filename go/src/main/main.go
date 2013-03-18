@@ -16,7 +16,11 @@ func main() {
 	fmt.Printf("Number of somethings in the dictionary: %v\n", len (dictslice))
 
 	const word = "goon"
+	bag := anagrams.WordToBag (word)
+
+	pruned_dict := anagrams.Filter(dictslice, bag)
+
 	fmt.Printf("Anagrams of '%s': %v",
 		word,
-		anagrams.Anagrams (dictslice, anagrams.WordToBag (word)))
+		anagrams.Anagrams (pruned_dict, bag))
 }
