@@ -3,6 +3,7 @@ package bag
 import (
 	"fmt"
 	"math/big"
+	"sort"
 	"strings"
 )
 
@@ -19,7 +20,7 @@ var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53,
 
 type Bag struct {
 	z       *big.Int
-	letters string
+	letters []byte
 }
 
 func (b Bag) GobEncode() ([]byte, error) { return b.z.GobEncode() }
@@ -32,7 +33,11 @@ func (b *Bag) GobDecode(bytes []byte) error {
 
 	return e
 }
-func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.z.String()) }
+func (b Bag) Format(f fmt.State, c rune) {
+	fmt.Fprintf(f, "%v (%v)",
+		b.z.String(),
+		b.letters)
+}
 
 func lettertoprime(ch int) int64 {
 	index := ch - 'a'
@@ -43,6 +48,20 @@ func lettertoprime(ch int) int64 {
 	return primes[index]
 }
 
+type SortableString []byte
+
+func (s SortableString) Len() int {
+	return len(s)
+}
+func (s SortableString) Less(i, j int) bool {
+	return s[i] < s[j]
+}
+func (s SortableString) Swap(i, j int) {
+	tmp := s[i]
+	s[i] = s[j]
+	s[j] = tmp
+}
+
 func FromString(w string) Bag {
 	product := big.NewInt(1)
 
@@ -50,15 +69,18 @@ func FromString(w string) Bag {
 		product.Mul(product, big.NewInt(lettertoprime(int(c))))
 	}
 
-	return Bag{product, w}
+	sort_me := make(SortableString, len(w))
+	copy(sort_me, w)
+	sort.Sort(sort_me)
+	return Bag{product, sort_me}
 }
 
 func FromBigInt(z *big.Int) Bag {
-	return Bag{z, "?"}
+	return Bag{z, []byte("?")}
 }
 
 func (this Bag) same_as_int(i int64) bool {
-	return this.same(Bag{big.NewInt(i), "?"})
+	return this.same(Bag{big.NewInt(i), []byte("?")})
 }
 
 func (this Bag) same(other Bag) bool {
@@ -74,7 +96,7 @@ func (this Bag) Empty() bool {
 
 func (minuend Bag) Subtract(subtrahend Bag) (Bag, bool) {
 	diff, ok := subtract(minuend.z, subtrahend.z)
-	return Bag{diff, "?"}, ok
+	return Bag{diff, []byte("?")}, ok
 }
 
 func subtract(minuend, subtrahend *big.Int) (*big.Int, bool) {
