@@ -1,7 +1,9 @@
 package bag
 
-import "testing"
-import "math/big"
+import (
+	"math/big"
+	"testing"
+)
 
 func TestLetterToPrime(t *testing.T) {
 	b := lettertoprime('b')
@@ -47,7 +49,7 @@ func TestSubtraction(t *testing.T) {
 		Minuend            string
 		Subtrahend         string
 		ExpectedDifference *big.Int
-		ExpectedStatus      bool
+		ExpectedStatus     bool
 	}
 
 	var cases = []TestCase{
@@ -84,4 +86,23 @@ func TestEmpty(t *testing.T) {
 	if !empty.Empty() {
 		t.Errorf("%v otta be empty but isn't", empty.z)
 	}
+}
+
+func TestGobs(t *testing.T) {
+	b := FromString("frotz!!")
+	gob, _ := b.GobEncode()
+
+	roundtripped := new(Bag)
+
+	roundtripped.GobDecode(gob)
+
+	better_be_empty, better_be_true := b.Subtract(*roundtripped)
+
+	if !better_be_true {
+		t.Errorf("WTF!!")
+	}
+	if !better_be_empty.Empty() {
+		t.Errorf("%v otta be empty but isn't", better_be_empty)
+	}
+
 }

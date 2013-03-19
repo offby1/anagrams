@@ -10,11 +10,11 @@ import (
 	"runtime/pprof"
 )
 
-var cpuprofile   = flag.String("cpuprofile", "", "write cpu profile to file")
+var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 var input_string = flag.String("input", "", "string from which to compute anagrams")
 
 func main() {
-    flag.Parse()
+	flag.Parse()
 
 	dictslice, error := anagrams.SnarfDict("/usr/share/dict/words")
 
@@ -22,21 +22,21 @@ func main() {
 		log.Fatal(error)
 	}
 
-	fmt.Printf("Number of somethings in the dictionary: %v\n", len (dictslice))
+	fmt.Printf("Number of somethings in the dictionary: %v\n", len(dictslice))
 
-	bag := bag.FromString (*input_string)
+	bag := bag.FromString(*input_string)
 
-    if *cpuprofile != "" {
-        f, err := os.Create(*cpuprofile)
-        if err != nil {
-            log.Fatal(err)
-        }
-        pprof.StartCPUProfile(f)
-        defer pprof.StopCPUProfile()
-    }
+	if *cpuprofile != "" {
+		f, err := os.Create(*cpuprofile)
+		if err != nil {
+			log.Fatal(err)
+		}
+		pprof.StartCPUProfile(f)
+		defer pprof.StopCPUProfile()
+	}
 
-	result := anagrams.Anagrams (dictslice, bag)
+	result := anagrams.Anagrams(dictslice, bag)
 	fmt.Fprintf(os.Stderr,
-				"%d anagrams of '%s'\n", len (result), *input_string) 
+		"%d anagrams of '%s'\n", len(result), *input_string)
 	fmt.Println(result)
 }

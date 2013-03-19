@@ -17,10 +17,21 @@ import (
 
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
 
-type Bag struct{ z *big.Int; letters string }
+type Bag struct {
+	z       *big.Int
+	letters string
+}
 
 func (b Bag) GobEncode() ([]byte, error) { return b.z.GobEncode() }
+func (b *Bag) GobDecode(bytes []byte) error {
+	z := new(big.Int)
+	e := z.GobDecode(bytes)
+	if e == nil {
+		b.z = z
+	}
 
+	return e
+}
 func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.z.String()) }
 
 func lettertoprime(ch int) int64 {
@@ -42,7 +53,7 @@ func FromString(w string) Bag {
 	return Bag{product, w}
 }
 
-func FromBigInt (z *big.Int) Bag {
+func FromBigInt(z *big.Int) Bag {
 	return Bag{z, "?"}
 }
 
