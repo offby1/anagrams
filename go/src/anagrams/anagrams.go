@@ -1,6 +1,8 @@
 package anagrams
 
-func Filter(d DictSlice, bag Bag) DictSlice {
+import "anagrams/bag"
+
+func Filter(d DictSlice, bag bag.Bag) DictSlice {
 	result := make(DictSlice, 0)
 
 	for _, entry := range d {
@@ -30,7 +32,7 @@ func combine(ws []string, ans [][]string) [][]string {
 	return rv
 }
 
-func Anagrams(d DictSlice, bag Bag) [][]string {
+func Anagrams(d DictSlice, bag bag.Bag) [][]string {
 	d = Filter(d, bag)
 
 	result := make([][]string, 0)

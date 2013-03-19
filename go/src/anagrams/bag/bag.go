@@ -1,4 +1,4 @@
-package anagrams
+package bag
 
 import (
 	"fmt"
@@ -12,11 +12,11 @@ type ErrCannotSubtract string
 
 func (e ErrCannotSubtract) Error() string { return "sorry, dude" }
 
-type Bag struct{ b *big.Int }
+type Bag struct{ B *big.Int }
 
-func (b Bag) GobEncode() ([]byte, error) { return b.b.GobEncode() }
+func (b Bag) GobEncode() ([]byte, error) { return b.B.GobEncode() }
 
-func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.b.String()) }
+func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.B.String()) }
 
 func lettertoprime(ch int) int64 {
 	index := ch - 'a'
@@ -42,20 +42,20 @@ func (this Bag) SameAsInt(i int64) bool {
 }
 
 func (this Bag) Same(other Bag) bool {
-	return this.b.Cmp(other.b) == 0
+	return this.B.Cmp(other.B) == 0
 }
 
 var zero = new(big.Int)
 var one = big.NewInt(1)
 
 func (this Bag) Empty() bool {
-	return this.b.Cmp(one) == 0
+	return this.B.Cmp(one) == 0
 }
 
 var error_cannot_subtract ErrCannotSubtract
 
 func (minuend Bag) Subtract(subtrahend Bag) (Bag, error) {
-	diff, error := subtract(minuend.b, subtrahend.b)
+	diff, error := subtract(minuend.B, subtrahend.B)
 	return Bag{diff}, error
 }
 

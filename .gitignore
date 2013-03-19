@@ -8,3 +8,4 @@ scheme/plt-v4/compiled
 /go/pkg/linux_386/anagrams.a
 /clojure/target/stale/extract-native.dependencies
 /go/whysoslow.prof
+/go/pkg/linux_386/anagrams/bag.a

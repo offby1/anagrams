@@ -2,6 +2,7 @@ package main
 
 import (
 	"anagrams"
+	"anagrams/bag"
 	"flag"
 	"fmt"
 	"log"
@@ -23,7 +24,7 @@ func main() {
 
 	fmt.Printf("Number of somethings in the dictionary: %v\n", len (dictslice))
 
-	bag := anagrams.WordToBag (*input_string)
+	bag := bag.WordToBag (*input_string)
 
     if *cpuprofile != "" {
         f, err := os.Create(*cpuprofile)

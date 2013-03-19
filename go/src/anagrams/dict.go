@@ -1,6 +1,7 @@
 package anagrams
 
 import (
+	"anagrams/bag"
 	"bufio"
 	"fmt"
 	"log"
@@ -21,7 +22,7 @@ type WordSet map[string]int
 type DictMap map[string]WordSet
 
 type Entry struct {
-	bag   Bag
+	bag   bag.Bag
 	words []string
 }
 
@@ -105,7 +106,7 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 
 		// Unfortunatley, we cannot use bigInts as map keys, so we use
 		// the next best thing: the bigInt's gob representation.
-		key, _ := WordToBag(word).GobEncode()
+		key, _ := bag.WordToBag(word).GobEncode()
 
 		words, ok := accum[string(key)]
 
@@ -132,7 +133,7 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 		e := new(Entry)
 		z := new(big.Int)
 		z.GobDecode([]byte(key))
-		e.bag = Bag{z}
+		e.bag = bag.Bag{z}
 
 		e.words = make([]string, 0)
 
