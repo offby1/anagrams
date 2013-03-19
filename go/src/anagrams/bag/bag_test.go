@@ -33,7 +33,7 @@ func TestWordsToBags(t *testing.T) {
 
 	for _, c := range cases {
 		actual := FromString(c.Input)
-		if !actual.SameAsInt(c.ExpectedOutput) {
+		if !actual.same_as_int(c.ExpectedOutput) {
 			t.Errorf("For word '%s', got %v but expected %v",
 				c.Input,
 				actual.z,

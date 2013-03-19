@@ -11,6 +11,9 @@ import (
 // func Subtract
 // func FromString
 // func FromBigInt
+// func GobEncode
+// func Format
+// func Empty
 
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
 
@@ -43,11 +46,11 @@ func FromBigInt (z *big.Int) Bag {
 	return Bag{z}
 }
 
-func (this Bag) SameAsInt(i int64) bool {
-	return this.Same(Bag{big.NewInt(i)})
+func (this Bag) same_as_int(i int64) bool {
+	return this.same(Bag{big.NewInt(i)})
 }
 
-func (this Bag) Same(other Bag) bool {
+func (this Bag) same(other Bag) bool {
 	return this.z.Cmp(other.z) == 0
 }
 
