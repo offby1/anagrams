@@ -126,6 +126,8 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 func dictmap_to_slice(dm DictMap) DictSlice {
 	return_value := make(DictSlice, 0)
 
+	longest_length := 0
+
 	for key, val := range dm {
 		e := new(Entry)
 		z := new(big.Int)
@@ -136,6 +138,11 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 
 		for word, _ := range val {
 			e.words = append(e.words, word)
+		}
+
+		if len(val) > longest_length {
+			longest_length = len(val)
+			fmt.Println(val)
 		}
 
 		return_value = append(return_value, *e)
