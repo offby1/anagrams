@@ -9,7 +9,7 @@ import (
 // Exports:
 // the type Bag
 // func Subtract
-// func WordToBag
+// func FromString
 // func FromBigInt
 
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
@@ -33,7 +33,7 @@ func lettertoprime(ch int) int64 {
 	return primes[index]
 }
 
-func WordToBag(w string) Bag {
+func FromString(w string) Bag {
 	product := big.NewInt(1)
 
 	for _, c := range strings.ToLower(w) {

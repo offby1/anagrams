@@ -106,7 +106,7 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 
 		// Unfortunatley, we cannot use bigInts as map keys, so we use
 		// the next best thing: the bigInt's gob representation.
-		key, _ := bag.WordToBag(word).GobEncode()
+		key, _ := bag.FromString(word).GobEncode()
 
 		words, ok := accum[string(key)]
 

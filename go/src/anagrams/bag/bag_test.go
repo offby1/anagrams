@@ -32,7 +32,7 @@ func TestWordsToBags(t *testing.T) {
 	}
 
 	for _, c := range cases {
-		actual := WordToBag(c.Input)
+		actual := FromString(c.Input)
 		if !actual.SameAsInt(c.ExpectedOutput) {
 			t.Errorf("For word '%s', got %v but expected %v",
 				c.Input,
@@ -52,15 +52,15 @@ func TestSubtraction(t *testing.T) {
 
 	var cases = []TestCase{
 		TestCase{"", "", big.NewInt(1), false},
-		TestCase{"a", "", WordToBag("a").z, false},
+		TestCase{"a", "", FromString("a").z, false},
 		TestCase{"", "a", big.NewInt(1), true},
-		TestCase{"cat", "a", WordToBag("ct").z, false},
-		TestCase{"caat", "a", WordToBag("cat").z, false},
+		TestCase{"cat", "a", FromString("ct").z, false},
+		TestCase{"caat", "a", FromString("cat").z, false},
 	}
 
 	for _, c := range cases {
-		minuend := WordToBag(c.Minuend)
-		subtrahend := WordToBag(c.Subtrahend)
+		minuend := FromString(c.Minuend)
+		subtrahend := FromString(c.Subtrahend)
 		diff, err := minuend.Subtract(subtrahend)
 
 		if (err == nil) == c.ExpectedError || diff.z.Cmp(c.ExpectedDifference) != 0 {
@@ -74,8 +74,8 @@ func TestSubtraction(t *testing.T) {
 }
 
 func TestEmpty(t *testing.T) {
-	empty := WordToBag("")
-	not_empty := WordToBag("frotz!!")
+	empty := FromString("")
+	not_empty := FromString("frotz!!")
 
 	if not_empty.Empty() {
 		t.Errorf("%v otta be non-empty but isn't", not_empty)

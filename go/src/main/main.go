@@ -24,7 +24,7 @@ func main() {
 
 	fmt.Printf("Number of somethings in the dictionary: %v\n", len (dictslice))
 
-	bag := bag.WordToBag (*input_string)
+	bag := bag.FromString (*input_string)
 
     if *cpuprofile != "" {
         f, err := os.Create(*cpuprofile)
