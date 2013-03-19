@@ -6,17 +6,23 @@ import (
 	"strings"
 )
 
+// Exports:
+// the type Bag
+// func Subtract
+// func WordToBag
+// func FromBigInt
+
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
 
 type ErrCannotSubtract string
 
 func (e ErrCannotSubtract) Error() string { return "sorry, dude" }
 
-type Bag struct{ B *big.Int }
+type Bag struct{ z *big.Int }
 
-func (b Bag) GobEncode() ([]byte, error) { return b.B.GobEncode() }
+func (b Bag) GobEncode() ([]byte, error) { return b.z.GobEncode() }
 
-func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.B.String()) }
+func (b Bag) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v", b.z.String()) }
 
 func lettertoprime(ch int) int64 {
 	index := ch - 'a'
@@ -37,25 +43,29 @@ func WordToBag(w string) Bag {
 	return Bag{product}
 }
 
+func FromBigInt (z *big.Int) Bag {
+	return Bag{z}
+}
+
 func (this Bag) SameAsInt(i int64) bool {
 	return this.Same(Bag{big.NewInt(i)})
 }
 
 func (this Bag) Same(other Bag) bool {
-	return this.B.Cmp(other.B) == 0
+	return this.z.Cmp(other.z) == 0
 }
 
 var zero = new(big.Int)
 var one = big.NewInt(1)
 
 func (this Bag) Empty() bool {
-	return this.B.Cmp(one) == 0
+	return this.z.Cmp(one) == 0
 }
 
 var error_cannot_subtract ErrCannotSubtract
 
 func (minuend Bag) Subtract(subtrahend Bag) (Bag, error) {
-	diff, error := subtract(minuend.B, subtrahend.B)
+	diff, error := subtract(minuend.z, subtrahend.z)
 	return Bag{diff}, error
 }
 

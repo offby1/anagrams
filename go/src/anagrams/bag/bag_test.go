@@ -36,7 +36,7 @@ func TestWordsToBags(t *testing.T) {
 		if !actual.SameAsInt(c.ExpectedOutput) {
 			t.Errorf("For word '%s', got %v but expected %v",
 				c.Input,
-				actual.B,
+				actual.z,
 				c.ExpectedOutput)
 		}
 	}
@@ -52,10 +52,10 @@ func TestSubtraction(t *testing.T) {
 
 	var cases = []TestCase{
 		TestCase{"", "", big.NewInt(1), false},
-		TestCase{"a", "", WordToBag("a").B, false},
+		TestCase{"a", "", WordToBag("a").z, false},
 		TestCase{"", "a", big.NewInt(1), true},
-		TestCase{"cat", "a", WordToBag("ct").B, false},
-		TestCase{"caat", "a", WordToBag("cat").B, false},
+		TestCase{"cat", "a", WordToBag("ct").z, false},
+		TestCase{"caat", "a", WordToBag("cat").z, false},
 	}
 
 	for _, c := range cases {
@@ -63,7 +63,7 @@ func TestSubtraction(t *testing.T) {
 		subtrahend := WordToBag(c.Subtrahend)
 		diff, err := minuend.Subtract(subtrahend)
 
-		if (err == nil) == c.ExpectedError || diff.B.Cmp(c.ExpectedDifference) != 0 {
+		if (err == nil) == c.ExpectedError || diff.z.Cmp(c.ExpectedDifference) != 0 {
 			t.Errorf("For '%s' - '%s', got %d, %s but expected %d, %s",
 				c.Minuend,
 				c.Subtrahend,
@@ -82,6 +82,6 @@ func TestEmpty(t *testing.T) {
 	}
 
 	if !empty.Empty() {
-		t.Errorf("%v otta be empty but isn't", empty.B)
+		t.Errorf("%v otta be empty but isn't", empty.z)
 	}
 }

@@ -133,7 +133,7 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 		e := new(Entry)
 		z := new(big.Int)
 		z.GobDecode([]byte(key))
-		e.bag = bag.Bag{z}
+		e.bag = bag.FromBigInt(z)
 
 		e.words = make([]string, 0)
 
