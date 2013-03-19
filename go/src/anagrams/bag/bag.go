@@ -14,10 +14,6 @@ import (
 
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
 
-type ErrCannotSubtract string
-
-func (e ErrCannotSubtract) Error() string { return "sorry, dude" }
-
 type Bag struct{ z *big.Int }
 
 func (b Bag) GobEncode() ([]byte, error) { return b.z.GobEncode() }
@@ -62,19 +58,17 @@ func (this Bag) Empty() bool {
 	return this.z.Cmp(one) == 0
 }
 
-var error_cannot_subtract ErrCannotSubtract
-
-func (minuend Bag) Subtract(subtrahend Bag) (Bag, error) {
-	diff, error := subtract(minuend.z, subtrahend.z)
-	return Bag{diff}, error
+func (minuend Bag) Subtract(subtrahend Bag) (Bag, bool) {
+	diff, ok := subtract(minuend.z, subtrahend.z)
+	return Bag{diff}, ok
 }
 
-func subtract(minuend, subtrahend *big.Int) (*big.Int, error) {
+func subtract(minuend, subtrahend *big.Int) (*big.Int, bool) {
 	q := new(big.Int)
 	r := new(big.Int)
 	q.QuoRem(minuend, subtrahend, r)
 	if r.Cmp(zero) == 0 {
-		return q, nil
+		return q, true
 	}
-	return big.NewInt(1), &error_cannot_subtract
+	return big.NewInt(1), false
 }

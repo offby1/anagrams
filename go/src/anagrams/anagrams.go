@@ -6,9 +6,9 @@ func Filter(d DictSlice, bag bag.Bag) DictSlice {
 	result := make(DictSlice, 0)
 
 	for _, entry := range d {
-		_, error := bag.Subtract(entry.bag)
+		_, ok := bag.Subtract(entry.bag)
 		// seems a shame to throw away the difference.
-		if error == nil {
+		if ok {
 			result = append(result, entry)
 		}
 	}
@@ -40,10 +40,10 @@ func Anagrams(d DictSlice, bag bag.Bag) [][]string {
 	for index, entry := range d {
 		// try to subtract our bag from this entry's bag; save result in "smaller bag".
 
-		smaller_bag, error := bag.Subtract(entry.bag)
+		smaller_bag, ok := bag.Subtract(entry.bag)
 		switch {
 		// if we cannot, just skip this entry.
-		case error != nil:
+		case !ok:
 			break
 
 			// if smaller bag is empty, "listify" this entry's words,

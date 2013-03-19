@@ -47,28 +47,28 @@ func TestSubtraction(t *testing.T) {
 		Minuend            string
 		Subtrahend         string
 		ExpectedDifference *big.Int
-		ExpectedError      bool
+		ExpectedStatus      bool
 	}
 
 	var cases = []TestCase{
-		TestCase{"", "", big.NewInt(1), false},
-		TestCase{"a", "", FromString("a").z, false},
-		TestCase{"", "a", big.NewInt(1), true},
-		TestCase{"cat", "a", FromString("ct").z, false},
-		TestCase{"caat", "a", FromString("cat").z, false},
+		TestCase{"", "", big.NewInt(1), true},
+		TestCase{"a", "", FromString("a").z, true},
+		TestCase{"", "a", big.NewInt(1), false},
+		TestCase{"cat", "a", FromString("ct").z, true},
+		TestCase{"caat", "a", FromString("cat").z, true},
 	}
 
 	for _, c := range cases {
 		minuend := FromString(c.Minuend)
 		subtrahend := FromString(c.Subtrahend)
-		diff, err := minuend.Subtract(subtrahend)
+		diff, ok := minuend.Subtract(subtrahend)
 
-		if (err == nil) == c.ExpectedError || diff.z.Cmp(c.ExpectedDifference) != 0 {
+		if ok != c.ExpectedStatus || diff.z.Cmp(c.ExpectedDifference) != 0 {
 			t.Errorf("For '%s' - '%s', got %d, %s but expected %d, %s",
 				c.Minuend,
 				c.Subtrahend,
-				diff, err,
-				c.ExpectedDifference, c.ExpectedError)
+				diff, ok,
+				c.ExpectedDifference, c.ExpectedStatus)
 		}
 	}
 }
