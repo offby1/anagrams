@@ -17,7 +17,7 @@ import (
 
 var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
 
-type Bag struct{ z *big.Int }
+type Bag struct{ z *big.Int; letters string }
 
 func (b Bag) GobEncode() ([]byte, error) { return b.z.GobEncode() }
 
@@ -39,15 +39,15 @@ func FromString(w string) Bag {
 		product.Mul(product, big.NewInt(lettertoprime(int(c))))
 	}
 
-	return Bag{product}
+	return Bag{product, w}
 }
 
 func FromBigInt (z *big.Int) Bag {
-	return Bag{z}
+	return Bag{z, "?"}
 }
 
 func (this Bag) same_as_int(i int64) bool {
-	return this.same(Bag{big.NewInt(i)})
+	return this.same(Bag{big.NewInt(i), "?"})
 }
 
 func (this Bag) same(other Bag) bool {
@@ -63,7 +63,7 @@ func (this Bag) Empty() bool {
 
 func (minuend Bag) Subtract(subtrahend Bag) (Bag, bool) {
 	diff, ok := subtract(minuend.z, subtrahend.z)
-	return Bag{diff}, ok
+	return Bag{diff, "?"}, ok
 }
 
 func subtract(minuend, subtrahend *big.Int) (*big.Int, bool) {
