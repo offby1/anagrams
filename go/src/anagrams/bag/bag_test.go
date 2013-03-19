@@ -1,44 +1,30 @@
 package bag
 
 import (
-	"math/big"
 	"testing"
 )
-
-func TestLetterToPrime(t *testing.T) {
-	b := lettertoprime('b')
-
-	if b != 3 {
-		t.Errorf("got %d; wanted 3", b)
-	}
-
-	bang := lettertoprime('!')
-	if bang != 1 {
-		t.Errorf("got %d; wanted 1", bang)
-	}
-}
 
 func TestWordsToBags(t *testing.T) {
 	type TestCase struct {
 		Input          string
-		ExpectedOutput int64
+		ExpectedOutput string
 	}
 
 	var cases = []TestCase{
-		TestCase{"", 1},
-		TestCase{"cat", 710},
-		TestCase{" Cat ! ... ", 710},
-		TestCase{"CAT", 710},
-		TestCase{"tac", 710},
-		TestCase{"acat", 1420},
+		TestCase{"", ""},
+		TestCase{"cat", "act"},
+		TestCase{" Cat ! ... ", "act"},
+		TestCase{"CAT", "act"},
+		TestCase{"tac", "act"},
+		TestCase{"acat", "aact"},
 	}
 
 	for _, c := range cases {
 		actual := FromString(c.Input)
-		if !actual.same_as_int(c.ExpectedOutput) {
+		if string(actual.letters) != c.ExpectedOutput {
 			t.Errorf("For word '%s', got %v but expected %v",
 				c.Input,
-				actual.z,
+				actual.letters,
 				c.ExpectedOutput)
 		}
 	}
@@ -48,16 +34,16 @@ func TestSubtraction(t *testing.T) {
 	type TestCase struct {
 		Minuend            string
 		Subtrahend         string
-		ExpectedDifference *big.Int
+		ExpectedDifference string
 		ExpectedStatus     bool
 	}
 
 	var cases = []TestCase{
-		TestCase{"", "", big.NewInt(1), true},
-		TestCase{"a", "", FromString("a").z, true},
-		TestCase{"", "a", big.NewInt(1), false},
-		TestCase{"cat", "a", FromString("ct").z, true},
-		TestCase{"caat", "a", FromString("cat").z, true},
+		TestCase{"", "", "", true},
+		TestCase{"a", "", "a", true},
+		TestCase{"", "a", "", false},
+		TestCase{"cat", "a", "ct", true},
+		TestCase{"caat", "a", "act", true},
 	}
 
 	for _, c := range cases {
@@ -65,7 +51,7 @@ func TestSubtraction(t *testing.T) {
 		subtrahend := FromString(c.Subtrahend)
 		diff, ok := minuend.Subtract(subtrahend)
 
-		if ok != c.ExpectedStatus || diff.z.Cmp(c.ExpectedDifference) != 0 {
+		if ok != c.ExpectedStatus || string(diff.letters) != c.ExpectedDifference {
 			t.Errorf("For '%s' - '%s', got %d, %s but expected %d, %s",
 				c.Minuend,
 				c.Subtrahend,
@@ -84,25 +70,6 @@ func TestEmpty(t *testing.T) {
 	}
 
 	if !empty.Empty() {
-		t.Errorf("%v otta be empty but isn't", empty.z)
+		t.Errorf("%v otta be empty but isn't", empty)
 	}
-}
-
-func TestGobs(t *testing.T) {
-	b := FromString("frotz!!")
-	gob, _ := b.GobEncode()
-
-	roundtripped := new(Bag)
-
-	roundtripped.GobDecode(gob)
-
-	better_be_empty, better_be_true := b.Subtract(*roundtripped)
-
-	if !better_be_true {
-		t.Errorf("WTF!!")
-	}
-	if !better_be_empty.Empty() {
-		t.Errorf("%v otta be empty but isn't", better_be_empty)
-	}
-
 }

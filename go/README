@@ -7,3 +7,4 @@ $ (cd $(git rev-parse --show-toplevel)/go ; export GOPATH=$(pwd); go fmt anagram
 Profiling:
 
 ... ./bin/main -cpuprofile=whysoslow.prof -input=hemingway > /dev/null
+go tool pprof bin/main whysoslow.prof 

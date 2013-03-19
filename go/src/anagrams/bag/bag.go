@@ -2,50 +2,21 @@ package bag
 
 import (
 	"fmt"
-	"math/big"
 	"sort"
 	"strings"
 )
 
-// Exports:
-// the type Bag
-// func Subtract
-// func FromString
-// func FromBigInt
-// func GobEncode
-// func Format
-// func Empty
-
-var primes = []int64{2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101}
-
 type Bag struct {
-	z       *big.Int
 	letters []byte
 }
 
-func (b Bag) GobEncode() ([]byte, error) { return b.z.GobEncode() }
-func (b *Bag) GobDecode(bytes []byte) error {
-	z := new(big.Int)
-	e := z.GobDecode(bytes)
-	if e == nil {
-		b.z = z
-	}
-
-	return e
-}
 func (b Bag) Format(f fmt.State, c rune) {
-	fmt.Fprintf(f, "%v (%v)",
-		b.z.String(),
+	fmt.Fprintf(f, "%v",
 		b.letters)
 }
 
-func lettertoprime(ch int) int64 {
-	index := ch - 'a'
-
-	if index >= len(primes) || index < 0 {
-		return 1
-	}
-	return primes[index]
+func (b Bag) AsString() string {
+	return string(b.letters)
 }
 
 type SortableString []byte
@@ -63,48 +34,70 @@ func (s SortableString) Swap(i, j int) {
 }
 
 func FromString(w string) Bag {
-	product := big.NewInt(1)
+	w = strings.ToLower(w)
+	sort_me := make(SortableString, 0)
+	for _, ch := range w {
 
-	for _, c := range strings.ToLower(w) {
-		product.Mul(product, big.NewInt(lettertoprime(int(c))))
+		if ch >= 'a' && ch <= 'z' {
+			sort_me = append(sort_me, byte(ch))
+		}
 	}
 
-	sort_me := make(SortableString, len(w))
-	copy(sort_me, w)
 	sort.Sort(sort_me)
-	return Bag{product, sort_me}
-}
-
-func FromBigInt(z *big.Int) Bag {
-	return Bag{z, []byte("?")}
-}
-
-func (this Bag) same_as_int(i int64) bool {
-	return this.same(Bag{big.NewInt(i), []byte("?")})
+	return Bag{sort_me}
 }
 
 func (this Bag) same(other Bag) bool {
-	return this.z.Cmp(other.z) == 0
+	return string(this.letters) == string(other.letters)
 }
 
-var zero = new(big.Int)
-var one = big.NewInt(1)
-
 func (this Bag) Empty() bool {
-	return this.z.Cmp(one) == 0
+	return len(this.letters) == 0
 }
 
 func (minuend Bag) Subtract(subtrahend Bag) (Bag, bool) {
-	diff, ok := subtract(minuend.z, subtrahend.z)
-	return Bag{diff, []byte("?")}, ok
+	diff, ok := subtract(minuend.letters, subtrahend.letters)
+	return Bag{diff}, ok
 }
 
-func subtract(minuend, subtrahend *big.Int) (*big.Int, bool) {
-	q := new(big.Int)
-	r := new(big.Int)
-	q.QuoRem(minuend, subtrahend, r)
-	if r.Cmp(zero) == 0 {
-		return q, true
+func cmp(a, b []byte) int {
+	if a[0] < b[0] {
+		return -1
 	}
-	return big.NewInt(1), false
+	if a[0] == b[0] {
+		return 0
+	}
+	return 1
+}
+
+func subtract(top, bottom []byte) ([]byte, bool) {
+	difference := make([]byte, 0)
+
+	for {
+		switch {
+		case len(bottom) == 0:
+			return append(difference, string(top)...), true
+		case len(top) == 0:
+			return top, false
+		case top[0] == bottom[0]:
+			break
+		case top[0] > bottom[0]:
+			return top, false
+		default:
+			for cmp(top, bottom) < 0 {
+				difference = append(difference, top[0])
+
+				top = top[1:]
+				if len(top) == 0 {
+					break
+				}
+			}
+
+			continue
+		}
+
+		top = top[1:]
+		bottom = bottom[1:]
+	}
+	return difference, true
 }

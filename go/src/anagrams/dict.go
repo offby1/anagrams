@@ -5,7 +5,6 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math/big"
 	"os"
 	"regexp"
 	"strings"
@@ -104,9 +103,7 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 			continue
 		}
 
-		// Unfortunatley, we cannot use bigInts as map keys, so we use
-		// the next best thing: the bigInt's gob representation.
-		key, _ := bag.FromString(word).GobEncode()
+		key := bag.FromString(word).AsString()
 
 		words, ok := accum[string(key)]
 
@@ -131,9 +128,7 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 
 	for key, val := range dm {
 		e := new(Entry)
-		z := new(big.Int)
-		z.GobDecode([]byte(key))
-		e.bag = bag.FromBigInt(z)
+		e.bag = bag.FromString(key)
 
 		e.words = make([]string, 0)
 
