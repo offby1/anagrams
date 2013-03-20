@@ -7,16 +7,16 @@ import (
 )
 
 type Bag struct {
-	letters []byte
+	Letters []byte
 }
 
 func (b Bag) Format(f fmt.State, c rune) {
 	fmt.Fprintf(f, "%v",
-		b.letters)
+		b.Letters)
 }
 
 func (b Bag) AsString() string {
-	return string(b.letters)
+	return string(b.Letters)
 }
 
 type SortableString []byte
@@ -48,15 +48,15 @@ func FromString(w string) Bag {
 }
 
 func (this Bag) same(other Bag) bool {
-	return string(this.letters) == string(other.letters)
+	return string(this.Letters) == string(other.Letters)
 }
 
 func (this Bag) Empty() bool {
-	return len(this.letters) == 0
+	return len(this.Letters) == 0
 }
 
 func (minuend Bag) Subtract(subtrahend Bag) (Bag, bool) {
-	diff, ok := subtract(minuend.letters, subtrahend.letters)
+	diff, ok := subtract(minuend.Letters, subtrahend.Letters)
 	return Bag{diff}, ok
 }
 

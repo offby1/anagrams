@@ -3,6 +3,7 @@ package anagrams
 import (
 	"anagrams/bag"
 	"bufio"
+	"encoding/gob"
 	"fmt"
 	"log"
 	"os"
@@ -21,20 +22,60 @@ type WordSet map[string]int
 type DictMap map[string]WordSet
 
 type Entry struct {
-	bag   bag.Bag
-	words []string
+	Bag   bag.Bag
+	Words []string
 }
 
-func (e Entry) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v: %v", e.bag, e.words) }
+func (e Entry) Format(f fmt.State, c rune) { fmt.Fprintf(f, "%v: %v", e.Bag, e.Words) }
+
+const cache_file_name = "/tmp/dict-cache"
+
+func snarf_cached_dict() (DictSlice, bool) {
+	_, err := os.Stat(cache_file_name)
+	if err != nil {
+		return nil, false
+	}
+	in, err := os.Open(cache_file_name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	decoder := gob.NewDecoder(in)
+	d := new(DictSlice)
+	err = decoder.Decode(d)
+	if err != nil {
+		log.Panic(err)
+	}
+	return *d, true
+}
+
+func save_cached_dict(d DictSlice) {
+	out, err := os.Create(cache_file_name)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer out.Close()
+
+	encoder := gob.NewEncoder(out)
+	err = encoder.Encode(d)
+	if err != nil {
+		log.Panic(err)
+	}
+}
 
 type DictSlice []Entry
 
 func SnarfDict(input_file_name string) (DictSlice, error) {
 
+	cached, ok := snarf_cached_dict()
+	if ok {
+		return cached, nil
+	}
+
 	file, err := os.Open(input_file_name)
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 
 	var dm DictMap
 	dm, err = snarfdict(bufio.NewReader(file))
@@ -42,7 +83,10 @@ func SnarfDict(input_file_name string) (DictSlice, error) {
 		log.Fatal(err)
 	}
 
-	return dictmap_to_slice(dm), nil
+	cache_me := dictmap_to_slice(dm)
+	save_cached_dict(cache_me)
+
+	return cache_me, nil
 }
 
 func word_acceptable(s string) bool {
@@ -128,12 +172,12 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 
 	for key, val := range dm {
 		e := new(Entry)
-		e.bag = bag.FromString(key)
+		e.Bag = bag.FromString(key)
 
-		e.words = make([]string, 0)
+		e.Words = make([]string, 0)
 
 		for word, _ := range val {
-			e.words = append(e.words, word)
+			e.Words = append(e.Words, word)
 		}
 
 		if len(val) > longest_length {
@@ -144,5 +188,6 @@ func dictmap_to_slice(dm DictMap) DictSlice {
 		return_value = append(return_value, *e)
 	}
 
+	// TODO -- maybe sort the return value in some interesting way (longest bags first, e.g.)
 	return return_value
 }

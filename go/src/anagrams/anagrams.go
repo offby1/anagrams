@@ -6,7 +6,7 @@ func Filter(d DictSlice, bag bag.Bag) DictSlice {
 	result := make(DictSlice, 0)
 
 	for _, entry := range d {
-		_, ok := bag.Subtract(entry.bag)
+		_, ok := bag.Subtract(entry.Bag)
 		// seems a shame to throw away the difference.
 		if ok {
 			result = append(result, entry)
@@ -40,7 +40,7 @@ func Anagrams(d DictSlice, bag bag.Bag) [][]string {
 	for index, entry := range d {
 		// try to subtract our bag from this entry's bag; save result in "smaller bag".
 
-		smaller_bag, ok := bag.Subtract(entry.bag)
+		smaller_bag, ok := bag.Subtract(entry.Bag)
 		switch {
 		// if we cannot, just skip this entry.
 		case !ok:
@@ -49,7 +49,7 @@ func Anagrams(d DictSlice, bag bag.Bag) [][]string {
 			// if smaller bag is empty, "listify" this entry's words,
 			// and append that list to the result.
 		case smaller_bag.Empty():
-			for _, w := range entry.words {
+			for _, w := range entry.Words {
 				new_list := make([]string, 1)
 				new_list[0] = w
 				result = append(result, new_list)
@@ -65,7 +65,7 @@ func Anagrams(d DictSlice, bag bag.Bag) [][]string {
 			// make a "cross-product" of this entry's words with the
 			// results of that recursive call.
 
-			for _, more := range combine(entry.words, from_recursive_call) {
+			for _, more := range combine(entry.Words, from_recursive_call) {
 				result = append(result, more)
 			}
 		}

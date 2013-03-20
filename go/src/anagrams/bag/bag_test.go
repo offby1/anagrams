@@ -21,10 +21,10 @@ func TestWordsToBags(t *testing.T) {
 
 	for _, c := range cases {
 		actual := FromString(c.Input)
-		if string(actual.letters) != c.ExpectedOutput {
+		if string(actual.Letters) != c.ExpectedOutput {
 			t.Errorf("For word '%s', got %v but expected %v",
 				c.Input,
-				actual.letters,
+				actual.Letters,
 				c.ExpectedOutput)
 		}
 	}
@@ -51,7 +51,7 @@ func TestSubtraction(t *testing.T) {
 		subtrahend := FromString(c.Subtrahend)
 		diff, ok := minuend.Subtract(subtrahend)
 
-		if ok != c.ExpectedStatus || string(diff.letters) != c.ExpectedDifference {
+		if ok != c.ExpectedStatus || string(diff.Letters) != c.ExpectedDifference {
 			t.Errorf("For '%s' - '%s', got %d, %s but expected %d, %s",
 				c.Minuend,
 				c.Subtrahend,
