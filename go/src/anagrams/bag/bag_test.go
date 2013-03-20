@@ -43,6 +43,7 @@ func TestSubtraction(t *testing.T) {
 		TestCase{"a", "", "a", true},
 		TestCase{"", "a", "", false},
 		TestCase{"cat", "a", "ct", true},
+		TestCase{"cat", "cat", "", true},
 		TestCase{"caat", "a", "act", true},
 	}
 

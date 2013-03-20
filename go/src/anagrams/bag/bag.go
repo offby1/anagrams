@@ -71,12 +71,16 @@ func cmp(a, b []byte) int {
 }
 
 func subtract(top, bottom []byte) ([]byte, bool) {
-	difference := make([]byte, 0)
+	output_size := 0
+	difference := make([]byte, len(top))
 
 	for {
 		switch {
 		case len(bottom) == 0:
-			return append(difference, string(top)...), true
+			copy(difference[output_size:], top)
+			output_size += len(top)
+			difference = difference[:output_size]
+			return difference, true
 		case len(top) == 0:
 			return top, false
 		case top[0] == bottom[0]:
@@ -85,7 +89,8 @@ func subtract(top, bottom []byte) ([]byte, bool) {
 			return top, false
 		default:
 			for cmp(top, bottom) < 0 {
-				difference = append(difference, top[0])
+				difference[output_size] = top[0]
+				output_size++
 
 				top = top[1:]
 				if len(top) == 0 {
@@ -99,5 +104,6 @@ func subtract(top, bottom []byte) ([]byte, bool) {
 		top = top[1:]
 		bottom = bottom[1:]
 	}
+	difference = difference[:output_size]
 	return difference, true
 }
