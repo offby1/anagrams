@@ -60,16 +60,6 @@ func (minuend Bag) Subtract(subtrahend Bag) (Bag, bool) {
 	return Bag{diff}, ok
 }
 
-func cmp(a, b []byte) int {
-	if a[0] < b[0] {
-		return -1
-	}
-	if a[0] == b[0] {
-		return 0
-	}
-	return 1
-}
-
 func subtract(top, bottom []byte) ([]byte, bool) {
 	output_size := 0
 	difference := make([]byte, len(top))
@@ -88,11 +78,12 @@ func subtract(top, bottom []byte) ([]byte, bool) {
 		case top[0] > bottom[0]:
 			return top, false
 		default:
-			for cmp(top, bottom) < 0 {
+			for top[0] < bottom[0] {
 				difference[output_size] = top[0]
 				output_size++
 
 				top = top[1:]
+
 				if len(top) == 0 {
 					break
 				}
