@@ -68,6 +68,7 @@ func SnarfDict(input_file_name string) (DictSlice, error) {
 
 	cached, ok := snarf_cached_dict()
 	if ok {
+		log.Printf("Read cached dictionary from %v, w00t\n", input_file_name)
 		return cached, nil
 	}
 
