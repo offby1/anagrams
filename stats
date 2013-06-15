@@ -1,6 +1,6 @@
 -*-org-*-
 
-dell optiplex:
+* optiplex:
 processor       : 0
 vendor_id       : GenuineIntel
 cpu family      : 15
@@ -19,11 +19,21 @@ cpuid level     : 2
 wp              : yes
 flags           : fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe cid
 bogomips        : 4771.02
------
-Lenovo T60 laptop:
+* Lenovo
+T60 laptop
 two processors (although all of these anagram programs are single-threaded)
 cpu MHz: either 1,000 or 2,000; it's not clear
 model name: T2400
+* macbook
+Model Name            MacBook Pro
+Model Identifier      MacBookPro10,2
+Processor Name        Intel Core i5
+Processor Speed       2.6 GHz
+Number of Processors  1
+Total Number of Cores 2
+L2 Cache (per Core)   256 KB
+L3 Cache              3 MB
+Memory                8 GB
 
 time ./anagrams  > /dev/null
 
@@ -57,6 +67,7 @@ be notably lower than if the answer were correct.
 | --------------------schemes  |            |          |                          |                      |                       |                  |                   |                   |                |                |
 | c++ (-O2)                    |            | lenovo   | yes                      |                      |                       |                  |                   | 16 user seconds   | bignums        | no             |
 | mzscheme v4.1                | no         | lenovo   | yes                      |                      |                       |                  |                   | 16 user seconds   |                |                |
+| go 1.1.1                     | no         | macbook  | yes                      |                      |                       |                  |                   | 17 user seconds   | strings        | yes            |
 | mzscheme v3.99.0.12          | no         | lenovo   | yes                      |                      |                       |                  |                   | 22 user seconds   |                |                |
 | mzscheme v370                |            | lenovo   | yes                      |                      |                       |                  |                   | 22 user seconds   | bignums        | no             |
 | mit-scheme 7.7.90 + 20070623 | yes        | optiplex | close                    |                      |                       |                  |                   | 22 user seconds   | bignums        | no             |
@@ -70,6 +81,8 @@ be notably lower than if the answer were correct.
 | chicken (3.4.0)              | yes: -O3   | lenovo   | no                       |                      |                       |                  |                   | 45 user seconds   | strings        | yes            |
 | Ikarus 0.0.1                 | no         | optiplex | close                    | 2.4 user seconds     | 2.8 user seconds      | 3.7 user seconds | 10.4 user seconds | 46 user seconds   | bignums        | no             |
 | bigloo 3.0a                  |            | optiplex |                          |                      |                       |                  | 11 user seconds   | 57 user seconds   | strings        | no             |
+| go 1.0.3                     | no         | lenovo   | yes                      |                      |                       |                  |                   | 53 user seconds   | strings        | no             |
+| bigloo 3.0a                  |            | optiplex |                          |                      |                       |                  | 11 user seconds   | 57 user seconds   | strings        | yes            |
 | chicken 4.0.0                | dunno      | lenovo   | yes                      |                      |                       |                  |                   | 70 user seconds   | strings        | yes            |
 | chicken (315)                | yes: -O3   | optiplex | no                       | 3 user seconds       | 3 user seconds        | 5 user seconds   | 21 user seconds   | 79 user seconds   | strings        | yes            |
 | gambit 4.0b22                | yes        | lenovo   | not quite                | 1 user seconds       | 1 user seconds        | 1 user seconds   |                   | 84 user seconds   | bignums        | no             |
