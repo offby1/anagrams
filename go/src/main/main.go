@@ -16,7 +16,9 @@ var input_string = flag.String("input", "", "string from which to compute anagra
 func main() {
 	flag.Parse()
 
-	dictslice, error := anagrams.SnarfDict("/usr/share/dict/words")
+	// TODO -- figure out how to get this file name reliably without
+	// hard-coding it
+	dictslice, error := anagrams.SnarfDict("/Users/erichanchrow/anagrams/words")
 
 	if error != nil {
 		log.Fatal(error)
