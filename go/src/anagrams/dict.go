@@ -11,12 +11,13 @@ import (
 	"strings"
 )
 
-// Open /usr/share/dict/words
 // read each word; return a map from bags to a set of words
 
 // Ideally I'd use a proper "set" type, but I haven't found one; I'll
-// just use a map and ignore the values instead
-type WordSet map[string]int
+// just use a map and ignore the values instead.  In fact,
+// http://golang.org/doc/effective_go.html#maps recommends exactly
+// this.
+type WordSet map[string]bool
 
 // The key is the gob representation of a big int
 type DictMap map[string]WordSet
@@ -157,7 +158,7 @@ func snarfdict(reader *bufio.Reader) (DictMap, error) {
 			accum[string(key)] = words
 		}
 
-		words[word] = 1
+		words[word] = true
 	}
 
 	log.Printf("Reading dictionary ... done")
