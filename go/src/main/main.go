@@ -40,5 +40,7 @@ func main() {
 	result := anagrams.Anagrams(dictslice, bag)
 	fmt.Fprintf(os.Stderr,
 		"%d anagrams of '%s'\n", len(result), *input_string)
-	fmt.Println(result)
+	for _, a := range result {
+		fmt.Println(a)
+	}
 }
