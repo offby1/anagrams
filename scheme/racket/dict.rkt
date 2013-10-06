@@ -4,10 +4,13 @@ exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
 |#
 
 #lang racket
-(require (except-in "bag.rkt" main))
-(require rackunit rackunit/text-ui
-         (lib "etc.ss")
-         srfi/1
+(require  "bag.rkt")
+(module+ test
+  (require
+   rackunit
+   rackunit/text-ui
+   (lib "etc.ss")))
+(require srfi/1
          srfi/26)
 
 (provide init)
@@ -78,42 +81,31 @@ exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
     (sort result > #:key car)))
 
 
-(provide main)
-(define (main . args)
-  (exit
-   (run-tests
-    (test-suite
-     "dict"
+(module+ test
+  (check-not-false (word-acceptable? "dog"))
+  (check-false (word-acceptable? "C3PO"))
+  (let ([d (wordlist->hash (build-path (this-expression-source-directory) 'up 'up "words"))])
+    (check-equal? (length (apply append (map cdr (hash-map d cons)))) 72794)
+    (check-equal? (hash-count d) 66965))
 
-     (test-begin
-      (check-not-false (word-acceptable? "dog"))
-      (check-false (word-acceptable? "C3PO"))
-      (let ([d (wordlist->hash (build-path (this-expression-source-directory) 'up 'up "words"))])
-        (check-equal? (length (apply append (map cdr (hash-map d cons)))) 72794)
-        (check-equal? (hash-count d) 66965)))
+  (let ((d (adjoin-word (make-immutable-hash '()) "frotz")))
+    (let ((alist (hash-map d cons)))
+      (check-equal? alist (list (cons  (bag "frotz")
+                                       (list "frotz")))))
+    (let ((alist (hash-map (adjoin-word d "zortf") cons)))
+      (check-equal? (caar alist) (bag "frotz"))
+      (check-not-false (member "zortf" (cdar alist)))
+      (check-not-false (member "frotz" (cdar alist))))
 
-     (test-begin
-      (let ((d (adjoin-word (make-immutable-hash '()) "frotz")))
-        (let ((alist (hash-map d cons)))
-          (check-equal? alist (list (cons  (bag "frotz")
-                                           (list "frotz")))))
-        (let ((alist (hash-map (adjoin-word d "zortf") cons)))
-          (check-equal? (caar alist) (bag "frotz"))
-          (check-not-false (member "zortf" (cdar alist)))
-          (check-not-false (member "frotz" (cdar alist))))
-
-        (let* ((alist (hash-map (adjoin-word d "plonk") cons))
-               (probe (assoc (bag "plonk" )
-                             alist)))
-          (check-equal? 2 (length alist))
-          (check-equal? probe (cons (bag "plonk") (list "plonk"))))))
-
-     (test-begin
-      (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
-        (check-equal? 2 (hash-count d)))
-      (let ((d (wordlist->hash (open-input-string "see\nshy\nJo\n"))))
-        (test-not-false "see" (hash-ref d (bag "see")))
-        (test-not-false "shy" (hash-ref d (bag "shy")))
-        (test-not-false "jo"  (hash-ref d (bag "jo")))
-        )))
-    )))
+    (let* ((alist (hash-map (adjoin-word d "plonk") cons))
+           (probe (assoc (bag "plonk" )
+                         alist)))
+      (check-equal? 2 (length alist))
+      (check-equal? probe (cons (bag "plonk") (list "plonk")))))
+  (let ((d (wordlist->hash (open-input-string "god\ncat\ndog\n"))))
+    (check-equal? 2 (hash-count d)))
+  (let ((d (wordlist->hash (open-input-string "see\nshy\nJo\n"))))
+    (test-not-false "see" (hash-ref d (bag "see")))
+    (test-not-false "shy" (hash-ref d (bag "shy")))
+    (test-not-false "jo"  (hash-ref d (bag "jo")))
+    ))

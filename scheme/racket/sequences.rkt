@@ -1,11 +1,8 @@
-#! /bin/sh
-#| Hey Emacs, this is -*-scheme-*- code!
-exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
-|#
-
 #lang racket
-(require rackunit rackunit/text-ui)
+(module+ test
+  (require rackunit))
 
+(provide in-cdrs)
 (define (in-cdrs seq)
   (make-do-sequence
    (lambda ()
@@ -30,15 +27,10 @@ exec racket -l errortrace --require "$0" --main -- ${1+"$@"}
       ;; not-last? (-> pos elt ... bool)
       (const #t)))))
 
-(define-test-suite in-cdrs-tests
-
+(module+ test
   (check-equal?
    (for/list ([(elt rest) (in-cdrs (list 1 2 3))])
      (list elt rest))
    '((1 (1 2 3))
      (2 (2 3))
      (3 (3)))))
-
-(define (main . args)
-  (exit (run-tests in-cdrs-tests 'verbose)))
-(provide in-cdrs main)

@@ -5,9 +5,9 @@ exec racket --require "$0" --main -- ${1+"$@"}
 
 #lang racket
 
-(require (except-in "dict.rkt" main)
-         (except-in "bag.rkt" main)
-         (except-in "sequences.rkt" main)
+(require "dict.rkt"
+         "bag.rkt"
+         "sequences.rkt"
          (lib "etc.ss"))
 
 (provide all-anagrams)
