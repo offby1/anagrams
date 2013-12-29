@@ -1,57 +1,59 @@
 #!/usr/bin/env python
 
-import string
-import sys
+from __future__ import print_function
+
+import collections
+import functools
 import unittest
 
-def bag_empty (b):
-    return b == 1
 
-def bag (str):
-    str = string.lower (str)
-    primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
-    rv = 1
+@functools.total_ordering
+class Bag(object):
+    def __init__(self, str):
+        self.c = collections.Counter([c.lower() for c in str])
 
-    for c in str:
-        if (c >= 'a') and (c <= 'z'):
-            rv *= primes [ord (c) - ord ('a')]
+    def empty(self):
+        return len(self.c) == 0
 
-    return rv
+    def __eq__(self, other):
+        return self.c == other.c
 
-def bags_equal (s1, s2):
-    return s1 == s2
+    def __lt__(self, other):
+        return self.c < other.c
 
-def subtract_bags (b1, b2):
-    remainder = b1 % b2
-    if (0 == remainder):
-        return b1 / b2
-    else:
-        return 0
+    def subtract(self, other):
+        top = collections.Counter(self.c)
+        top.subtract(other.c)
+        if any([x < 0 for x in top.values()]):
+            return False
+        return Bag(top.elements())
+
+    def __hash__(self):
+        return str(self).__hash__()
+
+    def __str__(self):
+        return ''.join(self.c.elements())
+
 
-class WhatchaMaDingy (unittest.TestCase):
-    def __init__ (self, methodName='runTest'):
+class WhatchaMaDingy(unittest.TestCase):
+    def __init__(self, methodName='runTest'):
         self.done = False
-        unittest.TestCase.__init__ (self, methodName)
+        unittest.TestCase.__init__(self, methodName)
 
-    def testAlWholeLottaStuff (self):
-        self.assert_ (bag_empty (bag ("")))
+    def testAlWholeLottaStuff(self):
+        self.assert_(Bag("").empty())
 
-        self.assert_ (not (bag_empty (bag ("a"))))
+        self.assert_(not(Bag("a").empty()))
 
-        self.assert_ (bags_equal (bag ("abc"),
-                            bag ("cba")))
+        self.assert_(Bag("abc") == Bag("cba"))
 
-        self.assert_ (not (bags_equal (bag ("abc"),
-                                 bag ("bc"))))
+        self.assert_(Bag("abc") != Bag("bc"))
 
-        self.assert_ (bags_equal (bag ("a"),
-                              subtract_bags (bag("ab"),
-                                             bag ("b"))))
-        self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("b"))))
+        self.assert_(Bag("a") == Bag("ab").subtract(Bag("b")))
 
-        self.assert_ (not (subtract_bags (bag ("a"),
-                                    bag ("aa"))))
+        self.assert_(not(Bag("a").subtract(Bag("b"))))
+
+        self.assert_(not(Bag("a").subtract(Bag("aa"))))
 
         silly_long_string = "When first I was a wee, wee lad\n\
         Eating on my horse\n\
@@ -63,14 +65,19 @@ class WhatchaMaDingy (unittest.TestCase):
         With dimples on your tie."
 
         ever_so_slightly_longer_string = silly_long_string + "x"
-        self.assert_ (bags_equal (bag ("x"),
-                            subtract_bags (bag (ever_so_slightly_longer_string),
-                                           bag (silly_long_string))))
+        self.assert_(Bag("x") == Bag(ever_so_slightly_longer_string).subtract(Bag(silly_long_string)))
 
-        self.assert_ (bags_equal (bag ("abc"),
-                            bag ("ABC")))
+        self.assert_(Bag("abc") == Bag("ABC"))
 
-        self.done = True;
+        self.done = True
+
+
+class Hashable(unittest.TestCase):
+    def testIt(self):
+        h = {}
+        h[Bag('hello')] = 3
+        self.assert_(Bag('hello') in h)
+        self.assert_(h[Bag('hello')] == 3)
 
 if __name__ == "__main__":
-    exit(unittest.main ())
+    exit(unittest.main())

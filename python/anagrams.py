@@ -1,54 +1,57 @@
 #!/usr/bin/env python
 
-from bag import bag, bag_empty, bags_equal, subtract_bags
+from __future__ import print_function
+
+from bag import Bag
 import dict
 from optparse import OptionParser
-from types import *
-import os
 import profile
 import sys
 
 try:
     import psyco
     psyco.full()
-    print >> sys.stderr, "Psyco loaded OK"
+    print("Psyco loaded OK",
+          file=sys.stderr)
 except ImportError, e:
-    print >> sys.stderr, "Psyco didn't load:", e
+    print("Psyco didn't load: {}".format(e),
+          file=sys.stderr)
 
-def combine (words, anagrams):
+
+def combine(words, anagrams):
 
     rv = []
     for w in words:
         for a in anagrams:
-            rv.append ([w] + a)
+            rv.append([w] + a)
 
     return rv
 
 
-def anagrams (bag, dict):
+def anagrams(bag, dict):
 
     rv = []
 
-    for words_processed in range (0, len (dict)):
+    for words_processed in range(0, len(dict)):
         entry = dict[words_processed]
         key   = entry[0]
         words = entry[1]
 
-        smaller_bag = subtract_bags (bag, key)
-        if (not smaller_bag):
+        smaller_bag = bag.subtract(key)
+        if not smaller_bag:
             continue
 
-        if (bag_empty (smaller_bag)):
+        if smaller_bag.empty():
             for w in words:
-                rv.append ([w])
+                rv.append([w])
             continue
 
-        from_smaller_bag = anagrams (smaller_bag,
+        from_smaller_bag = anagrams(smaller_bag,
                                      dict[words_processed:])
-        if (not len (from_smaller_bag)):
+        if not len(from_smaller_bag):
             continue
 
-        rv.extend (combine (words, from_smaller_bag))
+        rv.extend(combine(words, from_smaller_bag))
 
     return rv
 
@@ -66,14 +69,15 @@ if __name__ == "__main__":
 
     (options, args) = parser.parse_args()
 
-    if (0 == len(args)):
-        parser.print_help ()
-        sys.exit (0)
+    if 0 == len(args):
+        parser.print_help()
+        sys.exit(0)
 
-    dict_hash_table = dict.snarf_dictionary (options.dict_fn)
+    dict_hash_table = dict.snarf_dictionary(options.dict_fn)
 
-    the_phrase = bag (args[0])
-    print >> sys.stderr, "Pruning dictionary.  Before:", len (dict_hash_table.keys ()), "bags ...",
+    the_phrase = Bag(args[0])
+    print("Pruning dictionary.  Before: {} bags ...".format(len(dict_hash_table.keys())),
+          file=sys.stderr, end='')
 
     # Now convert the hash table to a list, longest entries first.  (This
     # isn't necessary, but it makes the more interesting anagrams appear
@@ -82,39 +86,38 @@ if __name__ == "__main__":
     # While we're at it, prune the list, too.  That _is_ necessary for the
     # program to finish before you grow old and die.
 
-
     the_dict_list = [[k, dict_hash_table[k]]
-                     for k in dict_hash_table.keys ()
-                     if (subtract_bags (the_phrase, k))]
+                     for k in dict_hash_table.keys()
+                     if the_phrase.subtract(k)]
 
     # Note that sorting entries "alphabetically" only makes partial sense,
-    # since each entry is (at least potentially) more than one word (all
+    # since each entry is(at least potentially) more than one word(all
     # the words in an entry are anagrams of each other).
-    def biggest_first_then_alphabetically (a, b):
+    def biggest_first_then_alphabetically(a, b):
         a = a[1][0]
         b = b[1][0]
-        result = cmp (len (b), len (a))
-        if (not result):
-            result = cmp (a, b)
+        result = cmp(len(b), len(a))
+        if not result:
+            result = cmp(a, b)
         return result
 
-    the_dict_list.sort (biggest_first_then_alphabetically)
+    the_dict_list.sort(biggest_first_then_alphabetically)
 
-
-    print >> sys.stderr, "Pruned dictionary.  After:", len (the_dict_list), "bags."
-    profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
+    print(" After: {} bags.".format(len(the_dict_list)),
+          file=sys.stderr)
+    profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04("Hoary Hedgehog")
     if "psyco" in globals():
-        result = anagrams (the_phrase, the_dict_list)
+        result = anagrams(the_phrase, the_dict_list)
     else:
-        profile.run("result = anagrams (the_phrase, the_dict_list)")
-        print >> sys.stderr, len(result), "anagrams of", sys.argv[1], ":"
+        profile.run("result = anagrams(the_phrase, the_dict_list)")
 
-    print >> sys.stderr, "%d anagrams of %s" % (len(result), args[0])
+    print("{} anagrams of {}".format(len(result), args[0]),
+          file=sys.stderr)
     for a in result:
-        sys.stdout.write ("(")
-        for i, w in  enumerate (a):
-            if (i):
-                sys.stdout.write (" ")
-            sys.stdout.write  (w)
-        sys.stdout.write (")")
-        print
+        sys.stdout.write("(")
+        for i, w in  enumerate(a):
+            if i > 0:
+                sys.stdout.write(" ")
+            sys.stdout.write(w)
+        sys.stdout.write(")")
+        print()
