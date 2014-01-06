@@ -1,20 +1,19 @@
 #!/usr/bin/env python3
 
-import string
-import sys
 import unittest
+
 
 class Bag(object):
     _primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101]
 
     __slots__ = 'num'
-    
+
     def __init__(self, str):
         num = 1
 
         for c in str.lower():
             if (c >= 'a') and (c <= 'z'):
-                num *= self._primes [ord (c) - ord ('a')]
+                num *= self._primes[ord(c) - ord('a')]
 
         self.num = num
 
@@ -23,7 +22,7 @@ class Bag(object):
 
     def __repr__(self):
         return repr(self.num)
-    
+
     def __eq__(self, other):
         return self.num == other.num
 
@@ -39,11 +38,12 @@ class Bag(object):
         else:
             return 0
 
+
 class WhatchaMaDingy(unittest.TestCase):
     def testAlWholeLottaStuff(self):
         self.assertTrue(Bag("").empty())
         self.assertFalse(Bag("a").empty())
-        self.assertEqual(Bag("abc"),Bag("cba"))
+        self.assertEqual(Bag("abc"), Bag("cba"))
         self.assertNotEqual(Bag("abc"), Bag("bc"))
         self.assertEqual(Bag("a"), Bag("ab") - Bag("b"))
         self.assertFalse(Bag("a") - Bag("b"))
