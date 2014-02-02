@@ -5,7 +5,7 @@ $ export GOPATH=$(pwd)
 $ go fmt anagrams 
 $ go test anagrams
 $ go install main
-$ ./bin/main --input='Ernest Hemingway' > wow
+$ ./bin/main --words ../words --input='Ernest Hemingway' > wow
 
 "go clean" works too.
 

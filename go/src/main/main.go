@@ -12,13 +12,12 @@ import (
 
 var cpuprofile = flag.String("cpuprofile", "", "write cpu profile to file")
 var input_string = flag.String("input", "", "string from which to compute anagrams")
+var words_file = flag.String("words", "", "name of dictionary file")
 
 func main() {
 	flag.Parse()
 
-	// TODO -- figure out how to get this file name reliably without
-	// hard-coding it
-	dictslice, error := anagrams.SnarfDict("/Users/erichanchrow/anagrams/words")
+	dictslice, error := anagrams.SnarfDict(*words_file)
 
 	if error != nil {
 		log.Fatal(error)
