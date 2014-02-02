@@ -27,7 +27,7 @@ Hmm.
 * Ensure each implementation uses the same dictionary
 
 Many (especially those I've touched recently) use the dictionary in
-this directory, but a bunch probably still look for
+this directory, but some (C++ in particular) still look for
 /usr/share/dict/words, which of course won't work on Windows.
 
 * Languages to do
@@ -51,3 +51,5 @@ They're practically the same, except the former draws stuff in a
 window, whereas the latter just returns a list of stuff.
 ** "CoreLogic".  Some kinda weird varient of Clojure.
 Suggested by Kevin-from-Seajure.
+
+** http://rust-lang.org

@@ -65,7 +65,7 @@ be notably lower than if the answer were correct.
 | cmucl                        |            | optiplex |                          | 1 seconds            | 2 seconds             |                  |                   | 10 user seconds   |                |                |
 | clisp                        |            | optiplex |                          |                      |                       |                  |                   | 20 user seconds   |                |                |
 | --------------------schemes  |            |          |                          |                      |                       |                  |                   |                   |                |                |
-| c++ (-O2)                    |            | lenovo   | yes                      |                      |                       |                  |                   | 16 user seconds   | bignums        | no             |
+| c++ (-O2)                    |            | lenovo   | no(1)                 |                      |                       |                  |                   | 16 user seconds   | bignums        | no             |
 | mzscheme v4.1                | no         | lenovo   | yes                      |                      |                       |                  |                   | 16 user seconds   |                |                |
 | go 1.1.1                     | no         | macbook  | yes                      |                      |                       |                  |                   | 17 user seconds   | strings        | yes            |
 | mzscheme v3.99.0.12          | no         | lenovo   | yes                      |                      |                       |                  |                   | 22 user seconds   |                |                |
@@ -109,6 +109,11 @@ be notably lower than if the answer were correct.
 | c-sharp                      |            | lenovo   |                          | 10 wallclock seconds | 144 wallclock seconds |                  |                   |                   | strings        | sort of        |
 | emacs lisp                   | hell no    | optiplex |                          | 20 wallclock seconds |                       |                  |                   |                   | strings        | no             |
 | erlang R11B5                 | no         | lenovo   | nah                      | 2 + user             | 17 user               | 57 user          | 300 user          |                   | bignums        | yes            |
+
+Footnotes:
+
+1 - For all I know, the algorithm is correct, but it reads from the
+    wrong dictionary file, so it's not clear.
 
 
 ---

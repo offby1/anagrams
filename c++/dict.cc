@@ -56,6 +56,9 @@ init (const bag &filter)
 
   hash_t  hash;
   
+  // TODO -- use the file that's part of this project, rather than
+  // hard-coding.  Failing that, at least let it be specified on the
+  // command line.
   const std::string dict_file_name ("/usr/share/dict/words");
   std::ifstream words (dict_file_name.c_str ());
   if (!words)
