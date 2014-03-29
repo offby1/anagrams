@@ -1,5 +1,5 @@
 import unittest
-from bag import Bag
+from bag2 import Bag
 
 class WhatchaMaDingy(unittest.TestCase):
     def testAlWholeLottaStuff(self):
