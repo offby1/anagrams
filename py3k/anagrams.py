@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-import  bag
+from    bag import Bag
 import  cProfile
 import  dict
 import  functools
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     dict_hash_table = dict.snarf_dictionary(options.dict_fn)
 
-    the_phrase = bag.Bag(args[0])
+    the_phrase = Bag(args[0])
 
     print("Pruning dictionary.  Before:",
           functools.reduce(lambda acc, elt: acc + len(dict_hash_table[elt]),
