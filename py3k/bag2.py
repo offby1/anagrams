@@ -17,13 +17,17 @@ class Bag(collections.Counter):
     def empty(self):
         return len(self.keys()) == 0
 
-    # TODO -- side-effecty.  Will probably break stuff.
     def __sub__(self, other):
-        self.subtract(other)
-        least = self.most_common()[:-2:-1]
+        result = Bag(self)
+        result.subtract(other)
+        least = result.most_common()[:-2:-1]
         if least and least[0][1] < 0:
             return None
-        return +self
+
+        return Bag(+result)
 
     def __hash__(self):
         return hash(tuple(sorted(self.items())))
+
+    def __str__(self):
+        return "".join([k * v for k, v in sorted(self.items())])
