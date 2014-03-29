@@ -1,24 +1,13 @@
 #!/usr/bin/env python3
 
-import bag
-import functools
-import dict
-from optparse import OptionParser
-import os
-from types import *
-import sys
-
-try:
-    import psyco
-    psyco.full()
-    print( "Psyco loaded OK", file=sys.stderr)
-except ImportError as e:
-    print( "Psyco didn't load:", e, file=sys.stderr)
-
-# try:
-#     import profile
-# except:
-#     pass
+import  bag
+import  cProfile
+import  dict
+import  functools
+from    optparse import OptionParser
+import  os
+import  sys
+from    types import *
 
 def combine(words, anagrams):
 
@@ -105,19 +94,20 @@ if __name__ == "__main__":
                            0),
           "words.",
           file=sys.stderr)
-    if "profile" in globals():
-        profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
-        profile.run("result = anagrams(the_phrase, the_dict_list)", filename="profile-info")
-    else:
-        result = anagrams(the_phrase, the_dict_list)
+
+    #cProfile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
+    cProfile.run("result = anagrams(the_phrase, the_dict_list)")
 
     print(len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
 
-    for a in result:
-        sys.stdout.write("(")
-        for i, w in  enumerate(a):
-            if i:
-                sys.stdout.write(" ")
-            sys.stdout.write(w)
-        sys.stdout.write(")")
-        sys.stdout.write("\n")
+    with open(args[0], 'w') as outf:
+        for a in result:
+            outf.write("(")
+            for i, w in  enumerate(a):
+                if i:
+                    outf.write(" ")
+                outf.write(w)
+            outf.write(")")
+            outf.write("\n")
+
+    print("Results written to {}".format(outf.name), file=sys.stderr)
