@@ -26,5 +26,8 @@ class WhatchaMaDingy(unittest.TestCase):
 
         self.assertEqual(Bag("abc"), Bag("ABC"))
 
+        d = {Bag("fred"):'ted'}
+        self.assertEqual(d[Bag("fred")], 'ted')
+
 if __name__ == "__main__":
     exit(unittest.main())
