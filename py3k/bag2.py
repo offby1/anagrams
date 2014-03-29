@@ -9,8 +9,11 @@ class Bag(collections.Counter):
     """
     Wrapper around collections.Counter that provides the API that anagrams.py expects.
     """
-    def __init__(self, str):
-        super(Bag, self).__init__(str.lower())
+    def __init__(self, wozzit):
+        if hasattr(wozzit, 'lower'):
+            wozzit = wozzit.lower()
+        super(Bag, self).__init__(wozzit)
+
     def empty(self):
         return len(self.keys()) == 0
 
@@ -23,4 +26,4 @@ class Bag(collections.Counter):
         return +self
 
     def __hash__(self):
-        return hash(tuple(self.items()))
+        return hash(tuple(sorted(self.items())))
