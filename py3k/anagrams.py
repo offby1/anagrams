@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from    bag import Bag
+from    bag2 import Bag
 import  cProfile
 import  dict
 import  functools
@@ -28,7 +28,7 @@ def anagrams(b, dict):
         words = entry[1]
 
         smaller_bag = b - key
-        if not smaller_bag:
+        if smaller_bag is None:
             continue
 
         if smaller_bag.empty():
@@ -81,10 +81,9 @@ if __name__ == "__main__":
     # While we're at it, prune the list, too.  That _is_ necessary for the
     # program to finish before you grow old and die.
 
-
     the_dict_list = [[k, dict_hash_table[k]]
                      for k in dict_hash_table.keys()
-                     if the_phrase - k]
+                     if (the_phrase - k) is not None]
 
     the_dict_list.sort(key=len)
 

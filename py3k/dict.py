@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.0
 
-import bag
+from bag2 import Bag
 import collections
 from io import StringIO
 import os
@@ -29,36 +29,19 @@ default_dict_name = os.path.join(os.path.dirname(__file__), "../words.utf8")
 
 
 def snarf_dictionary_from_IO(I):
-    print("Snarfing", I, file=sys.stderr)
     hash_table = collections.defaultdict(set)
     for w in re.findall(r'.+', I.read()):
         w = w.lower()
         if not word_acceptable(w):
             continue
 
-        key = bag.Bag(w)
-        hash_table[key].add(w)
+        hash_table[Bag(w)].add(w)
 
-    print("done", file=sys.stderr)
     return hash_table
 
-hash_cache = os.path.join(os.path.dirname(__file__), "hash.cache")
-
-
 def snarf_dictionary(fn):
-    try:
-        fh = open(hash_cache, "rb")
-        rv = pickle.load(fh)
-        print("Reading cache", hash_cache, "instead of dictionary", fn, file=sys.stderr)
-    except:
-        fh = open(fn, "r", encoding='utf_8')
-        rv = snarf_dictionary_from_IO(fh)
-        fh.close()
-        fh = open(hash_cache, "wb")
-        pickle.dump(rv, fh, 2)
-
-    fh.close()
-    return rv
+    with open(fn, "r", encoding='utf_8') as fh:
+        return snarf_dictionary_from_IO(fh)
 
 
 if __name__ == "__main__":
@@ -78,11 +61,11 @@ if __name__ == "__main__":
 
         def test_this_and_that(self):
             self.assertEqual(2, len(self.fake_dict.keys()))
-            cat_hits = sorted(self.fake_dict[bag.Bag("cat")])
+            cat_hits = sorted(self.fake_dict[Bag("cat")])
             self.assertEqual(2, len(cat_hits))
             self.assertEqual(cat_hits[0], "cat")
             self.assertEqual(cat_hits[1], "tac")
-            self.assertEqual(1, len(self.fake_dict[bag.Bag("fred")]))
-            self.assertEqual(list(self.fake_dict[bag.Bag("fred")])[0], "fred")
+            self.assertEqual(1, len(self.fake_dict[Bag("fred")]))
+            self.assertEqual(list(self.fake_dict[Bag("fred")])[0], "fred")
 
     unittest.main()
