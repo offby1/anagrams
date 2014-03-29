@@ -8,7 +8,7 @@ class WhatchaMaDingy(unittest.TestCase):
         self.assertEqual(Bag("abc"), Bag("cba"))
         self.assertNotEqual(Bag("abc"), Bag("bc"))
         self.assertEqual(Bag("a"), Bag("ab") - Bag("b"))
-        self.assertFalse(Bag("a") - Bag("b"))
+        self.assertIsNone(Bag("a") - Bag("b"))
         self.assertFalse(Bag("a") - Bag("aa"))
 
         silly_long_string = """When first I was a wee, wee lad
@@ -28,6 +28,8 @@ class WhatchaMaDingy(unittest.TestCase):
 
         d = {Bag("fred"):'ted'}
         self.assertEqual(d[Bag("fred")], 'ted')
+
+        self.assertTrue((Bag("x") - Bag("x")).empty())
 
 if __name__ == "__main__":
     exit(unittest.main())
