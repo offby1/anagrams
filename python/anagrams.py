@@ -2,24 +2,18 @@
 
 from __future__ import print_function
 
+# Local
 from bag import Bag
 import dict
-from optparse import OptionParser
-import profile
-import sys
 
-try:
-    import psyco
-    psyco.full()
-    print("Psyco loaded OK",
-          file=sys.stderr)
-except ImportError, e:
-    print("Psyco didn't load: {}".format(e),
-          file=sys.stderr)
+# Core
+from   optparse import OptionParser
+import cProfile
+import pstats
+import sys
 
 
 def combine(words, anagrams):
-
     rv = []
     for w in words:
         for a in anagrams:
@@ -105,11 +99,14 @@ if __name__ == "__main__":
 
     print(" After: {} bags.".format(len(the_dict_list)),
           file=sys.stderr)
-    profile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04("Hoary Hedgehog")
-    if "psyco" in globals():
-        result = anagrams(the_phrase, the_dict_list)
-    else:
-        profile.run("result = anagrams(the_phrase, the_dict_list)")
+
+    pr = cProfile.Profile()
+    pr.enable()
+    result = anagrams(the_phrase, the_dict_list)
+    pr.disable()
+
+    ps = pstats.Stats(pr, stream=sys.stderr).sort_stats('cumulative')
+    ps.print_stats()
 
     print("{} anagrams of {}".format(len(result), args[0]),
           file=sys.stderr)
