@@ -7,7 +7,6 @@ import collections
 import os
 import re
 import sys
-import unittest
 
 # Local
 from bag import Bag
@@ -46,27 +45,3 @@ def snarf_dictionary_from_file(fn):
 
     print("done", file=sys.stderr)
     return hash_table
-
-
-if __name__ == "__main__":
-    class TestStuff(unittest.TestCase):
-        def setUp(self):
-            self.fake_input = "cat\ntac\nfred\n"
-            self.fake_dict = {Bag('cat'): set(['cat', 'tac']), Bag('fred'): set(['fred'])}
-
-        def test_word_acceptable(self):
-            self.assert_(word_acceptable("dog"))
-            self.assertFalse(word_acceptable("C3PO"))
-            d = snarf_dictionary_from_file(os.path.join(default_dict_name))
-            self.assertEqual(66965, len(d))
-            self.assertEqual(72794, sum(len(words) for words in d.values()))
-
-        def test_this_and_that(self):
-            self.assert_(2 == len(self.fake_dict.keys()))
-            cat_hits = self.fake_dict[Bag("cat")]
-            self.assert_(2 == len(cat_hits))
-            self.assert_(cat_hits == set(["cat", "tac"]))
-            self.assert_(1 == len(self.fake_dict[Bag("fred")]))
-            self.assert_(self.fake_dict[Bag("fred")] == set(["fred"]))
-
-    unittest.main()
