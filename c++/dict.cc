@@ -59,7 +59,7 @@ init (const bag &filter)
   // TODO -- use the file that's part of this project, rather than
   // hard-coding.  Failing that, at least let it be specified on the
   // command line.
-  const std::string dict_file_name ("/usr/share/dict/words");
+  const std::string dict_file_name ("words.utf8");
   std::ifstream words (dict_file_name.c_str ());
   if (!words)
     {

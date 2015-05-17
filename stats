@@ -24,7 +24,7 @@ T60 laptop
 two processors (although all of these anagram programs are single-threaded)
 cpu MHz: either 1,000 or 2,000; it's not clear
 model name: T2400
-* macbook
+* macbook (MacBook Pro (Retina, 13-inch, Early 2013))
 Model Name            MacBook Pro
 Model Identifier      MacBookPro10,2
 Processor Name        Intel Core i5
@@ -58,14 +58,14 @@ be notably lower than if the answer were correct.
 
 | language                     | optimized? | machine  | correct                  | time                 | time "st              | time "est        | time "Ernes       | time "Ernest      | bag            | dictionary     |
 |                              |            |          | answer?                  | "hemingway"          | hemingway"            | hemingway"       | Hemingway"        | Hemingway"        | implementation | cached?        |
-|                              |            |          |                          |                      |                       |                  |                   | (894521 anagrams) |                |                |
+|                              |            |          |                          |                      |                       | (32882 anagrams) |                   | (894521 anagrams) |                |                |
 |------------------------------+------------+----------+--------------------------+----------------------+-----------------------+------------------+-------------------+-------------------+----------------+----------------|
 | ----------------common lisps |            | optiplex | yes                      |                      |                       |                  |                   |                   | bignums        | yes            |
 | sbcl                         |            | optiplex |                          |                      |                       |                  |                   | 7 user seconds    |                |                |
 | cmucl                        |            | optiplex |                          | 1 seconds            | 2 seconds             |                  |                   | 10 user seconds   |                |                |
 | clisp                        |            | optiplex |                          |                      |                       |                  |                   | 20 user seconds   |                |                |
 | --------------------schemes  |            |          |                          |                      |                       |                  |                   |                   |                |                |
-| c++ (-O2)                    |            | lenovo   | no(1)                    |                      |                       |                  |                   | 16 user seconds   | bignums        | no             |
+| c++ (-O2)                    |            | lenovo   | yes                      |                      |                       |                  |                   | 16 user seconds   | bignums        | no             |
 | mzscheme v4.1                | no         | lenovo   | yes                      |                      |                       |                  |                   | 16 user seconds   |                |                |
 | go 1.1.1                     | no         | macbook  | yes                      |                      |                       |                  |                   | 17 user seconds   | strings        | yes            |
 | mzscheme v3.99.0.12          | no         | lenovo   | yes                      |                      |                       |                  |                   | 22 user seconds   |                |                |
@@ -109,11 +109,6 @@ be notably lower than if the answer were correct.
 | c-sharp                      |            | lenovo   |                          | 10 wallclock seconds | 144 wallclock seconds |                  |                   |                   | strings        | sort of        |
 | emacs lisp                   | hell no    | optiplex |                          | 20 wallclock seconds |                       |                  |                   |                   | strings        | no             |
 | erlang R11B5                 | no         | lenovo   | nah                      | 2 + user             | 17 user               | 57 user          | 300 user          |                   | bignums        | yes            |
-
-Footnotes:
-
-1 - For all I know, the algorithm is correct, but it reads from the
-    wrong dictionary file, so it's not clear.
 
 
 ---
