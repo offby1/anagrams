@@ -7,7 +7,7 @@ from bag import Bag
 import dict
 
 # Core
-from   optparse import OptionParser
+import argparse
 import cProfile
 import pstats
 import sys
@@ -49,25 +49,18 @@ def anagrams(bag, dictionary):
 
 
 if __name__ == "__main__":
-    parser = OptionParser(usage="usage: %prog [options] string")
-    parser.add_option("-d",
-                      "--dictionary",
-                      action="store",
-                      type="string",
-                      dest="dict_fn",
-                      default=dict.default_dict_name,
-                      metavar="FILE",
-                      help="location of word list")
+    parser = parser = argparse.ArgumentParser()
+    parser.add_argument('words',
+                        nargs='+')
+    parser.add_argument('--dictionary',
+                        default=dict.default_dict_name,
+                        help="location of word list")
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    if 0 == len(args):
-        parser.print_help()
-        sys.exit(0)
+    dict_hash_table = dict.snarf_dictionary_from_file(args.dictionary)
 
-    dict_hash_table = dict.snarf_dictionary_from_file(options.dict_fn)
-
-    the_phrase = Bag(args[0])
+    the_phrase = Bag(''.join(args.words))
     print("Pruning dictionary.  Before: {} bags ...".format(len(dict_hash_table.keys())),
           file=sys.stderr, end='')
 
@@ -94,7 +87,7 @@ if __name__ == "__main__":
     ps = pstats.Stats(pr, stream=sys.stderr).sort_stats('cumulative')
     ps.print_stats()
 
-    print("{} anagrams of {}".format(len(result), args[0]),
+    print("{} anagrams of {}".format(len(result), ' '.join(args.words)),
           file=sys.stderr)
     for a in result:
         sys.stdout.write("(")
