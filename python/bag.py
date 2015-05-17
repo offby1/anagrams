@@ -28,6 +28,7 @@ class Bag(object):
         return self.number == other.number
 
     def subtract(self, other):
+        # To my surprise, using divmod here is slower.
         remainder = self.number % other.number
         if (0 == remainder):
             return self.from_number(self.number / other.number)
