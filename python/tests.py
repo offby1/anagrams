@@ -11,7 +11,6 @@ from bag import Bag
 from dict import (
     default_dict_name,
     snarf_dictionary_from_file,
-    word_acceptable
 )
 
 
@@ -65,9 +64,7 @@ class TestStuff(unittest.TestCase):
         self.fake_input = "cat\ntac\nfred\n"
         self.fake_dict = {Bag('cat'): set(['cat', 'tac']), Bag('fred'): set(['fred'])}
 
-    def test_word_acceptable(self):
-        self.assert_(word_acceptable("dog"))
-        self.assertFalse(word_acceptable("C3PO"))
+    def test_proper_word_filtering(self):
         d = snarf_dictionary_from_file(os.path.join(default_dict_name))
         self.assertEqual(66965, len(d))
         self.assertEqual(72794, sum(len(words) for words in d.values()))

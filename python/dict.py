@@ -15,17 +15,6 @@ has_a_vowel_re = re.compile(r'[aeiouy]')
 long_enough_re = re.compile(r'^i$|^a$|^..')
 non_letter_re = re.compile(r'[^a-z]')
 
-
-def word_acceptable(w):
-    if non_letter_re.search(w):
-        return False
-    if (not long_enough_re.match(w)):
-        return False
-    if (not has_a_vowel_re.search(w)):
-        return False
-
-    return True
-
 default_dict_name = os.path.join(os.path.dirname(__file__), "../words.utf8")
 
 
@@ -37,7 +26,11 @@ def snarf_dictionary_from_file(fn):
         for w in inf:
             w = w.lower().rstrip()
 
-            if not word_acceptable(w):
+            if non_letter_re.search(w):
+                continue
+            if (not long_enough_re.match(w)):
+                continue
+            if (not has_a_vowel_re.search(w)):
                 continue
 
             key = Bag(w)
