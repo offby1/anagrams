@@ -3,8 +3,6 @@
 from __future__ import print_function
 
 # Core
-import StringIO
-import cPickle
 import collections
 import os
 import re
