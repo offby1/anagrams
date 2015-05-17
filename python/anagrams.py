@@ -22,14 +22,12 @@ def combine(words, anagrams):
     return rv
 
 
-def anagrams(bag, dict):
+def anagrams(bag, dictionary):
 
     rv = []
 
-    for words_processed in range(0, len(dict)):
-        entry = dict[words_processed]
-        key   = entry[0]
-        words = entry[1]
+    for index, entry in enumerate(dictionary):
+        key, words = entry
 
         smaller_bag = bag.subtract(key)
         if not smaller_bag:
@@ -41,8 +39,8 @@ def anagrams(bag, dict):
             continue
 
         from_smaller_bag = anagrams(smaller_bag,
-                                     dict[words_processed:])
-        if not len(from_smaller_bag):
+                                    dictionary[index:])
+        if not from_smaller_bag:
             continue
 
         rv.extend(combine(words, from_smaller_bag))
@@ -67,7 +65,7 @@ if __name__ == "__main__":
         parser.print_help()
         sys.exit(0)
 
-    dict_hash_table = dict.snarf_dictionary(options.dict_fn)
+    dict_hash_table = dict.snarf_dictionary_from_file(options.dict_fn)
 
     the_phrase = Bag(args[0])
     print("Pruning dictionary.  Before: {} bags ...".format(len(dict_hash_table.keys())),
@@ -80,22 +78,10 @@ if __name__ == "__main__":
     # While we're at it, prune the list, too.  That _is_ necessary for the
     # program to finish before you grow old and die.
 
-    the_dict_list = [[k, dict_hash_table[k]]
+    the_dict_list = sorted([[k, dict_hash_table[k]]
                      for k in dict_hash_table.keys()
-                     if the_phrase.subtract(k)]
-
-    # Note that sorting entries "alphabetically" only makes partial sense,
-    # since each entry is(at least potentially) more than one word(all
-    # the words in an entry are anagrams of each other).
-    def biggest_first_then_alphabetically(a, b):
-        a = a[1][0]
-        b = b[1][0]
-        result = cmp(len(b), len(a))
-        if not result:
-            result = cmp(a, b)
-        return result
-
-    the_dict_list.sort(biggest_first_then_alphabetically)
+                     if the_phrase.subtract(k)],
+                           key=len)
 
     print(" After: {} bags.".format(len(the_dict_list)),
           file=sys.stderr)

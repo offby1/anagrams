@@ -33,7 +33,7 @@ class Bag(object):
         if (0 == remainder):
             return self.from_number(self.number / other.number)
         else:
-            return 0
+            return False
 
     def __hash__(self):
         return hash(self.number)

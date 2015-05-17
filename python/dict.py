@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
+# Core
 import StringIO
-import string
+import cPickle
+import collections
+import os
 import re
 import sys
-import cPickle
-import os
 import unittest
+
+# Local
 from bag import Bag
 
 has_a_vowel_re = re.compile(r'[aeiouy]')
@@ -17,9 +22,9 @@ non_letter_re = re.compile(r'[^a-z]')
 def word_acceptable(w):
     if non_letter_re.search(w):
         return False
-    if(not long_enough_re.match(w)):
+    if (not long_enough_re.match(w)):
         return False
-    if(not has_a_vowel_re.search(w)):
+    if (not has_a_vowel_re.search(w)):
         return False
 
     return True
@@ -27,41 +32,39 @@ def word_acceptable(w):
 default_dict_name = os.path.join(os.path.dirname(__file__), "../words.utf8")
 
 
-def snarf_dictionary_from_IO(I):
-    print >> sys.stderr, "Snarfing", I
-    hash_table = {}
-    for w in re.findall(r'.+', I.read()):
-        w = string.lower(w)
+def snarf_dictionary(inf):
+    print("Snarfing {}".format(inf.name), file=sys.stderr)
+    hash_table = collections.defaultdict(set)
+    for w in inf:
+        w = w.lower().rstrip()
 
         if not word_acceptable(w):
             continue
 
         key = Bag(w)
-        if key in hash_table:
-            if(0 == hash_table[key].count(w)): # avoid duplicates
-                hash_table[key].append(w)
-        else:
-            hash_table[key] = [w]
+        hash_table[key].add(w)
 
-    print >> sys.stderr, "done"
+    print("done", file=sys.stderr)
     return hash_table
 
 hash_cache = os.path.join(os.path.dirname(__file__), "hash.cache")
 
 
-def snarf_dictionary(fn):
+def snarf_dictionary_from_file(fn):
     try:
-        fh = open(hash_cache, "rb")
-        rv = cPickle.load(fh)
-        print >> sys.stderr, "Reading cache", hash_cache, "instead of dictionary", fn
-    except:
-        fh = open(fn, "r")
-        rv = snarf_dictionary_from_IO(fh)
-        fh.close()
-        fh = open(hash_cache, "wb")
-        cPickle.dump(rv, fh, 2)
+        with open(hash_cache, "rb") as inf:
+            rv = cPickle.load(inf)
+            print("Reading cache {} instead of dictionary {}".format(hash_cache, fn), file=sys.stderr)
+            return rv
+    except IOError:
+        pass
 
-    fh.close()
+    with open(fn) as inf:
+        rv = snarf_dictionary(inf)
+
+    with open(hash_cache, "wb") as outf:
+        cPickle.dump(rv, outf, 2)
+
     return rv
 
 
@@ -69,12 +72,12 @@ if __name__ == "__main__":
     class TestStuff(unittest.TestCase):
         def setUp(self):
             self.fake_input = "cat\ntac\nfred\n"
-            self.fake_dict = snarf_dictionary_from_IO(StringIO.StringIO(self.fake_input))
+            self.fake_dict = snarf_dictionary(StringIO.StringIO(self.fake_input))
 
         def test_word_acceptable(self):
             self.assert_(word_acceptable("dog"))
             self.assertFalse(word_acceptable("C3PO"))
-            d = snarf_dictionary(os.path.join(default_dict_name))
+            d = snarf_dictionary_from_file(os.path.join(default_dict_name))
             self.assertEqual(66965, len(d))
             self.assertEqual(72794, sum(len(words) for words in d.values()))
 
