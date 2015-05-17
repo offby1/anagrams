@@ -1,7 +1,7 @@
 #-*-python-*-
 
-Program ('anagrams', 
-         ['numeric-bag.cc', 'dict.cc', 'anagrams.cc'], 
+Program ('anagrams',
+         ['numeric-bag.cc', 'dict.cc', 'anagrams.cc'],
          #CXX="clang++",
          CXXFLAGS='-O2',
          #CXXFLAGS='-O2 -pg',
