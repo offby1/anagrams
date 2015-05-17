@@ -32,40 +32,22 @@ def word_acceptable(w):
 default_dict_name = os.path.join(os.path.dirname(__file__), "../words.utf8")
 
 
-def snarf_dictionary(inf):
-    print("Snarfing {}".format(inf.name), file=sys.stderr)
-    hash_table = collections.defaultdict(set)
-    for w in inf:
-        w = w.lower().rstrip()
+def snarf_dictionary_from_file(fn):
+    print("Snarfing {}".format(fn), file=sys.stderr)
 
-        if not word_acceptable(w):
-            continue
+    with open(fn) as inf:
+        hash_table = collections.defaultdict(set)
+        for w in inf:
+            w = w.lower().rstrip()
 
-        key = Bag(w)
-        hash_table[key].add(w)
+            if not word_acceptable(w):
+                continue
+
+            key = Bag(w)
+            hash_table[key].add(w)
 
     print("done", file=sys.stderr)
     return hash_table
-
-hash_cache = os.path.join(os.path.dirname(__file__), "hash.cache")
-
-
-def snarf_dictionary_from_file(fn):
-    try:
-        with open(hash_cache, "rb") as inf:
-            rv = cPickle.load(inf)
-            print("Reading cache {} instead of dictionary {}".format(hash_cache, fn), file=sys.stderr)
-            return rv
-    except IOError:
-        pass
-
-    with open(fn) as inf:
-        rv = snarf_dictionary(inf)
-
-    with open(hash_cache, "wb") as outf:
-        cPickle.dump(rv, outf, 2)
-
-    return rv
 
 
 if __name__ == "__main__":
