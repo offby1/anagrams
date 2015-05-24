@@ -12,12 +12,11 @@ Into the whole slow and steady thing?
 $ go fmt anagrams 
 $ go test anagrams
 $ go install main
-$ ./bin/main --words ../words --input='Ernest Hemingway' > wow
+$ ./bin/main --words ../words.utf8 --input='Ernest Hemingway' > wow
 
 "go clean" works too.
 
 Profiling:
 
 $ ./bin/main -cpuprofile=whysoslow.prof --words ../words -input=hemingway > /dev/null
-$ go tool pprof bin/main whysoslow.prof 
-top
+$ echo top | go tool pprof bin/main whysoslow.prof 
