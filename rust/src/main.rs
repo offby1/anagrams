@@ -1,7 +1,7 @@
 fn main() {
     println!("hello?");
 
-    let mut x = 27u;
+    let mut x = 27u32;
     loop {
         if x == 1 { break; }
         if x % 2 == 0 {
