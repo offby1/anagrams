@@ -1,12 +1,14 @@
 *~
+/clojure/target/stale/extract-native.dependencies
+/go/bin/main
 /go/go
+/go/pkg/darwin_amd64/
+/go/pkg/linux_386/
+/go/pkg/linux_386/anagrams.a
+/go/whysoslow.prof
+/rust/Cargo.lock
+/rust/target/
 \#*#
 scheme/ikarus/out
 scheme/plt-v4/Ernest Hemingway
 scheme/plt-v4/compiled
-/go/bin/main
-/go/pkg/linux_386/anagrams.a
-/clojure/target/stale/extract-native.dependencies
-/go/whysoslow.prof
-/go/pkg/linux_386/
-/go/pkg/darwin_amd64/
