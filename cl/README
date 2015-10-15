@@ -1,0 +1,9 @@
+On OS X, I somehow installed into ~/sbcl.
+
+So to run the profile, this works:
+
+(export SBCL_HOME=$HOME/sbcl/lib/sbcl; $SBCL_HOME/../../bin/sbcl --load profile.lisp )
+
+And to run without profiling:
+
+(export SBCL_HOME=$HOME/sbcl/lib/sbcl; $SBCL_HOME/../../bin/sbcl --load sbcl-main.lisp )
