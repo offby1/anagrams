@@ -3,7 +3,7 @@
 (defun word-acceptablep (word)
   (declare (type simple-string word))
   (and (not (zerop (length word)))
-       (and 
+       (and
 
         ;; it can't have weird non-ascii-letter characters -- they
         ;; cause Clisp to puke sometimes.
@@ -11,7 +11,7 @@
                           (or (not (alpha-char-p ch))
                               (not (standard-char-p ch)))) word))
 
-          
+
         ;; it's gotta have a vowel.
         (find-if #'(lambda (ch)
                      (find ch "aeiouy")) word)
@@ -59,21 +59,24 @@
 
     (when (not hash-cache)
       (format t "~%~a reading dictionary ... " (lisp-implementation-type)) (finish-output)
-      (setf hash-cache 
-            (make-hash-from-file 
+      (setf hash-cache
+            (make-hash-from-file
              (find-if
               'identity
               (mapcar
                'probe-file
-               '("/usr/share/dict/words"
+               '("/Users/erichanchrow/git-repositories/me/anagrams/words"
+                 "/usr/share/dict/words"
                  "/usr/share/dict/american-english"))))))
-    
+
     (setf *dict* nil)
     (format t "Converting dictionary hash to a list ... " ) (finish-output)
-    (let ((words-found 0))
+    (let ((words-found 0)
+          (bags-hashed 0))
       (maphash
        #'(lambda (bag words)
            (incf words-found (length words))
+           (incf bags-hashed)
            (push (cons bag (sort
                             ;; sort is destructive, but we don't want to
                             ;; clobber the hash, so we must copy the
@@ -81,10 +84,10 @@
                             (copy-list words)
                             #'string<)) *dict*))
        hash-cache)
-      (format t "~a elements.~%" words-found))
+      (format t "~a bags; ~a elements.~%" bags-hashed words-found))
     (format t "Sorting & pruning ...") (finish-output)
     (setf *dict* (sort (delete-if #'(lambda (entry)
-                                          (not (subtract-bags bag (car entry)))) *dict*) 
+                                          (not (subtract-bags bag (car entry)))) *dict*)
                        #'(lambda (e1 e2)
                            ;; longer entries first; then alphabetically.
                            (let ((w1 (cadr e1))
