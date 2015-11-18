@@ -15,7 +15,7 @@ multi sub infix:<eqv>(Bag $a, Bag $b)
   }
 ;
 
-sub bag_from_letters($letters) is export {
+our sub bag_from_letters($letters) is export {
   my %bag;
   for $letters.split('') -> $l {
                                 my $lc = $l.lc;

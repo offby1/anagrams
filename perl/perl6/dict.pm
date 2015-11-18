@@ -55,7 +55,7 @@ sub snarf_wordlist {
 
 my $cache_file_name = "dict.cache";
 if ($cache_file_name.IO ~~ :f) {
-  @dict = open("dict.cache").slurp.eval(:lang<yaml>);
+  @dict = open("dict.cache").slurp.eval(:lang<json>);
   say "Slurped $cache_file_name";
 } else {
   say "Slurping word list ...";
@@ -70,10 +70,10 @@ if ($cache_file_name.IO ~~ :f) {
   {
     my $cache = open($cache_file_name, :w)
       or die "Can't open $cache_file_name for writing 'cuz $!; stopped";
-    $cache.print(@dict.yaml);
+    $cache.print(@dict.json);
     say "Wrote @dict.elems() elements to $cache_file_name";
     close ($cache) or die "Closing $cache";
   }
 }
 
-1;
+;
