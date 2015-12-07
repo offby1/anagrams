@@ -1,6 +1,7 @@
 import unittest
 from bag2 import Bag
 
+
 class WhatchaMaDingy(unittest.TestCase):
     def testAlWholeLottaStuff(self):
         self.assertTrue(Bag("").empty())
@@ -26,7 +27,7 @@ class WhatchaMaDingy(unittest.TestCase):
 
         self.assertEqual(Bag("abc"), Bag("ABC"))
 
-        d = {Bag("fred"):'ted'}
+        d = {Bag("fred"): 'ted'}
         self.assertEqual(d[Bag("fred")], 'ted')
 
         self.assertTrue((Bag("x") - Bag("x")).empty())

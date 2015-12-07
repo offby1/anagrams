@@ -1,8 +1,6 @@
 #!/usr/bin/env python3.1
 
 import collections
-import itertools
-import unittest
 
 
 class Bag(collections.Counter):

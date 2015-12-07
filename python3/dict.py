@@ -1,14 +1,10 @@
 #!/usr/bin/env python3.0
 
-from bag2 import Bag
+from   bag2 import Bag
 import collections
-from io import StringIO
+from   io import StringIO
 import os
-import pickle
 import re
-from stat import *
-import string
-import sys
 
 has_a_vowel_re = re.compile(r'[aeiouy]')
 long_enough_re = re.compile(r'^i$|^a$|^..')
@@ -38,6 +34,7 @@ def snarf_dictionary_from_IO(I):
         hash_table[Bag(w)].add(w)
 
     return hash_table
+
 
 def snarf_dictionary(fn):
     with open(fn, "r", encoding='utf_8') as fh:

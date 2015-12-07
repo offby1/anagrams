@@ -5,9 +5,8 @@ import  cProfile
 import  dict
 import  functools
 from    optparse import OptionParser
-import  os
 import  sys
-from    types import *
+
 
 def combine(words, anagrams):
 
@@ -94,7 +93,7 @@ if __name__ == "__main__":
           "words.",
           file=sys.stderr)
 
-    #cProfile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
+    # cProfile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
     cProfile.run("result = anagrams(the_phrase, the_dict_list)")
 
     print(len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
