@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from    bag2 import Bag
-import  cProfile
 import  dict
 import  functools
 from    optparse import OptionParser
@@ -93,9 +92,7 @@ if __name__ == "__main__":
           "words.",
           file=sys.stderr)
 
-    # cProfile.Profile.bias = 8e-06    # measured on dell optiplex, Ubuntu 8.04 ("Hoary Hedgehog")
-    cProfile.run("result = anagrams(the_phrase, the_dict_list)")
-
+    result = anagrams(the_phrase, the_dict_list)
     print(len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
 
     with open(args[0], 'w') as outf:
