@@ -14,7 +14,7 @@ def Read(fn)
 
   rescue Errno::ENOENT
     the_hash = Hash.new { |hash, k| hash[k] = [] }
-    File.open(fn, "r") do |aFile|
+    File.open(fn, mode: 'r:UTF-8') do |aFile|
       printf "Snarfing #{fn} ..."
       $stdout.flush
       has_a_vowel_re = /[aeiouy]/
