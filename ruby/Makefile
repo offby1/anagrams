@@ -4,8 +4,8 @@ profile:
 	ruby -rprofile anagrams.rb "Ernest"
 
 check:
-	ruby test_bag.rb
-	time ruby anagrams.rb "Ernest Hemingway"
+	# ruby test_bag.rb
+	time ruby anagrams.rb "Ernest Hemingway" > "Ernest Hemingway"
 
 
 .PHONY: all check
