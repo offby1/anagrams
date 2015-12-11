@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
+import  argparse
 from    bag2 import Bag
 import  dict
 import  functools
-from    optparse import OptionParser
 import  sys
 
 
@@ -45,25 +45,16 @@ def anagrams(b, dict):
 
 
 if __name__ == "__main__":
-    parser = OptionParser(usage="usage: %prog [options] string")
-    parser.add_option("-d",
-                      "--dictionary",
-                      action="store",
-                      type="string",
-                      dest="dict_fn",
-                      default=dict.default_dict_name,
-                      metavar="FILE",
-                      help="location of word list")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-d", "--dictionary", default=dict.default_dict_name, metavar="FILE", help="location of word list")
+    parser.add_argument('input', nargs='+')
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
-    if not len(args):
-        parser.print_help()
-        sys.exit(0)
+    dict_hash_table = dict.snarf_dictionary(args.dictionary)
 
-    dict_hash_table = dict.snarf_dictionary(options.dict_fn)
-
-    the_phrase = Bag(args[0])
+    the_phrase = ' '.join(args.input)
+    the_input_bag = Bag(the_phrase)
 
     print("Pruning dictionary.  Before:",
           functools.reduce(lambda acc, elt: acc + len(dict_hash_table[elt]),
@@ -81,7 +72,7 @@ if __name__ == "__main__":
 
     the_dict_list = [[k, dict_hash_table[k]]
                      for k in dict_hash_table.keys()
-                     if (the_phrase - k) is not None]
+                     if (the_input_bag - k) is not None]
 
     the_dict_list.sort(key=len)
 
@@ -92,10 +83,10 @@ if __name__ == "__main__":
           "words.",
           file=sys.stderr)
 
-    result = anagrams(the_phrase, the_dict_list)
-    print(len(result), "anagrams of", sys.argv[1], ":", file=sys.stderr)
+    result = anagrams(the_input_bag, the_dict_list)
+    print(len(result), "anagrams of", the_phrase, ":", file=sys.stderr)
 
-    with open(args[0], 'w') as outf:
+    with open(the_phrase, 'w') as outf:
         for a in result:
             outf.write("(")
             for i, w in  enumerate(a):

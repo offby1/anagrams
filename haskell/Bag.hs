@@ -1,9 +1,9 @@
 -- -*-haskell-*-
 
 module Bag (make_bag, subtract_bags, empty, bags_equal) where
-import Char
+import Data.Char
 
--- represents an unordered multi-set of characters.  
+-- represents an unordered multi-set of characters.
 
 -- The most important operation is "subtracting" bags.  Imagine you've
 -- got one bag of scrabble tiles -- containing, say, two "d"s, an "o",
@@ -18,7 +18,7 @@ import Char
 -- So that's subtraction.  (Actually, despite the above example, we
 -- don't subtract a _string_ from a bag; instead we subtract another
 -- bag.  But that's a detail.)
-                           
+
 -- The implementation is intended to make subtraction fast, although
 -- to be sure I haven't tested alternate techniques in Haskell.  Each
 -- bag is just a large integer, made of the product of letter codes --

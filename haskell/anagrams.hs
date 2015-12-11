@@ -1,8 +1,8 @@
 module Main where
 import Bag
-import Char
-import System
-import IO
+import Data.Char
+import System.Environment
+import System.IO
 import qualified Data.Map as M
 
 -- generate anagrams of a string passed on the command line.
@@ -25,7 +25,7 @@ member string (x:xs) =
 -- it isn't already on that list.
 adjoin :: Integer -> String -> DictMap -> DictMap
 adjoin key string dict =
-       M.insertWith (\new -> (\old -> ( 
+       M.insertWith (\new -> (\old -> (
                     if member (head new) old then old else (new ++ old) ))) key [string] dict
 
 from_strings :: [String] -> DictMap
@@ -34,8 +34,8 @@ from_strings (line:lines) =
              adjoin (make_bag (line)) line (from_strings (lines))
 
 isVowel :: Char -> Bool
-isVowel c = 
-        any (\v -> v == c) "aeiouy" 
+isVowel c =
+        any (\v -> v == c) "aeiouy"
 
 hasVowel :: String -> Bool
 hasVowel s =
@@ -57,11 +57,11 @@ acceptable word =
 prune :: Integer -> Dict -> Dict
 prune bag [] = []
 prune bag (x:xs) = if (subtract_bags bag (fst x) ) > 0 then (x : (prune bag xs)) else prune bag xs
-          
+
 -- given a list of words, and some anagrams, make more anagrams, where
 -- each new anagram gets one of the words.
 combine :: [String] -> [[String]] -> [[String]]
-combine words anagrams = 
+combine words anagrams =
         concatMap (\w -> (map (\an -> w : an) anagrams)) words
 
 -- the heart of the matter.  Given a bag and a dictionary, return a
@@ -80,9 +80,9 @@ anagrams bag (x:xs) =
              []) ++ anagrams bag xs
 
 main= do
-      x <- readFile ("../words")
+      x <- readFile ("../words.utf8")
 
-      args <- System.getArgs
+      args <- System.Environment.getArgs
       let dict = M.toList (from_strings (filter acceptable (map (map toLower) (lines x))));
           input = head args
           in (let b = make_bag input;
@@ -90,4 +90,3 @@ main= do
                   in do
                   print  answer
                   hPrint stderr (show (length answer) ++ " anagrams of " ++ input))
-                 
