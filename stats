@@ -1,4 +1,4 @@
--*-org-*-
+-*-orgtbl-*-
 
 * optiplex:
 processor       : 0
@@ -76,6 +76,7 @@ be notably lower than if the answer were correct.
 | mit-scheme 7.7.90 + 20070623 | I think so | lenovo   | close                    |                      |                       |                  |                   | 29 user seconds   | bignums        | no             |
 | mzscheme v370                |            | optiplex | yes                      |                      |                       |                  |                   | 30 user seconds   | bignums        | no             |
 | Ikarus 0.0.3+                | no         | optiplex | close                    |                      |                       |                  |                   | 30 user seconds   | bignums        | no             |
+| bigloo 4.1a                  | yes        | macbook  |                          |                      |                       |                  |                   | 35 user seconds   | strings        | yes            |
 | mzscheme v301.4              |            | optiplex | yes                      |                      |                       |                  | 10 user seconds   | 40 user seconds   | bignums        | no             |
 | go 1.0.3                     | no         | lenovo   | yes                      |                      |                       |                  |                   | 44 user seconds   | strings        | yes            |
 | chicken (3.4.0)              | yes: -O3   | lenovo   | no                       |                      |                       |                  |                   | 45 user seconds   | strings        | yes            |
