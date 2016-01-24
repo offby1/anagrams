@@ -3,15 +3,15 @@
 
 anagrams: $(addsuffix .o,anagrams bag dict)
 
-# -g enables assertions
+BIGLOO=bigloo -Obench
 %.o : %.scm
-	bigloo -g -g4 -c $^
+	$(BIGLOO) -c $^
 
 % : %.o
-	bigloo -g4 -o $@ $^
+	$(BIGLOO) -o $@ $^
 
 check: anagrams
-	time LD_LIBRARY_PATH=/usr/local/lib:$(LD_LIBRARY_PATH) ./$^ "Ernes Hemingway" > /dev/null
+	time LD_LIBRARY_PATH=/usr/local/lib:$(LD_LIBRARY_PATH) ./$^ "Ernest Hemingway" > /dev/null
 
 clean:
 	rm -f anagrams *.o cached-dictionary

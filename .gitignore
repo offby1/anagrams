@@ -13,3 +13,6 @@ scheme/ikarus/out
 scheme/plt-v4/Ernest Hemingway
 scheme/plt-v4/compiled
 /perl/perl6/dict.cache
+/scheme/bigloo/anagrams
+*.o
+/scheme/bigloo/cached-dictionary
