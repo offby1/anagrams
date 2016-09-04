@@ -1,7 +1,4 @@
-#! /bin/sh
-#| Hey Emacs, this is -*-scheme-*- code!
-exec racket --require "$0" --main -- ${1+"$@"}
-|#
+#! /usr/bin/env racket
 
 #lang racket
 
@@ -52,13 +49,12 @@ list of anagrams, each of which begins with one of the WORDS."
                             anagrams))
                      words)))
 
-(provide main)
 
-(define (main . args)
-  (let* ((in (apply string-append args))
+(module+ main
+  (let* ((in (apply string-append (command-line #:args str str)))
          (results (all-anagrams
                    in
-                   (build-path (this-expression-source-directory) 'up 'up "words")
+                   (build-path (this-expression-source-directory) 'up 'up "words.utf8")
                    )))
     (fprintf (current-error-port) "~a anagrams of ~s~%" (length results) in)
 

@@ -7,12 +7,18 @@
 
 (define char->factor
   (let ((a-code (char->integer #\a)))
+
+    (define (char-index c)
+      (let ([c-code (char->integer (char-downcase c))])
+        (let ((index (- c-code a-code)))
+           (and (<= 0 index (sub1 (vector-length primes)))
+                index))))
+
     (lambda (c)
-      (if (char-alphabetic? c)
-          (let ((index (- (char->integer (char-downcase c))
-                          a-code)))
-            (vector-ref primes index))
-          1))))
+      (match  (char-index c)
+        [#f 1]
+        [index
+         (vector-ref primes index)]))))
 
 (define (bag s)
   "Return an object that describes all the letters in S, without
