@@ -1,9 +1,10 @@
 (ns anagrams.core
+(require [clojure.java.io :as io])
 (:use [clojure.set :only (union)])
 (:use [clojure.string :only (lower-case split)])
 (:use [clojure.test])
-(:use [anagrams.bag :only (bag subtract-bags bag-empty?)])
-(:use [anagrams.profile :only (profile prof)]))
+(:use [anagrams.bag :only (bag subtract-bags bag-empty?)]))
+
 
 (defn contains-vowel? [w]
   (re-find #"[aeiouy]" w))
@@ -12,17 +13,15 @@
   (re-find #"[^a-z]" w))
 
 (defn word-acceptable? [w]
-  (prof :word-acceptable?
-        (and
-         (contains-vowel? w)
-         (not (contains-non-letter? w))
-         (or (= w "i")
-             (= w "a")
-             (< 1 (count w))
-             ))))
+  (and
+   (contains-vowel? w)
+   (not (contains-non-letter? w))
+   (or (= w "i")
+       (= w "a")
+       (< 1 (count w))
+       )))
 
-;; FIXME -- make this a resource bundled into the uberjar
-(def dict-fn (str "/usr/share/dict/words"))
+(def dict-fn (io/resource "words.utf8"))
 
 (with-test
   (defn dict-from-strings [words]
@@ -31,11 +30,11 @@
       first
       (reduce
        (fn [acc elt]
-         (prof :update-in (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %))))
+         (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %)))
        (hash-map)
        words))))
 
-  (is (= '([5593M #{"dog"}] [710M #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
+  (is (= '([5593N #{"dog"}] [710N #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
   )
 (test #'dict-from-strings)
 
@@ -47,41 +46,53 @@
          (clojure.string/split (slurp dict-fn)
                                #"\n")))))
 
-;; Suggested by "amalloy", April 2012
 (defn combine [words anagrams]
   (for [word words, anagram anagrams]
-    (cons word anagram)))
+    (conj anagram word)))
 
-(defn filter-dict [bag dict]
-  (filter
-   (fn [entry]
-     (subtract-bags
-      bag
-      (first entry)))
-   dict))
+(with-test
+  (defn filter-dict [bag dict]
+    (filter
+     (fn [entry]
+       (subtract-bags
+        bag
+        (first entry)))
+     dict))
+  (is (= 25 (count (filter-dict (bag "Ernest") (dict))))))
+(test #'filter-dict)
 
 (with-test
   (defn anagrams [bag dict]
-    (if (bag-empty? bag) [[]]
-        (let [filtered-dict (filter-dict bag dict)]
-          (if (empty? filtered-dict) :no-result
-              (for [[key words] filtered-dict
-                    :let [smaller-bag (subtract-bags bag key),
-                          anagrams-remainder (anagrams smaller-bag filtered-dict)]
-                    :when (not= anagrams-remainder :no-result)
-                    word words,
-                    an anagrams-remainder]
-                (cons word an))))))
-  (is (= '(("GOD") ("dog")) (anagrams (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
+    (loop [subdict (filter-dict bag dict)
+           return-value '()]
+      (if (empty? subdict) return-value
+          (let [[key words] (first subdict)
+                smaller-bag (subtract-bags bag key)]
+            (if (not smaller-bag) (recur (rest subdict) return-value)
+                (if (bag-empty? smaller-bag) (recur (rest subdict) (concat return-value (map list words)))
+                    (let [from-smaller-bag (anagrams smaller-bag subdict)]
+                      (recur (rest subdict)
+                             (if (not (seq from-smaller-bag))
+                               return-value
+                               (concat return-value (combine words from-smaller-bag)))))))
+            ))))
+  (is (= '(("dog") ("GOD"))
+         (anagrams (bag "dog") {(bag "dog") #{"dog" "GOD"}}))))
+
 
 (test #'anagrams)
 
 (defn -main [& args]
-  (profile
-   (let [d (dict)
-         result (anagrams (bag (apply str args)) d)]
+  (let [b (bag (apply str args))
+        d (filter-dict b (dict))
+        result (anagrams b d)]
 
-     (doseq [an (take 15 result)]
-       [(printf "%s\n" an)])
+    (printf "Pruned dictionary now has %s words.\n" (apply + (map count (map second d))))
+    (printf "%s anagrams  of %s.\n"
+            (count result)
+            (apply str args))
 
-     (printf "Just reading in the dictionary is slow!\n"))))
+    (doseq [an   result]
+      [(print an)
+       (printf "\n")])
+    ))
