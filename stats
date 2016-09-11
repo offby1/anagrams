@@ -35,10 +35,6 @@ L2 Cache (per Core)   256 KB
 L3 Cache              3 MB
 Memory                8 GB
 
-time ./anagrams  > /dev/null
-
-All times are on the dell optiplex, unless otherwise noted.
-
 For testing a new implementation, note that the words file should wind
 up with 72794 words (66965 distinct bags); these two numbers are baked
 in to the unit tests in a couple of the implementations, but really

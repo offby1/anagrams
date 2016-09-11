@@ -25,16 +25,14 @@
 
 (with-test
   (defn dict-from-strings [words]
-    (reverse
-     (sort-by
-      first
       (reduce
        (fn [acc elt]
          (update-in acc (list (bag elt)) #(clojure.set/union #{elt} %)))
        (hash-map)
-       words))))
+     words))
 
-  (is (= '([5593N #{"dog"}] [710N #{"tac" "cat"}]) (dict-from-strings (list "dog" "dog" "cat" "tac"))))
+  (is (= (set '([5593N #{"dog"}] [710N #{"tac" "cat"}]))
+         (set (dict-from-strings (list "dog" "dog" "cat" "tac")))))
   )
 (test #'dict-from-strings)
 
@@ -83,16 +81,23 @@
 (test #'anagrams)
 
 (defn -main [& args]
-  (let [b (bag (apply str args))
-        d (filter-dict b (dict))
-        result (anagrams b d)]
 
-    (printf "Pruned dictionary now has %s words.\n" (apply + (map count (map second d))))
-    (printf "%s anagrams  of %s.\n"
+  (let [b (bag (apply str args))]
+
+    (binding [*out* *err*]
+      (println "Filtering dictionary."))
+
+    (let [d (filter-dict b (dict))]
+
+      (binding [*out* *err*]
+        (println (format "Pruned dictionary now has %s words." (apply + (map count (map second d))))))
+
+      (let [result  (anagrams b d)]
+        (binding [*out* *err*]
+          (println (format "%s anagrams of '%s'."
             (count result)
-            (apply str args))
+                           (apply str args))))
+        (doseq [an (sort-by #(format "%02d%s" (count %) %) result)]
+          [(println an)])))
 
-    (doseq [an   result]
-      [(print an)
-       (printf "\n")])
     ))
