@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import  argparse
-from    bag2 import Bag
+from    bag import Bag
 import  dict
 import  functools
 import  sys

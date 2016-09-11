@@ -7,13 +7,11 @@ class Bag(object):
     __slots__ = 'num'
 
     def __init__(self, str):
-        num = 1
+        self.num = 1
 
         for c in str.lower():
             if (c >= 'a') and (c <= 'z'):
-                num *= self._primes[ord(c) - ord('a')]
-
-        self.num = num
+                self.num *= self._primes[ord(c) - ord('a')]
 
     def empty(self):
         return self.num == 1
@@ -34,4 +32,4 @@ class Bag(object):
             rv.num = self.num // other.num
             return rv
         else:
-            return 0
+            return None

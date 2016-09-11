@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.0
 
-from   bag2 import Bag
+from   bag import Bag
 import collections
 from   io import StringIO
 import os
