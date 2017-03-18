@@ -18,3 +18,4 @@ scheme/plt-v4/compiled
 /scheme/bigloo/cached-dictionary
 /clojure/.nrepl-port
 /clojure/target/
+perl/perl6/.precomp/

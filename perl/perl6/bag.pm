@@ -3,26 +3,9 @@ use Test;
 
 unit module bag;
 
-class Bag {
-  method empty { self.letters.empty }
-    has $.letters;
-};
-
-multi sub infix:<eqv>(Bag $a, Bag $b)
-  {
-    say "hey $a $b";
-    $a.letters eqv $b.letters;
-  }
-;
-
 our sub bag_from_letters($letters) is export {
-  my %bag;
-  for $letters.split('') -> $l {
-                                my $lc = $l.lc;
-                                %bag{$lc}++ if $lc ~~ 'a' .. 'z';
-                               }
-    Bag.new(letters => %bag);
+  $letters.ords.Bag
 }
 
 ok(bag_from_letters('abcdeaa') eqv bag_from_letters('aaabcde'));
-is-deeply(bag_from_letters('abcdeaa').letters, bag_from_letters('aaabcde').letters);
+is-deeply(bag_from_letters('abcdeaa').kxxv.chrs, bag_from_letters('aaabcde').kxxv.chrs);

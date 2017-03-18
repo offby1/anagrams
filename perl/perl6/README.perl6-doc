@@ -1,10 +1,14 @@
-The best perl6 quick cheat sheet I've found is in
+A not-bad intro is at http://perl6intro.com/
+
+The best perl6 quick cheat sheet I've found --although it's years old
+by now -- is in
 https://github.com/audreyt/pugs/tree/master/docs/Perl6/Overview
 
 http://perlgeek.de/en/article/5-to-6 is pretty good, albeit terse.
 
-Synopses -- hard to understand, but presumably complete and
-authoritative -- are at http://perlcabal.org/syn/
+Synopses -- hard to understand, but at one point, presumably, were
+complete and authoritative -- are at http://perlcabal.org/syn/.
+There's a warning banner now, though, saying they may be out of date.
 
 I've heard that the official definition of Perl 6 will be: any program
 that passes the "spec tests".  And those tests live at

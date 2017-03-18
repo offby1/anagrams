@@ -1,13 +1,9 @@
-#!/usr/local/src/langs/pugs/pugs
-module dict;
-use bag;
+unit module dict;
 
 our @dict;
 
-# TODO -- figure out how to use FindBin, so as to make this work
-# regardless of the current directory.
-#my $dict_file_name = '../../words.utf8';
-my $dict_file_name = "words";
+my $dict_file_name = #"../../words.utf8";
+                     "words";
 
 sub acceptable (Str $word) returns Bool {
   if $word ~~ m{<-alpha>} {
@@ -37,43 +33,27 @@ sub snarf_wordlist {
   my $dict = open($dict_file_name, :r)
     or die "Can't open $dict_file_name for reading 'cuz $!; stopped";
 
-  warn "Reading $dict_file_name ...";
+  note "Reading $dict_file_name ...";
 
-  my %dict_hash;
+  my %words_by_bag is default(SetHash);
 
-  for ($dict.lines) -> $word {
-                                 my $chopped = lc (chomp($word));
-                                 next unless (acceptable($chopped));
-                                 my $bag = bag::bag_from_letters($chopped);
-                                 %dict_hash{$bag}.push($chopped)
-                                 unless $chopped eq any @(%dict_hash{$bag});
-                                };
-  warn " done; dict_hash has %dict_hash.elems() elements\n";
+  for ($dict.words) {
+      my $word = lc($_);
+      if acceptable($word) {
+          my $bag = $word.ords.Bag;
+          %words_by_bag{$bag}{$word} = True;
+      }
+  };
+  note " done";
   close ($dict) or die "Closing $dict: $!";
-  %dict_hash;
-}
 
-my $cache_file_name = "dict.cache";
-if ($cache_file_name.IO ~~ :f) {
-  @dict = open("dict.cache").slurp.eval(:lang<json>);
-  say "Slurped $cache_file_name";
-} else {
-  say "Slurping word list ...";
+  note "Now rejiggering that data into a nice list ...";
 
-  for (snarf_wordlist().pairs) -> $p {
-                                      my $bag = $p[0];
-                                      my @words=$p[1];
-                                      push @dict, [$bag, @words];
-                                     }
-
-
-  {
-    my $cache = open($cache_file_name, :w)
-      or die "Can't open $cache_file_name for writing 'cuz $!; stopped";
-    $cache.print(@dict.json);
-    say "Wrote @dict.elems() elements to $cache_file_name";
-    close ($cache) or die "Closing $cache";
+  for %words_by_bag.pairs -> $bag, $words {
+      @dict.push($bag, $words);
   }
+  note " done";
 }
 
-;
+snarf_wordlist();
+say @dict.perl;
