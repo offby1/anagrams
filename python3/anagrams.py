@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-import  argparse
-from    bag import Bag
-import  dict
-import  functools
-import  sys
+import argparse
+from bag import Bag
+import dict
+import functools
+import sys
+
 
 def _p(*args):
     print(*args, file=sys.stderr)
@@ -53,7 +54,7 @@ def anagrams(b, dict):
 
     return rv
 
-
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-d", "--dictionary",
@@ -96,7 +97,7 @@ if __name__ == "__main__":
     with open(the_phrase, 'w') as outf:
         for a in result:
             outf.write("(")
-            for i, w in  enumerate(a):
+            for i, w in enumerate(a):
                 if i:
                     outf.write(" ")
                 outf.write(w)
