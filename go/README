@@ -9,7 +9,7 @@ $ go run src/main/main.go --words ../words -input='Ernest Hemingway' > yeeha
 
 Into the whole slow and steady thing?
 
-$ go fmt anagrams 
+$ go fmt anagrams
 $ go test anagrams
 $ go install main
 $ ./bin/main --words ../words.utf8 --input='Ernest Hemingway' > wow
@@ -19,4 +19,4 @@ $ ./bin/main --words ../words.utf8 --input='Ernest Hemingway' > wow
 Profiling:
 
 $ ./bin/main -cpuprofile=whysoslow.prof --words ../words -input=hemingway > /dev/null
-$ echo top | go tool pprof bin/main whysoslow.prof 
+$ echo top | go tool pprof bin/main whysoslow.prof
