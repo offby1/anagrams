@@ -16,7 +16,7 @@
 
 
 
-(anagrams  "Piffle")
+(anagrams  "Ernest Hemingway")
 (format t "Done!~%" )
 
 (in-package :common-lisp-user)
