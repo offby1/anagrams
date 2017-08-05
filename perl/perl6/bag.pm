@@ -4,8 +4,13 @@ use Test;
 unit module bag;
 
 our sub bag_from_letters($letters) is export {
-  $letters.ords.Bag
+  $letters.lc.ords.grep({ 'a'.ord <= $_ <= 'z'.ord}).Bag
 }
 
-ok(bag_from_letters('abcdeaa') eqv bag_from_letters('aaabcde'));
-is-deeply(bag_from_letters('abcdeaa').kxxv.chrs, bag_from_letters('aaabcde').kxxv.chrs);
+our sub bag_empty(Bag $b) is export {
+    $b ~~ 0
+}
+
+our sub subtract (Bag $top, Bag $bottom) is export {
+    ($bottom (<=) $top) and $top (-) $bottom
+}
