@@ -5,7 +5,7 @@
 
 (defun combine (these-words more-anagrams)
   (mapcan #'(lambda (word-to-prepend)
-              (mapcar #'(lambda (phrase) 
+              (mapcar #'(lambda (phrase)
                           (cons word-to-prepend phrase))
                       more-anagrams))
           these-words))
@@ -37,7 +37,7 @@
                 (incf length (length combined)))
               (let ((more-anagrams (anagrams-internal
                                     smaller-bag
-                                    (prune smaller-bag dict)                                 
+                                    (prune smaller-bag dict)
                                     limit)))
                 (when more-anagrams
                   (let ((combined (combine these-words more-anagrams)))
