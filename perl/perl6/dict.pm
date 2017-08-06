@@ -1,4 +1,5 @@
 unit module dict;
+use bag;
 
 our @dict;
 
@@ -35,25 +36,23 @@ sub snarf_wordlist {
 
   note "Reading $dict_file_name ...";
 
-  my %words_by_bag is default(SetHash);
+  my %words_by_bag{Bag} is default(SetHash);
 
   for ($dict.words) {
       my $word = lc($_);
       if acceptable($word) {
-          my $bag = $word.ords.Bag;
+          my $bag = bag_from_letters($word);
           %words_by_bag{$bag}{$word} = True;
       }
   };
   note " done";
   close ($dict) or die "Closing $dict: $!";
 
-  note "Now rejiggering that data into a nice list ...";
+
 
   for %words_by_bag.pairs -> $bag, $words {
       @dict.push($bag, $words);
   }
-  note " done";
 }
 
 snarf_wordlist();
-say @dict.perl;

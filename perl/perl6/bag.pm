@@ -4,7 +4,7 @@ use Test;
 unit module bag;
 
 our sub bag_from_letters($letters) is export {
-  $letters.lc.ords.grep({ 'a'.ord <= $_ <= 'z'.ord}).Bag
+  $letters.lc.split("", :skip-empty).grep({ 'a'.ord <= $_.ord <= 'z'.ord}).Bag
 }
 
 our sub bag_empty(Bag $b) is export {
