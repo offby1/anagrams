@@ -35,7 +35,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
         return rv;
     }
-    
+
     String flatten(ArrayList<String> words) {
         String rv = new String();
         for(String w: words) {
@@ -45,7 +45,7 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
         return rv;
     }
-    
+
     String flatten_ans(ArrayList<ArrayList<String>> ans) {
         String rv = new String();
         for (ArrayList<String> gram : ans) {
@@ -54,11 +54,11 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         }
         return rv;
     }
-    
+
     private ArrayList<ArrayList<String>> combine(ArrayList<String> ws, ArrayList<ArrayList<String>> ans) {
-        
+
         ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>> ();
-        
+
         for (ArrayList<String> a : ans) {
             for (String word : ws) {
                 ArrayList<String> bigger_anagram = new ArrayList<String>();
@@ -67,31 +67,31 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                 rv.add(bigger_anagram);
             }
         }
-        
+
         return rv;
     }
-    
+
     private ArrayList<ArrayList<String>> do_em(Bag input,
             ArrayList<DictionaryReaderWorker.entry> wordlist,
             int recursion_level) {
-        
+
         ArrayList<ArrayList<String>> rv = new ArrayList<ArrayList<String>>();
         ArrayList<DictionaryReaderWorker.entry> pruned = prune(input, wordlist);
         int original_length = pruned.size();
         while (pruned.size() > 0) {
             DictionaryReaderWorker.entry elem = pruned.get(0);
             Bag diff = input.subtract(elem.b);
-            
+
             if (diff != null) {
                 if (diff.empty()) {
-                    
+
                     for (int i = 0; i < elem.words.size(); i++) {
                         ArrayList<String> loner = new ArrayList<String>();
                         loner.add(elem.words.get(i));
                         rv.add(loner);
                     }
                 } else {
-                    
+
                     ArrayList<ArrayList<String>> from_smaller = do_em(
                             diff,
                             pruned,
@@ -102,12 +102,12 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                     }
                 }
             }
-            
+
             pruned.remove(0);
-            
+
             if (recursion_level == 0) {
                 setProgress(java.lang.Math.round(100 * (1 - ((float)pruned.size()) / original_length)));
-                
+
             }
         }
         if (recursion_level == 0) {
@@ -116,14 +116,14 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
                 found_so_far++;
             }
         }
-        
+
         return rv;
     }
     @Override
     public String doInBackground() {
         setProgress(0);
         do_em(new Bag(input), initial_wordlist, 0);
-        
+
         return null;
     }
     @Override

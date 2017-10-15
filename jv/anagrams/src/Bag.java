@@ -42,15 +42,15 @@ public class Bag {
     new BigInteger("101")};
 
     private BigInteger guts;
-    
+
     // strictly for debugging: the string which we were created from
     private String source;
-    
+
     /** Creates a new instance of Bag */
     public Bag(BigInteger b) {
         guts = b;
     }
-    
+
     public Bag(String s) {
         source = s;
         s = s.toLowerCase();
@@ -72,11 +72,11 @@ public class Bag {
     public Boolean empty() {
         return guts.equals(BigInteger.ONE);
     }
-    
+
     public boolean equals(Object other){
         return guts.equals(((Bag)other).guts);
     }
-    
+
     public Bag subtract(Bag other){
         BigInteger rem = guts.remainder(other.guts);
         if (!BigInteger.ZERO.equals(rem))
@@ -86,7 +86,7 @@ public class Bag {
         rv.source = rv.guts.toString();
         return rv;
     }
-    
+
     public String toString() {
         return source;
     }
