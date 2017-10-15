@@ -46,14 +46,6 @@ public class AnagrammerWorker extends SwingWorker<Object, List<String>> {
         return rv;
     }
 
-    String flatten_ans(ArrayList<ArrayList<String>> ans) {
-        String rv = new String();
-        for (ArrayList<String> gram : ans) {
-            if (rv.length() > 0) rv += ", ";
-            rv += "[" + flatten(gram) + "]";
-        }
-        return rv;
-    }
 
     private ArrayList<ArrayList<String>> combine(ArrayList<String> ws, ArrayList<ArrayList<String>> ans) {
 
