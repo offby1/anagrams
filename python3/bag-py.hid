@@ -26,10 +26,10 @@ class Bag(object):
         return self.num.__hash__()
 
     def __sub__(self, other):
-        remainder = self.num % other.num
+        quotient, remainder = divmod(self.num, other.num)
         if (0 == remainder):
             rv = Bag("")
-            rv.num = self.num // other.num
+            rv.num = quotient
             return rv
         else:
             return None
