@@ -25,24 +25,20 @@ def anagrams(b, dict_as_list):
 
     rv = []
 
-    for index in range(len(dict_as_list)):
-        subdict = dict_as_list[index:]
-        (key, words) = subdict[0]
+    while dict_as_list:
+        (key, words) = dict_as_list[0]
         smaller_bag = b - key
 
-        if smaller_bag is None:
-            continue
+        if smaller_bag is not None:
+            if smaller_bag.empty():
+                for w in words:
+                    rv.append([w])
+            else:
+                from_smaller_bag = anagrams(smaller_bag, dict_as_list)
+                if from_smaller_bag:
+                    rv.extend(combine(words, from_smaller_bag))
 
-        if smaller_bag.empty():
-            for w in words:
-                rv.append([w])
-            continue
-
-        from_smaller_bag = anagrams(smaller_bag, subdict)
-        if not len(from_smaller_bag):
-            continue
-
-        rv.extend(combine(words, from_smaller_bag))
+        dict_as_list = dict_as_list[1:]
 
     return rv
 
