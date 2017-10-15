@@ -21,20 +21,12 @@ def combine(words, anagrams):
     return rv
 
 
-def tails(seq):
-    """
-    > list(tails ([1, 2, 3]))
-      [[1, 2, 3], [2, 3], [3]]
-    """
-    for index in range(len(seq)):
-        yield seq[index:]
-
-
-def anagrams(b, dict):
+def anagrams(b, dict_as_list):
 
     rv = []
 
-    for subdict in tails(dict):
+    for index in range(len(dict_as_list)):
+        subdict = dict_as_list[index:]
         (key, words) = subdict[0]
         smaller_bag = b - key
 
