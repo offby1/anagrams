@@ -3,7 +3,7 @@ import os
 
 from pytest import fixture
 
-from bag_collections import Bag
+from bag import Bag
 from dict import (
     default_dict_name,
     snarf_dictionary,

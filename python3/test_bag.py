@@ -1,4 +1,4 @@
-from bag_collections import Bag
+from bag import Bag
 
 
 def test_a_whole_lotta_stuff():
