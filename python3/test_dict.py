@@ -35,9 +35,9 @@ def test_word_acceptable():
 
 def test_this_and_that(fake_dict):
     assert (2 == len(fake_dict.keys()))
-    cat_hits = sorted(fake_dict[Bag("cat")])
-    assert (2 == len(cat_hits))
-    assert (cat_hits[0] == "cat")
-    assert (cat_hits[1] == "tac")
+    key = Bag("cat")
+    cat_hits = sorted(fake_dict[key])
+    assert (cat_hits == ["cat", "tac"])
+
     assert (1 == len(fake_dict[Bag("fred")]))
     assert (list(fake_dict[Bag("fred")])[0] == "fred")
