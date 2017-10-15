@@ -1,6 +1,6 @@
 #!/usr/bin/env python3.0
 
-from bag import Bag
+from bag_collections import Bag
 import collections
 import os
 import re
