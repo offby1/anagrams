@@ -10,9 +10,9 @@ class TestStart {
         @BeforeClass @JvmStatic fun setup() {
             sam = Bag("sam")
             mas = Bag("mas")
-    	}
+    	}	
     }
-
+   
     @Test fun testEmpty() {
         val b = Bag("")
         Assert.assertTrue(b.empty())
@@ -36,7 +36,7 @@ class TestStart {
         ht.put(sam, "hey")
         Assert.assertEquals("hey", ht.get(mas))
 	}
-
+    
     @Test fun testWordAcceptable() {
         Assert.assertTrue(word_acceptable("dog"))
 		Assert.assertFalse(word_acceptable("C3PO"))
