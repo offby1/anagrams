@@ -39,19 +39,19 @@ class Bag(var num: BigInteger) {
             }
         }
     }
-
+    
     fun empty(): Boolean {
         return num == BigInteger.ONE
     }
-
-    fun equals(other: Any): Boolean {
+    
+    override fun equals(other: Any?): Boolean {
         return num == (other as Bag).num;
     }
-
+    
     override fun hashCode(): Int {
         return num.hashCode()
-    }
-
+    } 
+    
     operator fun minus(other: Bag): Bag? {
         if (num % other.num != BigInteger.ZERO) return null
         return Bag(num / other.num)
