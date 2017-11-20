@@ -43,7 +43,7 @@ fun main(args: Array<String>) {
 	val input_phrase = args.joinToString(separator=" ")
 	val input_bag = Bag(input_phrase)
 
-	val dict = prune(input_bag, read_dict("words.utf8"))
+	val dict = prune(input_bag, read_dict("../words.utf8"))
 	
 	val results = anagrams(input_bag, dict)
 	val result_file = File(input_phrase).printWriter()
